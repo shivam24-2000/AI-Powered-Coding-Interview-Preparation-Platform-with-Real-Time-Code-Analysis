@@ -23,6 +23,19 @@ export interface AnalysisState {
     message: string;
     line?: number;
   }>;
+  explanation?: string[];
+  edgeCases?: Array<{
+    id: string;
+    title: string;
+    description: string;
+  }>;
+}
+
+export interface ChatMessage {
+  id: string;
+  role: 'user' | 'assistant';
+  content: string;
+  timestamp: number;
 }
 
 

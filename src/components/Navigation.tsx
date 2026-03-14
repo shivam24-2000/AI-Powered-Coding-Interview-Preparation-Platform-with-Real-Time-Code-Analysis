@@ -1,5 +1,5 @@
 import React from 'react';
-import { Play, Send, Settings, Loader } from 'lucide-react';
+import { Play, Send, Settings, Loader, Activity } from 'lucide-react';
 
 interface NavigationProps {
   onRunCode: () => void;
@@ -9,6 +9,7 @@ interface NavigationProps {
   isRunning: boolean;
   cooldownRemaining?: number;
   timer?: string | null; // formatted mm:ss or null
+  onMentor: () => void;
 }
 
 export const Navigation: React.FC<NavigationProps> = ({
@@ -19,6 +20,7 @@ export const Navigation: React.FC<NavigationProps> = ({
   isRunning,
   cooldownRemaining = 0,
   timer,
+  onMentor,
 }) => {
   const isBlocked = cooldownRemaining > 0;
 
@@ -53,6 +55,20 @@ export const Navigation: React.FC<NavigationProps> = ({
             <span style={{ fontSize: '1rem', marginRight: '4px' }}>⏱</span> {timer}
           </div>
         )}
+
+        <button
+          className="btn btn-secondary"
+          onClick={onMentor}
+          style={{ 
+            color: 'var(--accent-primary)', 
+            borderColor: 'rgba(168, 85, 247, 0.2)',
+            background: 'rgba(168, 85, 247, 0.05)',
+            boxShadow: '0 0 15px rgba(168, 85, 247, 0.1)'
+          }}
+        >
+          <Activity size={16} />
+          <span>AI Mentor</span>
+        </button>
 
         <button
           id="settings-btn"

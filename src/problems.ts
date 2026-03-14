@@ -29,7 +29,13 @@ export const PROBLEMS: Problem[] = [
       python: `class Solution:\n    def twoSum(self, nums: list[int], target: int) -> list[int]:\n        pass`,
       cpp: `class Solution {\npublic:\n    vector<int> twoSum(vector<int>& nums, int target) {\n        \n    }\n};`,
       go: `func twoSum(nums []int, target int) []int {\n    \n}`,
-      rust: `impl Solution {\n    pub fn two_sum(nums: Vec<i32>, target: i32) -> Vec<i32> {\n        \n    }\n}`
+      rust: `impl Solution {\n    pub fn two_sum(nums: Vec<i32>, target: i32) -> Vec<i32> {\n        \n    }\n}`,
+      kotlin: `class Solution {\n    fun twoSum(nums: IntArray, target: Int): IntArray {\n        \n    }\n}`,
+      swift: `class Solution {\n    func twoSum(_ nums: [Int], _ target: Int) -> [Int] {\n        \n    }\n}`,
+      ruby: `# @param {Integer[]} nums\n# @param {Integer} target\n# @return {Integer[]}\ndef two_sum(nums, target)\n    \nend`,
+      php: `class Solution {\n    /**\n     * @param Integer[] $nums\n     * @param Integer $target\n     * @return Integer[]\n     */\n    function twoSum($nums, $target) {\n        \n    }\n}`,
+      dart: `class Solution {\n  List<int> twoSum(List<int> nums, int target) {\n    \n  }\n}`,
+      scala: `object Solution {\n    def twoSum(nums: Array[Int], target: Int): Array[Int] = {\n        \n    }\n}`
     }
   },
   {
@@ -63,7 +69,13 @@ export const PROBLEMS: Problem[] = [
       python: `class Solution:\n    def isValid(self, s: str) -> bool:\n        pass`,
       cpp: `class Solution {\npublic:\n    bool isValid(string s) {\n        \n    }\n};`,
       go: `func isValid(s string) bool {\n    \n}`,
-      rust: `impl Solution {\n    pub fn is_valid(s: String) -> bool {\n        \n    }\n}`
+      rust: `impl Solution {\n    pub fn is_valid(s: String) -> bool {\n        \n    }\n}`,
+      kotlin: `class Solution {\n    fun isValid(s: String): Boolean {\n        \n    }\n}`,
+      swift: `class Solution {\n    func isValid(_ s: String) -> Bool {\n        \n    }\n}`,
+      ruby: `# @param {String} s\n# @return {Boolean}\ndef is_valid(s)\n    \nend`,
+      php: `class Solution {\n    /**\n     * @param String $s\n     * @return Boolean\n     */\n    function isValid($s) {\n        \n    }\n}`,
+      dart: `class Solution {\n  bool isValid(String s) {\n    \n  }\n}`,
+      scala: `object Solution {\n    def isValid(s: String): Boolean = {\n        \n    }\n}`
     }
   },
   {
@@ -91,7 +103,13 @@ export const PROBLEMS: Problem[] = [
       python: `class Solution:\n    def maxProfit(self, prices: list[int]) -> int:\n        pass`,
       cpp: `class Solution {\npublic:\n    int maxProfit(vector<int>& prices) {\n        \n    }\n};`,
       go: `func maxProfit(prices []int) int {\n    \n}`,
-      rust: `impl Solution {\n    pub fn max_profit(prices: Vec<i32>) -> i32 {\n        \n    }\n}`
+      rust: `impl Solution {\n    pub fn max_profit(prices: Vec<i32>) -> i32 {\n        \n    }\n}`,
+      kotlin: `class Solution {\n    fun maxProfit(prices: IntArray): Int {\n        \n    }\n}`,
+      swift: `class Solution {\n    func maxProfit(_ prices: [Int]) -> Int {\n        \n    }\n}`,
+      ruby: `# @param {Integer[]} prices\n# @return {Integer}\ndef max_profit(prices)\n    \nend`,
+      php: `class Solution {\n    /**\n     * @param Integer[] $prices\n     * @return Integer\n     */\n    function maxProfit($prices) {\n        \n    }\n}`,
+      dart: `class Solution {\n  int maxProfit(List<int> prices) {\n    \n  }\n}`,
+      scala: `object Solution {\n    def maxProfit(prices: Array[Int]): Int = {\n        \n    }\n}`
     }
   },
   {
@@ -119,7 +137,13 @@ export const PROBLEMS: Problem[] = [
       python: `class Solution:\n    def lengthOfLongestSubstring(self, s: str) -> int:\n        pass`,
       cpp: `class Solution {\npublic:\n    int lengthOfLongestSubstring(string s) {\n        \n    }\n};`,
       go: `func lengthOfLongestSubstring(s string) int {\n    \n}`,
-      rust: `impl Solution {\n    pub fn length_of_longest_substring(s: String) -> i32 {\n        \n    }\n}`
+      rust: `impl Solution {\n    pub fn length_of_longest_substring(s: String) -> i32 {\n        \n    }\n}`,
+      kotlin: `class Solution {\n    fun lengthOfLongestSubstring(s: String): Int {\n        \n    }\n}`,
+      swift: `class Solution {\n    func lengthOfLongestSubstring(_ s: String) -> Int {\n        \n    }\n}`,
+      ruby: `# @param {String} s\n# @return {Integer}\ndef length_of_longest_substring(s)\n    \nend`,
+      php: `class Solution {\n    /**\n     * @param String $s\n     * @return Integer\n     */\n    function lengthOfLongestSubstring($s) {\n        \n    }\n}`,
+      dart: `class Solution {\n  int lengthOfLongestSubstring(String s) {\n    \n  }\n}`,
+      scala: `object Solution {\n    def lengthOfLongestSubstring(s: String): Int = {\n        \n    }\n}`
     }
   },
   {
@@ -149,7 +173,13 @@ export const PROBLEMS: Problem[] = [
       python: `class Solution:\n    def maxArea(self, height: list[int]) -> int:\n        pass`,
       cpp: `class Solution {\npublic:\n    int maxArea(vector<int>& height) {\n        \n    }\n};`,
       go: `func maxArea(height []int) int {\n    \n}`,
-      rust: `impl Solution {\n    pub fn max_area(height: Vec<i32>) -> i32 {\n        \n    }\n}`
+      rust: `impl Solution {\n    pub fn max_area(height: Vec<i32>) -> i32 {\n        \n    }\n}`,
+      kotlin: `class Solution {\n    fun maxArea(height: IntArray): Int {\n        \n    }\n}`,
+      swift: `class Solution {\n    func maxArea(_ height: [Int]) -> Int {\n        \n    }\n}`,
+      ruby: `# @param {Integer[]} height\n# @return {Integer}\ndef max_area(height)\n    \nend`,
+      php: `class Solution {\n    /**\n     * @param Integer[] $height\n     * @return Integer\n     */\n    function maxArea($height) {\n        \n    }\n}`,
+      dart: `class Solution {\n  int maxArea(List<int> height) {\n    \n  }\n}`,
+      scala: `object Solution {\n    def maxArea(height: Array[Int]): Int = {\n        \n    }\n}`
     }
   },
   {
@@ -176,7 +206,13 @@ export const PROBLEMS: Problem[] = [
       python: `class Solution:\n    def merge(self, intervals: list[list[int]]) -> list[list[int]]:\n        pass`,
       cpp: `class Solution {\npublic:\n    vector<vector<int>> merge(vector<vector<int>>& intervals) {\n        \n    }\n};`,
       go: `func merge(intervals [][]int) [][]int {\n    \n}`,
-      rust: `impl Solution {\n    pub fn merge(intervals: Vec<Vec<i32>>) -> Vec<Vec<i32>> {\n        \n    }\n}`
+      rust: `impl Solution {\n    pub fn merge(intervals: Vec<Vec<i32>>) -> Vec<Vec<i32>> {\n        \n    }\n}`,
+      kotlin: `class Solution {\n    fun merge(intervals: Array<IntArray>): Array<IntArray> {\n        \n    }\n}`,
+      swift: `class Solution {\n    func merge(_ intervals: [[Int]]) -> [[Int]] {\n        \n    }\n}`,
+      ruby: `# @param {Integer[][]} intervals\n# @return {Integer[][]}\ndef merge(intervals)\n    \nend`,
+      php: `class Solution {\n    /**\n     * @param Integer[][] $intervals\n     * @return Integer[][]\n     */\n    function merge($intervals) {\n        \n    }\n}`,
+      dart: `class Solution {\n  List<List<int>> merge(List<List<int>> intervals) {\n    \n  }\n}`,
+      scala: `object Solution {\n    def merge(intervals: Array[Array[Int]]): Array[Array[Int]] = {\n        \n    }\n}`
     }
   },
   {
@@ -207,7 +243,13 @@ export const PROBLEMS: Problem[] = [
       python: `class Solution:\n    def wordBreak(self, s: str, wordDict: list[str]) -> bool:\n        pass`,
       cpp: `class Solution {\npublic:\n    bool wordBreak(string s, vector<string>& wordDict) {\n        \n    }\n};`,
       go: `func wordBreak(s string, wordDict []string) bool {\n    \n}`,
-      rust: `impl Solution {\n    pub fn word_break(s: String, word_dict: Vec<String>) -> bool {\n        \n    }\n}`
+      rust: `impl Solution {\n    pub fn word_break(s: String, word_dict: Vec<String>) -> bool {\n        \n    }\n}`,
+      kotlin: `class Solution {\n    fun wordBreak(s: String, wordDict: List<String>): Boolean {\n        \n    }\n}`,
+      swift: `class Solution {\n    func wordBreak(_ s: String, _ wordDict: [String]) -> Bool {\n        \n    }\n}`,
+      ruby: `# @param {String} s\n# @param {String[]} word_dict\n# @return {Boolean}\ndef word_break(s, word_dict)\n    \nend`,
+      php: `class Solution {\n    /**\n     * @param String $s\n     * @param String[] $wordDict\n     * @return Boolean\n     */\n    function wordBreak($s, $wordDict) {\n        \n    }\n}`,
+      dart: `class Solution {\n  bool wordBreak(String s, List<String> wordDict) {\n    \n  }\n}`,
+      scala: `object Solution {\n    def wordBreak(s: String, wordDict: List[String]): Boolean = {\n        \n    }\n}`
     }
   },
   {
@@ -234,7 +276,13 @@ export const PROBLEMS: Problem[] = [
       python: `class Solution:\n    def trap(self, height: list[int]) -> int:\n        pass`,
       cpp: `class Solution {\npublic:\n    int trap(vector<int>& height) {\n        \n    }\n};`,
       go: `func trap(height []int) int {\n    \n}`,
-      rust: `impl Solution {\n    pub fn trap(height: Vec<i32>) -> i32 {\n        \n    }\n}`
+      rust: `impl Solution {\n    pub fn trap(height: Vec<i32>) -> i32 {\n        \n    }\n}`,
+      kotlin: `class Solution {\n    fun trap(height: IntArray): Int {\n        \n    }\n}`,
+      swift: `class Solution {\n    func trap(_ height: [Int]) -> Int {\n        \n    }\n}`,
+      ruby: `# @param {Integer[]} height\n# @return {Integer}\ndef trap(height)\n    \nend`,
+      php: `class Solution {\n    /**\n     * @param Integer[] $height\n     * @return Integer\n     */\n    function trap($height) {\n        \n    }\n}`,
+      dart: `class Solution {\n  int trap(List<int> height) {\n    \n  }\n}`,
+      scala: `object Solution {\n    def trap(height: Array[Int]): Int = {\n        \n    }\n}`
     }
   }
 ];

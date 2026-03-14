@@ -1,5 +1,5 @@
 import React from 'react';
-import { CheckCircle, XCircle, AlertTriangle, Terminal, Loader, WifiOff } from 'lucide-react';
+import { CheckCircle, XCircle, AlertTriangle, Terminal, Loader, WifiOff, ChevronDown } from 'lucide-react';
 import type { RunResult } from '../pistonApi';
 
 export type RunState =
@@ -149,13 +149,18 @@ export const OutputPanel: React.FC<OutputPanelProps> = ({ runState, onClose }) =
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <button
             onClick={onClose}
-            style={{
-              background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              padding: '4px', borderRadius: '4px'
+            className="btn btn-icon"
+            style={{ 
+              background: 'transparent', 
+              border: 'none', 
+              color: 'var(--text-muted)', 
+              cursor: 'pointer',
+              padding: '4px',
+              borderRadius: '6px'
             }}
+            title="Fold Panel"
           >
-            <span style={{ fontSize: '1.2rem', lineHeight: 1 }}>×</span>
+            <ChevronDown size={18} />
           </button>
         </div>
       </div>

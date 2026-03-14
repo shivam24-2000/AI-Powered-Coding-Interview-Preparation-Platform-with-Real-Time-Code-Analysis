@@ -1,8 +1,10 @@
 import React, { useRef, useEffect } from 'react';
 import Editor from '@monaco-editor/react';
-import { Terminal, ChevronDown, RotateCcw } from 'lucide-react';
+import { Terminal, ChevronDown, RotateCcw, Globe } from 'lucide-react';
 import type { Language } from '../languages';
 import type { EditorSettings } from './SettingsModal';
+import { LanguageModal } from './LanguageModal';
+import { useState } from 'react';
 
 interface CodeEditorProps {
   code: string;
@@ -25,6 +27,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
 }) => {
   const editorRef = useRef<any>(null);
   const monacoRef = useRef<any>(null);
+  const [langModalOpen, setLangModalOpen] = useState(false);
 
   const handleEditorDidMount = (editor: any, monaco: any) => {
     editorRef.current = editor;
@@ -69,10 +72,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
     applyTheme(monacoRef.current, settings.theme);
   }, [settings]);
 
-  const handleLangChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const lang = languages.find(l => l.id === e.target.value);
-    if (lang) onLanguageChange(lang);
-  };
+  // Removed handleLangChange in favor of modal select
 
   return (
     <div
@@ -107,39 +107,41 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
           )}
 
           <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
-            <select
-              id="language-selector"
-              value={language.id}
-              onChange={handleLangChange}
+            <button
+              onClick={() => setLangModalOpen(true)}
               style={{
-                appearance: 'none',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
                 background: 'rgba(139, 92, 246, 0.12)',
                 border: '1px solid rgba(139, 92, 246, 0.3)',
                 borderRadius: '6px',
                 color: 'var(--text-primary)',
-                outline: 'none',
                 cursor: 'pointer',
                 fontSize: '0.8rem',
-                fontWeight: 500,
-                padding: '4px 28px 4px 10px',
-                transition: 'border-color 0.2s',
+                fontWeight: 600,
+                padding: '4px 10px',
+                transition: 'all 0.2s',
               }}
-              onMouseOver={e => (e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.7)')}
-              onMouseOut={e => (e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)')}
+              onMouseOver={e => (e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.7)', e.currentTarget.style.background = 'rgba(139, 92, 246, 0.2)')}
+              onMouseOut={e => (e.currentTarget.style.borderColor = 'rgba(139, 92, 246, 0.3)', e.currentTarget.style.background = 'rgba(139, 92, 246, 0.12)')}
             >
-              {languages.map(lang => (
-                <option key={lang.id} value={lang.id} style={{ background: '#18181b' }}>
-                  {lang.label}
-                </option>
-              ))}
-            </select>
-            <ChevronDown
-              size={13}
-              style={{ position: 'absolute', right: 8, pointerEvents: 'none', color: 'var(--text-muted)' }}
-            />
+              <Globe size={13} />
+              {language.label}
+              <ChevronDown size={13} style={{ color: 'var(--text-muted)' }} />
+            </button>
           </div>
         </div>
       </div>
+
+      {langModalOpen && (
+        <LanguageModal
+          currentLanguage={language}
+          languages={languages}
+          onSelect={onLanguageChange}
+          onClose={() => setLangModalOpen(false)}
+        />
+      )}
 
       <div className="panel-content" style={{ overflow: 'hidden' }}>
         <Editor
