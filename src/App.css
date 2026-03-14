@@ -282,6 +282,71 @@
   border: 1px solid rgba(168, 85, 247, 0.1);
 }
 
+/* Mobile Responsiveness */
+@media (max-width: 1024px) {
+  .main-workspace {
+    flex-direction: column;
+    padding: 8px;
+    gap: 12px;
+    overflow-y: auto;
+  }
+
+  .main-workspace > div {
+    flex: none !important;
+    width: 100% !important;
+    height: auto !important;
+    min-width: 0 !important;
+    max-width: none !important;
+  }
+
+  .editor-panel {
+    min-height: 400px;
+  }
+
+  .resizer {
+    display: none !important;
+  }
+
+  .navbar {
+    padding: 0 12px;
+  }
+
+  .navbar-brand span {
+    display: none;
+  }
+
+  .btn {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+  }
+
+  .btn span {
+    display: none; /* Hide button text on very small screens */
+  }
+
+  .btn-accent span, .btn-secondary span {
+    display: inline; /* Keep text for primary actions if space allows */
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar-brand {
+    gap: 8px;
+  }
+  
+  .navbar-actions {
+    gap: 6px;
+  }
+
+  .btn {
+    padding: 6px 8px;
+  }
+
+  .btn span {
+    display: none !important;
+  }
+}
+
 .custom-scrollbar::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.05);
 }

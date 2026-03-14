@@ -60,7 +60,7 @@ export const Navigation: React.FC<NavigationProps> = ({
           onClick={onSettings}
         >
           <Settings size={16} />
-          Settings
+          <span>Settings</span>
         </button>
         <button
           className="btn btn-secondary"
@@ -75,7 +75,7 @@ export const Navigation: React.FC<NavigationProps> = ({
           ) : (
             <Play size={16} fill="currentColor" />
           )}
-          {isRunning ? 'Running...' : isBlocked ? `Run (${cooldownRemaining}s)` : 'Run'}
+          <span>{isRunning ? 'Running...' : isBlocked ? `Run (${cooldownRemaining}s)` : 'Run'}</span>
         </button>
         <button
           className="btn btn-accent"
@@ -90,7 +90,7 @@ export const Navigation: React.FC<NavigationProps> = ({
           ) : (
             <Send size={16} />
           )}
-          {isRunning ? 'Submitting...' : isBlocked ? `Wait (${cooldownRemaining}s)` : 'Submit'}
+          <span>{isRunning ? 'Submitting...' : isBlocked ? `Wait (${cooldownRemaining}s)` : 'Submit'}</span>
         </button>
       </div>
     </nav>
