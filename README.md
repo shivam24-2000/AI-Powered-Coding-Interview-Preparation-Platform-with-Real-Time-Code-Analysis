@@ -54,8 +54,7 @@ The Feedback Mentor provides granular analysis, identifying specific lines for i
 ### Installation
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/YOUR_USERNAME/ai-interview-platform.git
-   cd ai-interview-platform
+   https://github.com/shivam24-2000/AI-Powered-Coding-Interview-Preparation-Platform-with-Real-Time-Code-Analysis.git
    ```
 2. **Install dependencies:**
    ```bash
