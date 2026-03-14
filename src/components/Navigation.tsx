@@ -26,7 +26,7 @@ export const Navigation: React.FC<NavigationProps> = ({
     <nav className="navbar">
       <div className="navbar-brand">
         <div className="glass-panel" style={{ padding: '0', borderRadius: '10px', overflow: 'hidden', width: '36px', height: '36px', border: '1px solid rgba(255,255,255,0.15)' }}>
-          <img src="/logo.png" alt="NexCode AI Logo" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          <img src={`${import.meta.env.BASE_URL}logo.png`} alt="NexCode AI Logo" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
         </div>
         <span className="text-gradient" style={{ fontSize: '1.4rem' }}>NexCode AI</span>
       </div>
