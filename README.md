@@ -1,74 +1,78 @@
-# React + TypeScript + Vite
+# NexCode AI 🚀
+### *The Next-Generation AI-Powered Coding Interview Platform*
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+NexCode AI is a high-fidelity, premium coding interview preparation platform. It provides candidates with a state-of-the-art environment to practice data structures and algorithms, enhanced by a real-time **AI Mentor** and a **Virtual Execution Engine** powered by Google's Gemini 2.0 Flash architecture.
 
-Currently, two official plugins are available:
+![Main Dashboard](./public/screenshots/main_view.png)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 🌟 Key Features
 
-## React Compiler
+### 🧠 Real-Time AI Mentor
+Get instant feedback on your code's time and space complexity as you type. The mentor identifies potential bugs, logic flaws, and optimization opportunities before you even hit "Run". 
+- **Smart Isolation:** AI suggestions are automatically paused during code execution to prioritize performance and focus.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### ⚡ Virtual Execution Engine
+Execute your solutions across multiple languages (JavaScript, Java, Python, C++, and more) without the need for complex backend infrastructure.
+- **Resilient Architecture:** Includes dual-model failover (Gemini 2.0 Flash to Pro) and emergency local fallbacks to ensure test results are returned even when API limits are reached.
+- **Quota Protection:** Visual cooldown timers prevent accidental rate-limiting during intense practice sessions.
 
-## Expanding the ESLint configuration
+### 🎨 Premium Developer Experience
+- **Glassmorphism Design:** A stunning, modern interface with deep midnight themes and vibrant accents.
+- **Monaco Editor Integration:** The same core engine powering VS Code, featuring full syntax highlighting and custom themes.
+- **Integrated Whiteboard:** Sketch out ideas and system designs directly within the platform.
+- **Subtle Confirmations:** Custom, non-intrusive pop-ups for critical actions like resetting your code.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+![Code Execution](./public/screenshots/execution.png)
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## 🖼️ Visual Tour
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### 📋 Comprehensive Problem Library
+Access a curated list of popular coding challenges ranging from Easy to Hard.
+![Problem List](./public/screenshots/problem_list.png)
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+### ☕ Multi-Language Support
+Seamlessly switch between languages like Java, C++, Python, and TypeScript with intelligent syntax highlighting.
+![Java Editor](./public/screenshots/java_editor.png)
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### 🦾 Deep AI Insights
+The Feedback Mentor provides granular analysis, identifying specific lines for improvement.
+![AI Analysis](./public/screenshots/ai_analysis.png)
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## 🛠️ Tech Stack
+- **Frontend:** React 18, Vite, TypeScript
+- **Styling:** Vanilla CSS (Custom Glassmorphism Design System)
+- **AI/LLM:** Google Generative AI (Gemini 2.0 Flash)
+- **Editor:** Monaco Editor (@monaco-editor/react)
+- **Icons:** Lucide React
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-# AI-Powered-Coding-Interview-Preparation-Platform-with-Real-Time-Code-Analysis
+## 🚀 Getting Started
+
+### Prerequisites
+- Node.js (v18 or higher)
+- A Google Gemini API Key (Available at [Google AI Studio](https://aistudio.google.com/))
+
+### Installation
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/YOUR_USERNAME/ai-interview-platform.git
+   cd ai-interview-platform
+   ```
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+3. **Configure Environment Variables:**
+   Create a `.env` file in the root directory:
+   ```env
+   VITE_GEMINI_API_KEY=your_gemini_api_key_here
+   ```
+4. **Start the development server:**
+   ```bash
+   npm run dev
+   ```
+
+## 🔒 Security Note
+The `.env` file is included in `.gitignore` by default. Never share your API key or push it to public repositories.
+
+---
+
