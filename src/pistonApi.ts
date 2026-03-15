@@ -15,8 +15,8 @@ export interface RunResult {
  * Optimized for resilience and production security via API proxy.
  */
 export async function executeCode(
-  languageId: string, 
-  code: string, 
+  languageId: string,
+  code: string,
   problem: Problem
 ): Promise<RunResult> {
   // EMERGENCY FALLBACK: Local Heuristic Execution for Two Sum (JS/Java)
@@ -26,9 +26,9 @@ export async function executeCode(
     if (isOptimal) {
       return {
         stdout: "Test 1: ✓ PASS\nTest 2: ✓ PASS\nTest 3: ✓ PASS\n\n3/3 tests passed",
-        stderr: "", 
-        exitCode: 0, 
-        isSimulated: true, 
+        stderr: "",
+        exitCode: 0,
+        isSimulated: true,
         timedOut: false
       };
     }
@@ -80,7 +80,7 @@ export async function executeCode(
 
     const data = await response.json();
     let text = data.candidates?.[0]?.content?.parts?.[0]?.text;
-    
+
     if (text) {
       text = text.replace(/```json\n?/, '').replace(/```\n?$/, '').trim();
       try {
@@ -96,7 +96,7 @@ export async function executeCode(
         throw new Error(`Execution halted abruptly: Gemini provided incomplete logic validation. Wait a moment and try again.`);
       }
     }
-    
+
     throw new Error('Invalid response format');
 
   } catch (error: any) {

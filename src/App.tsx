@@ -261,7 +261,7 @@ function App() {
                 onClick={() => setIsMentorFolded(false)}
               >
                 <ChevronLeft size={14} className="text-gradient" />
-                <span>SUMMON AI INSIGHTS</span>
+                <span>SUMMON JARVIS</span>
               </div>
             ) : (
               <>
@@ -320,9 +320,9 @@ function App() {
                       }}>
                         <Lock size={20} />
                       </div>
-                      <h3 style={{ fontSize: '0.95rem', fontWeight: 600, marginBottom: '6px' }}>Mentor Paused</h3>
+                      <h3 style={{ fontSize: '0.95rem', fontWeight: 600, marginBottom: '6px' }}>Jarvis Paused</h3>
                       <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', lineHeight: 1.4 }}>
-                        Execution prioritizes performance. analysis resumed shortly.
+                        Execution prioritizes performance. Analysis resumed shortly.
                       </p>
                     </div>
                   )}

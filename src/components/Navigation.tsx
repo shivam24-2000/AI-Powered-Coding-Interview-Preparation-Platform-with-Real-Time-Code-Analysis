@@ -1,5 +1,5 @@
 import React from 'react';
-import { Play, Send, Settings, Loader, Activity } from 'lucide-react';
+import { Play, Send, Settings, Loader, BrainCircuit } from 'lucide-react';
 
 interface NavigationProps {
   onRunCode: () => void;
@@ -26,11 +26,16 @@ export const Navigation: React.FC<NavigationProps> = ({
 
   return (
     <nav className="navbar">
-      <div className="navbar-brand">
-        <div className="glass-panel" style={{ padding: '0', borderRadius: '10px', overflow: 'hidden', width: '36px', height: '36px', border: '1px solid rgba(255,255,255,0.15)' }}>
-          <img src={`${import.meta.env.BASE_URL}logo.png`} alt="NexCode AI Logo" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+      <div className="navbar-brand" style={{ alignItems: 'flex-start', gap: '0', flexDirection: 'column', justifyContent: 'center' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+          <div className="glass-panel" style={{ padding: '0', borderRadius: '10px', overflow: 'hidden', width: '36px', height: '36px', border: '1px solid rgba(255,255,255,0.15)' }}>
+            <img src={`${import.meta.env.BASE_URL}logo.png`} alt="NexCode AI Logo" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          </div>
+          <span className="text-gradient" style={{ fontSize: '1.4rem' }}>NexCode AI</span>
         </div>
-        <span className="text-gradient" style={{ fontSize: '1.4rem' }}>NexCode AI</span>
+        <span style={{ fontSize: '0.60rem', color: 'var(--text-muted)', opacity: 0.7, paddingLeft: '50px', fontWeight: 500, letterSpacing: '0.04em', marginTop: '-2px' }}>
+          &copy; {new Date().getFullYear()} Shivam Singhal
+        </span>
       </div>
 
       <div className="navbar-actions">
@@ -66,8 +71,8 @@ export const Navigation: React.FC<NavigationProps> = ({
             boxShadow: '0 0 15px rgba(168, 85, 247, 0.1)'
           }}
         >
-          <Activity size={16} />
-          <span>AI Mentor</span>
+          <BrainCircuit size={16} />
+          <span>Jarvis</span>
         </button>
 
         <button

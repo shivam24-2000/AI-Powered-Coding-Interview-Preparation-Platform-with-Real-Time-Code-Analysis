@@ -104,7 +104,7 @@ export async function getChatResponse(
 
   try {
     const context = `
-      You are an expert technical interviewer at a top tech company. 
+      You are Jarvis, an expert technical interviewer and AI Assistant at NexCode. 
       The candidate is solving "${problem.title}".
       Problem: ${problem.description.replace(/<[^>]*>?/gm, '')}
       Current Language: ${language.label}

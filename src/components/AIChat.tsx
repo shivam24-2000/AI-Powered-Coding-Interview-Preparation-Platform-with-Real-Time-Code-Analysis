@@ -46,8 +46,8 @@ export const AIChat: React.FC<AIChatProps> = ({ messages, onSendMessage, isTypin
             color: 'var(--text-muted)',
             fontSize: '0.85rem'
           }}>
-            <Bot size={32} style={{ marginBottom: '12px', opacity: 0.3 }} />
-            <p>Ask me anything about your logic, time complexity, or how to optimize this solution.</p>
+              <Bot size={32} style={{ marginBottom: '12px', opacity: 0.3 }} />
+            <p>I'm Jarvis. Ask me anything about your logic, time complexity, or how to optimize this solution.</p>
           </div>
         )}
 

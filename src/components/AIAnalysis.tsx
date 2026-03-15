@@ -44,14 +44,14 @@ export const AIAnalysis: React.FC<AIAnalysisProps> = ({
       <div className="panel-header" style={{ justifyContent: 'space-between', paddingLeft: '16px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <Activity size={16} className="text-gradient" />
-          <span style={{ fontWeight: 600 }}>Feedback Mentor</span>
+          <span style={{ fontWeight: 600 }}>Jarvis</span>
         </div>
         
         <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
           <button
             onClick={() => onToggleAuto(!isAutoEnabled)}
             className={`btn btn-icon ${isAutoEnabled ? 'active' : ''}`}
-            title={isAutoEnabled ? "Disable Auto-Mentor" : "Enable Auto-Mentor"}
+            title={isAutoEnabled ? "Disable Auto-Jarvis" : "Enable Auto-Jarvis"}
             style={{ 
               background: isAutoEnabled ? 'rgba(168, 85, 247, 0.1)' : 'transparent',
               padding: '4px',
