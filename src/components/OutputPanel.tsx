@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { CheckCircle, XCircle, AlertTriangle, Terminal, Loader, WifiOff, ChevronDown } from 'lucide-react';
+import { CheckCircle, XCircle, Terminal, Loader, WifiOff, ChevronDown } from 'lucide-react';
 import type { RunResult } from '../pistonApi';
 import type { Problem } from '../types';
 
