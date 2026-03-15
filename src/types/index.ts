@@ -1,3 +1,9 @@
+export interface ProblemHint {
+  tier: 1 | 2 | 3;
+  label: string;    // e.g. "Conceptual", "Approach", "Pseudocode"
+  content: string;
+}
+
 export interface Problem {
   id: string;
   title: string;
@@ -10,7 +16,8 @@ export interface Problem {
     explanation?: string;
   }>;
   constraints: string[];
-  templates: Record<string, string>; // languageId -> codeTemplate
+  templates: Record<string, string>;
+  hints?: ProblemHint[];
 }
 
 export interface AnalysisState {

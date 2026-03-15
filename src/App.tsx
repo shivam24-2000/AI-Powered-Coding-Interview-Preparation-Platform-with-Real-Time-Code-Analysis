@@ -6,6 +6,7 @@ import { AIAnalysis } from './components/AIAnalysis';
 import { OutputPanel, type RunState } from './components/OutputPanel';
 import { SettingsModal, DEFAULT_SETTINGS, type EditorSettings } from './components/SettingsModal';
 import { ResetModal } from './components/ResetModal';
+import { KeyboardShortcutsModal } from './components/KeyboardShortcutsModal';
 import type { AnalysisState } from './types';
 import { LANGUAGES, DEFAULT_LANGUAGE, type Language } from './languages';
 import { PROBLEMS } from './problems';
@@ -14,9 +15,10 @@ import { buildRunnerCode } from './testRunners';
 import { PanelResizer } from './components/PanelResizer';
 import { analyzeCode as getAIAnalysis, getChatResponse as getAIChatResponse } from './aiService';
 import { quotaManager } from './quotaManager';
-import { Lock, ChevronLeft, ChevronUp } from 'lucide-react';
+import { Lock, ChevronLeft, ChevronUp, Terminal } from 'lucide-react';
 import type { ChatMessage } from './types';
 import { applyAppTheme } from './themes';
+import { useConfetti } from './hooks/useConfetti';
 import './App.css';
 
 function formatTime(seconds: number): string {
@@ -26,6 +28,7 @@ function formatTime(seconds: number): string {
 }
 
 function App() {
+  const { fire: fireConfetti } = useConfetti();
   const [selectedProblem, setSelectedProblem] = useState(PROBLEMS[0]);
   const [selectedLanguage, setSelectedLanguage] = useState<Language>(DEFAULT_LANGUAGE);
   const [code, setCode] = useState(PROBLEMS[0].templates[DEFAULT_LANGUAGE.id] || '');
@@ -36,7 +39,8 @@ function App() {
   const [resetModalOpen, setResetModalOpen] = useState(false);
   const [mentorOpen, setMentorOpen] = useState(false);
   const [isMentorFolded, setIsMentorFolded] = useState(false);
-  const [isResultsFolded, setIsResultsFolded] = useState(false);
+  const [isResultsFolded, setIsResultsFolded] = useState(true);
+  const [shortcutsOpen, setShortcutsOpen] = useState(false);
 
   // Panel sizing state
   const [rightWidth, setRightWidth] = useState(300);
@@ -46,7 +50,24 @@ function App() {
   const [isChatTyping, setIsChatTyping] = useState(false);
   const [aiTab, setAiTab] = useState<'analysis' | 'chat'>('analysis');
 
-  // Poll for quota cooldown
+  // Global keyboard shortcuts
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      const tag = (e.target as HTMLElement).tagName;
+      const isTyping = tag === 'INPUT' || tag === 'TEXTAREA' || (e.target as HTMLElement).isContentEditable;
+      if (e.key === '?' && !isTyping) {
+        e.preventDefault();
+        setShortcutsOpen(prev => !prev);
+      }
+      if ((e.ctrlKey || e.metaKey) && e.key === 'j') {
+        e.preventDefault();
+        setMentorOpen(prev => !prev);
+      }
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, []);
+
   useEffect(() => {
     const id = setInterval(() => {
       const rem = quotaManager.getRemainingCooldown();
@@ -152,6 +173,10 @@ function App() {
     // Check if everything passed
     const isSuccess = result.exitCode === 0 && !result.stderr.trim() && result.stdout.includes('passed');
     if (isSuccess) {
+      // 🎉 Fire confetti immediately
+      fireConfetti();
+
+      // Then open Jarvis to suggest next problems
       setTimeout(() => {
         setMentorOpen(true);
         setIsMentorFolded(false);
@@ -230,6 +255,7 @@ function App() {
         onRunCode={handleRunCode}
         onSubmit={handleSubmit}
         onSettings={() => setSettingsOpen(true)}
+        onShortcuts={() => setShortcutsOpen(true)}
         isAnalyzing={analysisState.isAnalyzing}
         isRunning={runState.status === 'running'}
         cooldownRemaining={cooldown}
@@ -264,29 +290,29 @@ function App() {
             onReset={handleResetCode}
             settings={settings}
           />
-          {runState.status !== 'idle' && (
-            <>
-              {isResultsFolded ? (
-                <div 
-                  className="glass-panel dock-bar-results"
-                  onClick={() => setIsResultsFolded(false)}
-                >
-                  <ChevronUp size={14} className="text-gradient" />
-                  <span>REVIEW LOGIC STREAM</span>
+          <>
+            {isResultsFolded ? (
+              <div 
+                className="glass-panel dock-bar-results"
+                onClick={() => setIsResultsFolded(false)}
+                style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 16px', borderTop: '1px solid rgba(255,255,255,0.08)' }}
+              >
+                <Terminal size={14} className="text-gradient" />
+                <span style={{ fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.05em', color: 'var(--text-muted)' }}>TEST RESULTS</span>
+                <ChevronUp size={14} style={{ marginLeft: 'auto', opacity: 0.6 }} />
+              </div>
+            ) : (
+              <>
+                <PanelResizer 
+                  direction="vertical" 
+                  onResize={(d) => setBottomHeight(h => Math.max(150, Math.min(800, h - d)))} 
+                />
+                <div style={{ height: bottomHeight, flex: `0 0 ${bottomHeight}px`, display: 'flex', flexDirection: 'column' }}>
+                  <OutputPanel runState={runState} problem={selectedProblem} onClose={() => setIsResultsFolded(true)} onDebugWithJarvis={handleDebugWithJarvis} />
                 </div>
-              ) : (
-                <>
-                  <PanelResizer 
-                    direction="vertical" 
-                    onResize={(d) => setBottomHeight(h => Math.max(150, Math.min(800, h - d)))} 
-                  />
-                  <div style={{ height: bottomHeight, flex: `0 0 ${bottomHeight}px`, display: 'flex', flexDirection: 'column' }}>
-                    <OutputPanel runState={runState} onClose={() => setIsResultsFolded(true)} onDebugWithJarvis={handleDebugWithJarvis} />
-                  </div>
-                </>
-              )}
-            </>
-          )}
+              </>
+            )}
+          </>
         </div>
 
         {mentorOpen && (
@@ -385,6 +411,11 @@ function App() {
           onClose={() => setResetModalOpen(false)}
         />
       )}
+
+      <KeyboardShortcutsModal
+        isOpen={shortcutsOpen}
+        onClose={() => setShortcutsOpen(false)}
+      />
     </div>
   );
 }

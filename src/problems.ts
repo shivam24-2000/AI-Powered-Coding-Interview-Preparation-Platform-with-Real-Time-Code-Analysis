@@ -36,7 +36,24 @@ export const PROBLEMS: Problem[] = [
       php: `class Solution {\n    /**\n     * @param Integer[] $nums\n     * @param Integer $target\n     * @return Integer[]\n     */\n    function twoSum($nums, $target) {\n        \n    }\n}`,
       dart: `class Solution {\n  List<int> twoSum(List<int> nums, int target) {\n    \n  }\n}`,
       scala: `object Solution {\n    def twoSum(nums: Array[Int], target: Int): Array[Int] = {\n        \n    }\n}`
-    }
+    },
+    hints: [
+      {
+        tier: 1,
+        label: 'Conceptual',
+        content: 'Think about what information you need to store as you scan the array. For each number, what are you searching for?'
+      },
+      {
+        tier: 2,
+        label: 'Approach',
+        content: 'Use a Hash Map. As you iterate, for each number x, check if (target - x) already exists in your map. If yes, you found your pair. If no, store x in the map and continue.'
+      },
+      {
+        tier: 3,
+        label: 'Pseudocode',
+        content: 'map = {}\nfor i, num in enumerate(nums):\n  complement = target - num\n  if complement in map:\n    return [map[complement], i]\n  map[num] = i'
+      }
+    ]
   },
   {
     id: 'valid-parentheses',
@@ -76,7 +93,24 @@ export const PROBLEMS: Problem[] = [
       php: `class Solution {\n    /**\n     * @param String $s\n     * @return Boolean\n     */\n    function isValid($s) {\n        \n    }\n}`,
       dart: `class Solution {\n  bool isValid(String s) {\n    \n  }\n}`,
       scala: `object Solution {\n    def isValid(s: String): Boolean = {\n        \n    }\n}`
-    }
+    },
+    hints: [
+      {
+        tier: 1,
+        label: 'Conceptual',
+        content: 'You need to match opening brackets with their most recent unmatched closing bracket. What data structure lets you track "the last thing seen"?'
+      },
+      {
+        tier: 2,
+        label: 'Approach',
+        content: 'Use a Stack. Push every opening bracket. When you see a closing bracket, check if the top of the stack is its matching opener — if yes, pop; if no (or stack is empty), return false. At the end the stack must be empty.'
+      },
+      {
+        tier: 3,
+        label: 'Pseudocode',
+        content: 'stack = []\nmap = { ")": "(", "}": "{", "]": "[" }\nfor char in s:\n  if char in map:\n    if not stack or stack[-1] != map[char]: return False\n    stack.pop()\n  else:\n    stack.push(char)\nreturn stack is empty'
+      }
+    ]
   },
   {
     id: 'best-time-buy-sell',
@@ -110,7 +144,24 @@ export const PROBLEMS: Problem[] = [
       php: `class Solution {\n    /**\n     * @param Integer[] $prices\n     * @return Integer\n     */\n    function maxProfit($prices) {\n        \n    }\n}`,
       dart: `class Solution {\n  int maxProfit(List<int> prices) {\n    \n  }\n}`,
       scala: `object Solution {\n    def maxProfit(prices: Array[Int]): Int = {\n        \n    }\n}`
-    }
+    },
+    hints: [
+      {
+        tier: 1,
+        label: 'Conceptual',
+        content: 'You can only buy before you sell. As you scan left to right, what two values do you need to keep track of?'
+      },
+      {
+        tier: 2,
+        label: 'Approach',
+        content: 'Use a single pass. Track the minimum price seen so far. At each day, compute profit as (current price - min price). Update your max profit if this is better.'
+      },
+      {
+        tier: 3,
+        label: 'Pseudocode',
+        content: 'min_price = infinity\nmax_profit = 0\nfor price in prices:\n  min_price = min(min_price, price)\n  max_profit = max(max_profit, price - min_price)\nreturn max_profit'
+      }
+    ]
   },
   {
     id: 'longest-substring',
@@ -144,7 +195,24 @@ export const PROBLEMS: Problem[] = [
       php: `class Solution {\n    /**\n     * @param String $s\n     * @return Integer\n     */\n    function lengthOfLongestSubstring($s) {\n        \n    }\n}`,
       dart: `class Solution {\n  int lengthOfLongestSubstring(String s) {\n    \n  }\n}`,
       scala: `object Solution {\n    def lengthOfLongestSubstring(s: String): Int = {\n        \n    }\n}`
-    }
+    },
+    hints: [
+      {
+        tier: 1,
+        label: 'Conceptual',
+        content: 'You need a window that only contains unique characters. How can you expand and shrink this window efficiently?'
+      },
+      {
+        tier: 2,
+        label: 'Approach',
+        content: 'Sliding Window + Set. Use two pointers (left, right). Expand right; if a duplicate is found, shrink from the left until the duplicate is removed. Track the max window size.'
+      },
+      {
+        tier: 3,
+        label: 'Pseudocode',
+        content: 'left = 0, max_len = 0\nchar_set = set()\nfor right in range(len(s)):\n  while s[right] in char_set:\n    char_set.remove(s[left])\n    left += 1\n  char_set.add(s[right])\n  max_len = max(max_len, right - left + 1)\nreturn max_len'
+      }
+    ]
   },
   {
     id: 'container-with-most-water',
@@ -180,7 +248,24 @@ export const PROBLEMS: Problem[] = [
       php: `class Solution {\n    /**\n     * @param Integer[] $height\n     * @return Integer\n     */\n    function maxArea($height) {\n        \n    }\n}`,
       dart: `class Solution {\n  int maxArea(List<int> height) {\n    \n  }\n}`,
       scala: `object Solution {\n    def maxArea(height: Array[Int]): Int = {\n        \n    }\n}`
-    }
+    },
+    hints: [
+      {
+        tier: 1,
+        label: 'Conceptual',
+        content: 'Brute force checks all O(N²) pairs. Can you use two pointers at opposite ends and move them cleverly to avoid checking every pair?'
+      },
+      {
+        tier: 2,
+        label: 'Approach',
+        content: 'Two Pointers. Start with left=0 and right=n-1. The area = min(height[l], height[r]) * (r - l). Move the pointer on the shorter side inward — moving the taller one can never increase area.'
+      },
+      {
+        tier: 3,
+        label: 'Pseudocode',
+        content: 'left, right = 0, len(height) - 1\nmax_area = 0\nwhile left < right:\n  area = min(height[left], height[right]) * (right - left)\n  max_area = max(max_area, area)\n  if height[left] < height[right]: left += 1\n  else: right -= 1\nreturn max_area'
+      }
+    ]
   },
   {
     id: 'merge-intervals',
@@ -213,7 +298,24 @@ export const PROBLEMS: Problem[] = [
       php: `class Solution {\n    /**\n     * @param Integer[][] $intervals\n     * @return Integer[][]\n     */\n    function merge($intervals) {\n        \n    }\n}`,
       dart: `class Solution {\n  List<List<int>> merge(List<List<int>> intervals) {\n    \n  }\n}`,
       scala: `object Solution {\n    def merge(intervals: Array[Array[Int]]): Array[Array[Int]] = {\n        \n    }\n}`
-    }
+    },
+    hints: [
+      {
+        tier: 1,
+        label: 'Conceptual',
+        content: 'Two intervals overlap if one starts before the other ends. What must you do first to make it easy to find all overlapping pairs?'
+      },
+      {
+        tier: 2,
+        label: 'Approach',
+        content: 'Sort intervals by start time. Then iterate: if the current interval overlaps with the last merged one (current.start <= last.end), extend the last merged interval\'s end. Otherwise, push the current as a new interval.'
+      },
+      {
+        tier: 3,
+        label: 'Pseudocode',
+        content: 'intervals.sort(key=lambda x: x[0])\nresult = [intervals[0]]\nfor start, end in intervals[1:]:\n  if start <= result[-1][1]:\n    result[-1][1] = max(result[-1][1], end)\n  else:\n    result.append([start, end])\nreturn result'
+      }
+    ]
   },
   {
     id: 'word-break',
@@ -250,7 +352,24 @@ export const PROBLEMS: Problem[] = [
       php: `class Solution {\n    /**\n     * @param String $s\n     * @param String[] $wordDict\n     * @return Boolean\n     */\n    function wordBreak($s, $wordDict) {\n        \n    }\n}`,
       dart: `class Solution {\n  bool wordBreak(String s, List<String> wordDict) {\n    \n  }\n}`,
       scala: `object Solution {\n    def wordBreak(s: String, wordDict: List[String]): Boolean = {\n        \n    }\n}`
-    }
+    },
+    hints: [
+      {
+        tier: 1,
+        label: 'Conceptual',
+        content: 'Think of the string as positions 0 to n. Can you reach position i if you can reach some earlier position j and the substring s[j..i] is in the dictionary?'
+      },
+      {
+        tier: 2,
+        label: 'Approach',
+        content: 'Dynamic Programming. Create a boolean array dp[] where dp[i] = true means s[0..i] can be segmented. For each position i, check all j < i: if dp[j] is true and s[j..i] is in wordDict, set dp[i] = true.'
+      },
+      {
+        tier: 3,
+        label: 'Pseudocode',
+        content: 'word_set = set(wordDict)\ndp = [False] * (len(s) + 1)\ndp[0] = True\nfor i in range(1, len(s)+1):\n  for j in range(i):\n    if dp[j] and s[j:i] in word_set:\n      dp[i] = True\n      break\nreturn dp[len(s)]'
+      }
+    ]
   },
   {
     id: 'trapping-rain-water',
@@ -283,7 +402,24 @@ export const PROBLEMS: Problem[] = [
       php: `class Solution {\n    /**\n     * @param Integer[] $height\n     * @return Integer\n     */\n    function trap($height) {\n        \n    }\n}`,
       dart: `class Solution {\n  int trap(List<int> height) {\n    \n  }\n}`,
       scala: `object Solution {\n    def trap(height: Array[Int]): Int = {\n        \n    }\n}`
-    }
+    },
+    hints: [
+      {
+        tier: 1,
+        label: 'Conceptual',
+        content: 'Water trapped at position i depends on the tallest bar to its left and the tallest bar to its right. How much water sits on top of bar i?'
+      },
+      {
+        tier: 2,
+        label: 'Approach',
+        content: 'Two Pointer O(N) solution: Use left/right pointers. Maintain left_max and right_max. Move the pointer on the shorter side and accumulate water = max_side - height[pointer]. This avoids precomputing prefix arrays.'
+      },
+      {
+        tier: 3,
+        label: 'Pseudocode',
+        content: 'left, right = 0, n-1\nleft_max = right_max = water = 0\nwhile left < right:\n  if height[left] < height[right]:\n    if height[left] >= left_max: left_max = height[left]\n    else: water += left_max - height[left]\n    left += 1\n  else:\n    if height[right] >= right_max: right_max = height[right]\n    else: water += right_max - height[right]\n    right -= 1\nreturn water'
+      }
+    ]
   },
   {
     id: 'climbing-stairs',
@@ -307,7 +443,24 @@ export const PROBLEMS: Problem[] = [
       javascript: `/**\n * @param {number} n\n * @return {number}\n */\nvar climbStairs = function(n) {\n    \n};`,
       python: `class Solution:\n    def climbStairs(self, n: int) -> int:\n        pass`,
       cpp: `class Solution {\npublic:\n    int climbStairs(int n) {\n        \n    }\n};`
-    }
+    },
+    hints: [
+      {
+        tier: 1,
+        label: 'Conceptual',
+        content: 'How many ways can you reach step n? Think about what the last step you took was — either 1 step or 2 steps. How does that relate to smaller subproblems?'
+      },
+      {
+        tier: 2,
+        label: 'Approach',
+        content: 'This is Fibonacci! ways(n) = ways(n-1) + ways(n-2). Use DP with O(1) space: just keep two variables for the previous two values and iterate up to n.'
+      },
+      {
+        tier: 3,
+        label: 'Pseudocode',
+        content: 'if n <= 2: return n\na, b = 1, 2\nfor _ in range(3, n+1):\n  a, b = b, a + b\nreturn b'
+      }
+    ]
   },
   {
     id: 'reverse-linked-list',
@@ -330,7 +483,24 @@ export const PROBLEMS: Problem[] = [
       typescript: `/**\n * Definition for singly-linked list.\n * class ListNode {\n *     val: number\n *     next: ListNode | null\n *     constructor(val?: number, next?: ListNode | null) {\n *         this.val = (val===undefined ? 0 : val)\n *         this.next = (next===undefined ? null : next)\n *     }\n * }\n */\nfunction reverseList(head: ListNode | null): ListNode | null {\n    \n};`,
       javascript: `/**\n * Definition for singly-linked list.\n * function ListNode(val, next) {\n *     this.val = (val===undefined ? 0 : val)\n *     this.next = (next===undefined ? null : next)\n * }\n */\n/**\n * @param {ListNode} head\n * @return {ListNode}\n */\nvar reverseList = function(head) {\n    \n};`,
       python: `# Definition for singly-linked list.\n# class ListNode:\n#     def __init__(self, val=0, next=None):\n#         self.val = val\n#         self.next = next\nclass Solution:\n    def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:\n        pass`
-    }
+    },
+    hints: [
+      {
+        tier: 1,
+        label: 'Conceptual',
+        content: 'You need to flip every arrow in the linked list. As you move forward, how do you reverse a link without losing the rest of the list?'
+      },
+      {
+        tier: 2,
+        label: 'Approach',
+        content: 'Iterative: keep three pointers — prev (starts null), curr (starts head), next. At each step: save next = curr.next, point curr.next = prev, move prev = curr, curr = next. When curr is null, prev is the new head.'
+      },
+      {
+        tier: 3,
+        label: 'Pseudocode',
+        content: 'prev = None\ncurr = head\nwhile curr:\n  next_node = curr.next\n  curr.next = prev\n  prev = curr\n  curr = next_node\nreturn prev'
+      }
+    ]
   },
   {
     id: 'longest-substring-without-repeating-characters',
@@ -379,7 +549,24 @@ export const PROBLEMS: Problem[] = [
       typescript: `function numIslands(grid: string[][]): number {\n    \n};`,
       javascript: `var numIslands = function(grid) {\n    \n};`,
       python: `class Solution:\n    def numIslands(self, grid: list[list[str]]) -> int:\n        pass`
-    }
+    },
+    hints: [
+      {
+        tier: 1,
+        label: 'Conceptual',
+        content: 'An island is a group of connected land cells. How can you "mark" all land cells in one island as visited so you don\'t count them again?'
+      },
+      {
+        tier: 2,
+        label: 'Approach',
+        content: 'DFS/BFS flood-fill. Loop through every cell. When you find a \'1\', increment your count and run DFS/BFS from that cell, marking all connected \'1\'s as \'0\' (visited) to avoid re-counting.'
+      },
+      {
+        tier: 3,
+        label: 'Pseudocode',
+        content: 'def dfs(r, c):\n  if out of bounds or grid[r][c] != "1": return\n  grid[r][c] = "0"\n  dfs(r+1,c); dfs(r-1,c); dfs(r,c+1); dfs(r,c-1)\n\ncount = 0\nfor r in range(rows):\n  for c in range(cols):\n    if grid[r][c] == "1":\n      dfs(r, c)\n      count += 1\nreturn count'
+      }
+    ]
   },
   {
     id: 'maximum-subarray',
@@ -402,7 +589,24 @@ export const PROBLEMS: Problem[] = [
       typescript: `function maxSubArray(nums: number[]): number {\n    \n};`,
       javascript: `var maxSubArray = function(nums) {\n    \n};`,
       python: `class Solution:\n    def maxSubArray(self, nums: list[int]) -> int:\n        pass`
-    }
+    },
+    hints: [
+      {
+        tier: 1,
+        label: 'Conceptual',
+        content: 'At each position, you decide: extend the existing subarray, or start a new one. When is it better to start fresh?'
+      },
+      {
+        tier: 2,
+        label: 'Approach',
+        content: 'Kadane\'s Algorithm: Keep a running current_sum. At each element, current_sum = max(num, current_sum + num) — if current_sum was negative, start over. Track the max current_sum seen.'
+      },
+      {
+        tier: 3,
+        label: 'Pseudocode',
+        content: 'current_sum = max_sum = nums[0]\nfor num in nums[1:]:\n  current_sum = max(num, current_sum + num)\n  max_sum = max(max_sum, current_sum)\nreturn max_sum'
+      }
+    ]
   },
   {
     id: 'kth-largest-element',
@@ -426,7 +630,24 @@ export const PROBLEMS: Problem[] = [
       typescript: `function findKthLargest(nums: number[], k: number): number {\n    \n};`,
       javascript: `var findKthLargest = function(nums, k) {\n    \n};`,
       python: `class Solution:\n    def findKthLargest(self, nums: list[int], k: int) -> int:\n        pass`
-    }
+    },
+    hints: [
+      {
+        tier: 1,
+        label: 'Conceptual',
+        content: 'You need the kth largest. Sorting works in O(N log N). Can you do better using a heap that only tracks the top k elements?'
+      },
+      {
+        tier: 2,
+        label: 'Approach',
+        content: 'Min-Heap of size k: push all elements; if heap grows beyond k, pop the minimum. The top of the min-heap at the end is the kth largest. O(N log k) time.'
+      },
+      {
+        tier: 3,
+        label: 'Pseudocode',
+        content: 'import heapq\nheap = []\nfor num in nums:\n  heapq.heappush(heap, num)\n  if len(heap) > k:\n    heapq.heappop(heap)\nreturn heap[0]'
+      }
+    ]
   },
   {
     id: 'binary-tree-level-order-traversal',
@@ -449,7 +670,24 @@ export const PROBLEMS: Problem[] = [
       typescript: `/**\n * Definition for a binary tree node.\n * class TreeNode {\n *     val: number\n *     left: TreeNode | null\n *     right: TreeNode | null\n *     constructor(val?: number, left?: TreeNode | null, right?: TreeNode | null) {\n *         this.val = (val===undefined ? 0 : val)\n *         this.left = (left===undefined ? null : left)\n *         this.right = (right===undefined ? null : right)\n *     }\n * }\n */\nfunction levelOrder(root: TreeNode | null): number[][] {\n    \n};`,
       javascript: `var levelOrder = function(root) {\n    \n};`,
       python: `class Solution:\n    def levelOrder(self, root: Optional[TreeNode]) -> list[list[int]]:\n        pass`
-    }
+    },
+    hints: [
+      {
+        tier: 1,
+        label: 'Conceptual',
+        content: 'You need to visit all nodes level by level. What data structure processes elements in FIFO order — visiting all nodes of one level before the next?'
+      },
+      {
+        tier: 2,
+        label: 'Approach',
+        content: 'BFS with a Queue. Start with root in a queue. At each iteration, process ALL nodes currently in the queue (that is one level). For each node, collect its value and enqueue its children. Repeat until queue is empty.'
+      },
+      {
+        tier: 3,
+        label: 'Pseudocode',
+        content: 'if not root: return []\nresult = []\nqueue = deque([root])\nwhile queue:\n  level = []\n  for _ in range(len(queue)):\n    node = queue.popleft()\n    level.append(node.val)\n    if node.left: queue.append(node.left)\n    if node.right: queue.append(node.right)\n  result.append(level)\nreturn result'
+      }
+    ]
   },
   {
     id: 'coin-change',
@@ -475,6 +713,23 @@ export const PROBLEMS: Problem[] = [
       typescript: `function coinChange(coins: number[], amount: number): number {\n    \n};`,
       javascript: `var coinChange = function(coins, amount) {\n    \n};`,
       python: `class Solution:\n    def coinChange(self, coins: list[int], amount: int) -> int:\n        pass`
-    }
+    },
+    hints: [
+      {
+        tier: 1,
+        label: 'Conceptual',
+        content: 'The minimum coins to make amount X depends on the minimum coins to make smaller amounts. Can you build up the answer from the bottom?'
+      },
+      {
+        tier: 2,
+        label: 'Approach',
+        content: 'Bottom-Up DP. Create dp[0..amount] initialized to infinity (impossible). dp[0] = 0. For each amount i from 1 to amount, try every coin: dp[i] = min(dp[i], dp[i - coin] + 1) if i - coin >= 0.'
+      },
+      {
+        tier: 3,
+        label: 'Pseudocode',
+        content: 'dp = [float("inf")] * (amount + 1)\ndp[0] = 0\nfor i in range(1, amount + 1):\n  for coin in coins:\n    if coin <= i:\n      dp[i] = min(dp[i], dp[i - coin] + 1)\nreturn dp[amount] if dp[amount] != float("inf") else -1'
+      }
+    ]
   }
 ];

@@ -1,14 +1,15 @@
 import React from 'react';
-import { Play, Send, Settings, Loader, BrainCircuit } from 'lucide-react';
+import { Play, Send, Settings, Loader, BrainCircuit, Keyboard } from 'lucide-react';
 
 interface NavigationProps {
   onRunCode: () => void;
   onSubmit: () => void;
   onSettings: () => void;
+  onShortcuts: () => void;
   isAnalyzing: boolean;
   isRunning: boolean;
   cooldownRemaining?: number;
-  timer?: string | null; // formatted mm:ss or null
+  timer?: string | null;
   onMentor: () => void;
 }
 
@@ -16,6 +17,7 @@ export const Navigation: React.FC<NavigationProps> = ({
   onRunCode,
   onSubmit,
   onSettings,
+  onShortcuts,
   isAnalyzing,
   isRunning,
   cooldownRemaining = 0,
@@ -82,6 +84,15 @@ export const Navigation: React.FC<NavigationProps> = ({
         >
           <Settings size={16} />
           <span>Settings</span>
+        </button>
+        <button
+          id="shortcuts-btn"
+          className="btn btn-secondary"
+          onClick={onShortcuts}
+          title="Keyboard Shortcuts (?)"
+          style={{ padding: '6px 10px', minWidth: 'unset' }}
+        >
+          <Keyboard size={16} />
         </button>
         <button
           className="btn btn-secondary"
