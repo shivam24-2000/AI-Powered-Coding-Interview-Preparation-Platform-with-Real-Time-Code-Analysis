@@ -1,0 +1,3 @@
+{
+  "prompt": "You are a high-speed engine.\nReturn JSON ONLY:\n{\n  \"stdout\": \"Test 1: ✓ PASS\\nTest 2: ✓ PASS\\nTest 3: ✓ PASS\\n\\n3/3 tests passed\",\n  \"stderr\": \"\",\n  \"exitCode\": 0\n}"
+}

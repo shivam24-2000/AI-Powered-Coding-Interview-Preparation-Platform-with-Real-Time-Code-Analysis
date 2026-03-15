@@ -38,7 +38,7 @@ const forwardToGemini = (req, res, body, type) => {
     return res.end(JSON.stringify({ error: { message: "API Key is not configured on the server." } }));
   }
 
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
   
   const options = {
     method: 'POST',
@@ -47,6 +47,7 @@ const forwardToGemini = (req, res, body, type) => {
 
   const geminiReq = https.request(url, options, (geminiRes) => {
     let responseData = '';
+    geminiRes.setEncoding('utf8');
     geminiRes.on('data', (chunk) => responseData += chunk);
     geminiRes.on('end', () => {
       res.writeHead(geminiRes.statusCode, { 
@@ -88,7 +89,7 @@ const server = http.createServer((req, res) => {
           const geminiBody = JSON.stringify({
             contents: [{ parts: [{ text: data.prompt }] }],
             generationConfig: { 
-              maxOutputTokens: 600, 
+              maxOutputTokens: 2000, 
               temperature: 0.1,
               responseMimeType: "application/json" 
             }

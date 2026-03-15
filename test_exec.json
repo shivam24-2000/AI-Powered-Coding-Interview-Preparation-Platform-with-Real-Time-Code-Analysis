@@ -1,0 +1,3 @@
+{
+  "prompt": "You are a high-speed code execution engine.\nExecute this javascript code for the problem: \"Two Sum\".\nCheck logic against cases: [{...}]\nCODE:\nfunction twoSum(nums, target) { return [0, 1]; }\n\nReturn JSON ONLY:\n{\n  \"stdout\": \"PASS/FAIL details\",\n  \"stderr\": \"Runtime errors\",\n  \"exitCode\": 0 or 1\n}"
+}

@@ -26,7 +26,7 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: { message: "GEMINI_API_KEY is not configured on the server." } });
   }
 
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
   
   const options = {
     method: 'POST',
@@ -34,33 +34,39 @@ export default async function handler(req, res) {
   };
 
   return new Promise((resolve) => {
-    const geminiReq = https.request(url, options, (geminiRes) => {
-      let responseData = '';
-      geminiRes.on('data', (chunk) => responseData += chunk);
-      geminiRes.on('end', () => {
-        try {
-          const parsed = JSON.parse(responseData);
-          res.status(geminiRes.statusCode).json(parsed);
-        } catch (e) {
-          res.status(500).json({ error: { message: "Failed to parse Gemini response" } });
-        }
+    try {
+      const geminiReq = https.request(url, options, (geminiRes) => {
+        let responseData = '';
+        geminiRes.setEncoding('utf8'); // Prevent stream chunk decoding errors
+        geminiRes.on('data', (chunk) => responseData += chunk);
+        geminiRes.on('end', () => {
+          try {
+            const parsed = JSON.parse(responseData);
+            res.status(geminiRes.statusCode).json(parsed);
+          } catch (e) {
+            res.status(500).json({ error: { message: "Failed to parse Gemini execution response" } });
+          }
+          resolve();
+        });
+      });
+
+      geminiReq.on('error', (e) => {
+        res.status(500).json({ error: { message: e.message } });
         resolve();
       });
-    });
 
-    geminiReq.on('error', (e) => {
-      res.status(500).json({ error: { message: e.message } });
+      geminiReq.write(JSON.stringify({
+        contents: [{ parts: [{ text: prompt }] }],
+        generationConfig: {
+          maxOutputTokens: 2000,
+          temperature: 0.1,
+          responseMimeType: "application/json"
+        }
+      }));
+      geminiReq.end();
+    } catch (err) {
+      res.status(500).json({ error: { message: `Execution Request Error: ${err.message}` } });
       resolve();
-    });
-
-    geminiReq.write(JSON.stringify({
-      contents: [{ parts: [{ text: prompt }] }],
-      generationConfig: {
-        maxOutputTokens: 400,
-        temperature: 0.1,
-        responseMimeType: "application/json"
-      }
-    }));
-    geminiReq.end();
+    }
   });
 }
