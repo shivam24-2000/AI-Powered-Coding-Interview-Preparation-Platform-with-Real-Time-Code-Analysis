@@ -76,7 +76,7 @@ export const AIChat: React.FC<AIChatProps> = ({ messages, onSendMessage, isTypin
               width: '30px', 
               height: '30px', 
               borderRadius: '10px', 
-              background: msg.role === 'user' ? tColor('accentSecondary', '0.1') : 'rgba(168, 85, 247, 0.15)',
+              background: msg.role === 'user' ? 'rgba(99, 102, 241, 0.15)' : 'rgba(168, 85, 247, 0.15)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -187,7 +187,3 @@ export const AIChat: React.FC<AIChatProps> = ({ messages, onSendMessage, isTypin
   );
 };
 
-// Simple helper to fetch primary theme variables dynamically
-function tColor(key: string, alpha='1') {
-   return `var(--${key})`; 
-}
