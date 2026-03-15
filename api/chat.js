@@ -20,7 +20,7 @@ export default async function handler(req, res) {
   }
 
   const { contents } = req.body;
-  const apiKey = process.env.CHAT_API_KEY || process.env.GEMINI_API_KEY;
+  const apiKey = process.env.CHAT_API_KEY || process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY;
 
   if (!apiKey) {
     return res.status(500).json({ error: { message: "API Key is not configured on the server." } });

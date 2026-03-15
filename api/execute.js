@@ -28,11 +28,6 @@ export default async function handler(req, res) {
 
   const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
   
-  const geminiBody = JSON.stringify({
-    contents: [{ parts: [{ text: prompt }] }],
-    generationConfig: { responseMimeType: "application/json" }
-  });
-
   const options = {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' }
@@ -58,7 +53,14 @@ export default async function handler(req, res) {
       resolve();
     });
 
-    geminiReq.write(geminiBody);
+    geminiReq.write(JSON.stringify({
+      contents: [{ parts: [{ text: prompt }] }],
+      generationConfig: {
+        maxOutputTokens: 400,
+        temperature: 0.1,
+        responseMimeType: "application/json"
+      }
+    }));
     geminiReq.end();
   });
 }
