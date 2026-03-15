@@ -12,6 +12,8 @@ interface AIAnalysisProps {
   chatMessages: ChatMessage[];
   onSendMessage: (content: string) => void;
   isChatTyping: boolean;
+  activeTab: 'analysis' | 'chat';
+  onTabChange: (tab: 'analysis' | 'chat') => void;
 }
 
 export const AIAnalysis: React.FC<AIAnalysisProps> = ({ 
@@ -22,10 +24,11 @@ export const AIAnalysis: React.FC<AIAnalysisProps> = ({
   onClose,
   chatMessages,
   onSendMessage,
-  isChatTyping
+  isChatTyping,
+  activeTab,
+  onTabChange
 }) => {
   const [analyzingMessage, setAnalyzingMessage] = React.useState('Analyzing...');
-  const [activeTab, setActiveTab] = React.useState<'analysis' | 'chat'>('analysis');
   
   React.useEffect(() => {
     if (!state.isAnalyzing) return;
@@ -38,6 +41,7 @@ export const AIAnalysis: React.FC<AIAnalysisProps> = ({
     }, 800);
     return () => clearInterval(id);
   }, [state.isAnalyzing]);
+
 
   return (
     <div className="panel analysis-panel glass-panel animate-fade-in" style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
@@ -84,45 +88,64 @@ export const AIAnalysis: React.FC<AIAnalysisProps> = ({
         </div>
       </div>
       
-      <div style={{ display: 'flex', borderBottom: '1px solid var(--border-color)', background: 'rgba(255,255,255,0.01)' }}>
-        <button 
-          onClick={() => setActiveTab('analysis')}
-          style={{ 
-            flex: 1, 
-            padding: '10px', 
-            fontSize: '0.75rem', 
-            fontWeight: 600,
-            color: activeTab === 'analysis' ? 'var(--accent-primary)' : 'var(--text-muted)',
-            borderBottom: activeTab === 'analysis' ? '2px solid var(--accent-primary)' : '2px solid transparent',
-            background: 'transparent',
-            cursor: 'pointer',
-            transition: 'all 0.2s'
-          }}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
+      {/* Tab Nav */}
+      <div style={{ padding: '0 16px', background: 'rgba(255,255,255,0.01)', borderBottom: '1px solid var(--border-color)' }}>
+        <div style={{
+          display: 'flex', 
+          background: 'rgba(255,255,255,0.03)', 
+          borderRadius: '10px', 
+          padding: '4px', 
+          margin: '8px 0 12px',
+          gap: '4px',
+          position: 'relative'
+        }}>
+          <button 
+            onClick={() => onTabChange('analysis')}
+            style={{ 
+              flex: 1, 
+              padding: '8px 12px', 
+              fontSize: '0.75rem', 
+              fontWeight: 600,
+              color: activeTab === 'analysis' ? 'var(--text-primary)' : 'var(--text-muted)',
+              border: 'none',
+              background: activeTab === 'analysis' ? 'var(--accent-primary)' : 'transparent',
+              borderRadius: '8px',
+              cursor: 'pointer',
+              transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '6px',
+              boxShadow: activeTab === 'analysis' ? '0 4px 12px var(--glow-primary)' : 'none',
+            }}
+          >
             <Activity size={14} />
             AI REVIEW
-          </div>
-        </button>
-        <button 
-          onClick={() => setActiveTab('chat')}
-          style={{ 
-            flex: 1, 
-            padding: '10px', 
-            fontSize: '0.75rem', 
-            fontWeight: 600,
-            color: activeTab === 'chat' ? 'var(--accent-primary)' : 'var(--text-muted)',
-            borderBottom: activeTab === 'chat' ? '2px solid var(--accent-primary)' : '2px solid transparent',
-            background: 'transparent',
-            cursor: 'pointer',
-            transition: 'all 0.2s'
-          }}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
+          </button>
+          <button 
+            onClick={() => onTabChange('chat')}
+            style={{ 
+              flex: 1, 
+              padding: '8px 12px', 
+              fontSize: '0.75rem', 
+              fontWeight: 600,
+              color: activeTab === 'chat' ? 'var(--text-primary)' : 'var(--text-muted)',
+              border: 'none',
+              background: activeTab === 'chat' ? 'var(--accent-primary)' : 'transparent',
+              borderRadius: '8px',
+              cursor: 'pointer',
+              transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '6px',
+              boxShadow: activeTab === 'chat' ? '0 4px 12px var(--glow-primary)' : 'none',
+            }}
+          >
             <MessagesSquare size={14} />
             DIRECT CHAT
-          </div>
-        </button>
+          </button>
+        </div>
       </div>
       
       <div className="panel-content custom-scrollbar" style={{ flex: 1, padding: '16px' }}>

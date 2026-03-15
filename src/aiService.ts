@@ -102,6 +102,10 @@ export async function getChatResponse(
     return "I'm cooling down for a moment to ensure high-quality responses. Please try again in a few seconds!";
   }
 
+  // Get active titles to suggest from
+  const { PROBLEMS } = await import('./problems');
+  const availableProblemTitles = PROBLEMS.map(p => `- ${p.title}`).join('\n');
+
   try {
     const context = `
       You are Jarvis, an expert technical interviewer and AI Assistant at NexCode. 
@@ -112,6 +116,9 @@ export async function getChatResponse(
       \`\`\`${language.monacoId}
       ${code}
       \`\`\`
+
+      IMPORTANT: Here are other available problems in the app. If the candidate solves the problem, suggest 3 of these by EXACT name or title:
+      ${availableProblemTitles}
 
       Instruction: Be concise, helpful, and encouraging. Don't just give the full solution unless asked. 
       Guide the candidate toward the right answer.

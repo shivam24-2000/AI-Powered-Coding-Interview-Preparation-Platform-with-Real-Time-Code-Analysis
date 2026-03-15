@@ -1,7 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import {
-  X, Type, LayoutList, WrapText, Hash, Timer, Sun, Moon,
+  X, Type, LayoutList, WrapText, Hash, Timer, Sun, Moon, Palette, ChevronRight, ChevronLeft
 } from 'lucide-react';
+import { APP_THEMES } from '../themes';
 
 export interface EditorSettings {
   fontSize: number;
@@ -10,6 +11,7 @@ export interface EditorSettings {
   lineNumbers: 'on' | 'off';
   theme: 'nexcode-dark' | 'vs-light';
   showTimer: boolean;
+  appTheme: string;
 }
 
 export const DEFAULT_SETTINGS: EditorSettings = {
@@ -19,6 +21,7 @@ export const DEFAULT_SETTINGS: EditorSettings = {
   lineNumbers: 'on',
   theme: 'nexcode-dark',
   showTimer: false,
+  appTheme: 'midnight-purple',
 };
 
 interface SettingsModalProps {
@@ -112,6 +115,7 @@ const StepButton: React.FC<{
 
 export const SettingsModal: React.FC<SettingsModalProps> = ({ settings, onChange, onClose }) => {
   const overlayRef = useRef<HTMLDivElement>(null);
+  const [showThemeSelector, setShowThemeSelector] = React.useState(false);
 
   // Close on Escape
   useEffect(() => {
@@ -152,10 +156,32 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ settings, onChange
           borderBottom: '1px solid rgba(255,255,255,0.07)',
           background: 'rgba(139, 92, 246, 0.06)',
         }}>
-          <div>
-            <div style={{ fontWeight: 600, fontSize: '1rem', color: 'var(--text-primary)' }}>Settings</div>
-            <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: '2px' }}>Editor & session preferences</div>
-          </div>
+          {showThemeSelector ? (
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <button
+                onClick={() => setShowThemeSelector(false)}
+                style={{
+                  background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)',
+                  color: 'var(--text-muted)', cursor: 'pointer', borderRadius: '8px',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', width: '30px', height: '30px',
+                  transition: 'all 0.15s',
+                }}
+                onMouseOver={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.12)'; e.currentTarget.style.color = 'var(--text-primary)'; }}
+                onMouseOut={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.06)'; e.currentTarget.style.color = 'var(--text-muted)'; }}
+              >
+                <ChevronLeft size={16} />
+              </button>
+              <div>
+                <div style={{ fontWeight: 600, fontSize: '1rem', color: 'var(--text-primary)' }}>App Theme</div>
+                <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: '2px' }}>Choose your workspace aesthetic</div>
+              </div>
+            </div>
+          ) : (
+            <div>
+              <div style={{ fontWeight: 600, fontSize: '1rem', color: 'var(--text-primary)' }}>Settings</div>
+              <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: '2px' }}>Editor & session preferences</div>
+            </div>
+          )}
           <button
             id="settings-close-btn"
             onClick={onClose}
@@ -175,6 +201,105 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ settings, onChange
 
         {/* Settings Rows */}
         <div style={{ padding: '6px 22px 22px' }}>
+          {showThemeSelector ? (
+            <div style={{ paddingTop: '16px', display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px', minHeight: '300px' }}>
+              {APP_THEMES.map(t => (
+                <button
+                  key={t.id}
+                  onClick={() => set('appTheme', t.id)}
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    padding: '8px',
+                    borderRadius: '8px',
+                    background: settings.appTheme === t.id ? 'rgba(255, 255, 255, 0.06)' : 'transparent',
+                    border: '1px solid transparent',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s',
+                  }}
+                  onMouseOver={e => {
+                    if (settings.appTheme !== t.id) {
+                      e.currentTarget.style.background = 'rgba(255, 255, 255, 0.03)';
+                    }
+                  }}
+                  onMouseOut={e => {
+                    if (settings.appTheme !== t.id) {
+                      e.currentTarget.style.background = 'transparent';
+                    }
+                  }}
+                >
+                  <div style={{
+                    width: '100%',
+                    height: '54px',
+                    borderRadius: '6px',
+                    background: t.colors.bgDark,
+                    border: `1px solid ${settings.appTheme === t.id ? t.colors.accentPrimary : t.colors.borderColor}`,
+                    position: 'relative',
+                    overflow: 'hidden',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    boxShadow: settings.appTheme === t.id ? `0 0 12px ${t.colors.accentPrimary}33` : 'none',
+                    marginBottom: '8px',
+                    transition: 'all 0.2s',
+                  }}>
+                    <div style={{
+                      height: '14px',
+                      background: t.colors.bgPanelSolid,
+                      borderBottom: `1px solid ${t.colors.borderColor}`,
+                      display: 'flex',
+                      alignItems: 'center',
+                      padding: '0 6px',
+                      gap: '4px'
+                    }}>
+                      <div style={{ width: '4px', height: '4px', borderRadius: '50%', background: t.colors.accentPrimary }} />
+                      <div style={{ width: '14px', height: '4px', borderRadius: '2px', background: t.colors.textMuted, opacity: 0.4 }} />
+                    </div>
+                    <div style={{ flex: 1, padding: '5px', display: 'flex', gap: '4px' }}>
+                      <div style={{ width: '16px', height: '100%', background: t.colors.bgPanel, borderRadius: '3px', border: `1px solid ${t.colors.borderColor}` }} />
+                      <div style={{ flex: 1, height: '100%', background: t.colors.bgPanelLight, borderRadius: '3px', display: 'flex', flexDirection: 'column', gap: '3px', padding: '4px', border: `1px solid ${t.colors.borderColor}` }}>
+                        <div style={{ width: '40%', height: '2px', background: t.colors.accentSecondary, borderRadius: '1px' }} />
+                        <div style={{ width: '70%', height: '2px', background: t.colors.textMuted, borderRadius: '1px', opacity: 0.3 }} />
+                        <div style={{ width: '50%', height: '2px', background: t.colors.textMuted, borderRadius: '1px', opacity: 0.3 }} />
+                      </div>
+                    </div>
+                  </div>
+                  <span style={{ 
+                    fontSize: '0.72rem', 
+                    fontWeight: settings.appTheme === t.id ? 600 : 500,
+                    color: settings.appTheme === t.id ? 'var(--text-primary)' : 'var(--text-muted)'
+                  }}>
+                    {t.name}
+                  </span>
+                </button>
+              ))}
+            </div>
+          ) : (
+            <>
+              {/* App Theme */}
+              <Row icon={<Palette size={15} />} label="App Theme">
+                <button
+                  onClick={() => setShowThemeSelector(true)}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    background: 'rgba(255,255,255,0.06)',
+                    border: '1px solid rgba(255,255,255,0.1)',
+                    color: 'var(--text-primary)',
+                    fontSize: '0.8rem',
+                    padding: '6px 14px',
+                    borderRadius: '6px',
+                    cursor: 'pointer',
+                    transition: 'all 0.15s',
+                  }}
+                  onMouseOver={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.1)'; }}
+                  onMouseOut={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.06)'; }}
+                >
+                  {APP_THEMES.find(t => t.id === settings.appTheme)?.name || 'Select Theme'}
+                  <ChevronRight size={14} style={{ opacity: 0.7 }} />
+                </button>
+              </Row>
 
           {/* Editor Theme */}
           <Row icon={settings.theme === 'nexcode-dark' ? <Moon size={15} /> : <Sun size={15} />} label="Editor Theme">
@@ -226,6 +351,8 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ settings, onChange
             <Toggle id="toggle-timer" checked={settings.showTimer} onChange={v => set('showTimer', v)} />
           </Row>
 
+            </>
+          )}
         </div>
       </div>
     </div>

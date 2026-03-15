@@ -11,6 +11,7 @@ export type RunState =
 interface OutputPanelProps {
   runState: RunState;
   onClose: () => void;
+  onDebugWithJarvis?: (outputStr: string) => void;
 }
 
 interface ParsedLine {
@@ -30,7 +31,7 @@ function parseOutput(stdout: string): ParsedLine[] {
   });
 }
 
-export const OutputPanel: React.FC<OutputPanelProps> = ({ runState, onClose }) => {
+export const OutputPanel: React.FC<OutputPanelProps> = ({ runState, onClose, onDebugWithJarvis }) => {
   const renderContent = () => {
     if (runState.status === 'idle') {
       return (
@@ -135,9 +136,23 @@ export const OutputPanel: React.FC<OutputPanelProps> = ({ runState, onClose }) =
             </pre>
           </div>
         )}
+
+        {/* Debug with Jarvis Action Button */}
+        {(!allPassed || hasStderr) && onDebugWithJarvis && (
+          <div style={{ marginTop: '12px', display: 'flex', justifyContent: 'flex-end' }}>
+            <button 
+              className="btn btn-secondary"
+              onClick={() => onDebugWithJarvis(`Stdout:\n${result.stdout}\n\nStderr:\n${result.stderr}`)}
+              style={{ padding: '6px 12px', fontSize: '0.8rem', gap: '6px', color: 'var(--accent-primary)', borderColor: 'rgba(168, 85, 247, 0.3)', background: 'rgba(168, 85, 247, 0.05)' }}
+            >
+              <AlertTriangle size={14} /> Debug with Jarvis
+            </button>
+          </div>
+        )}
       </div>
     );
   };
+
 
   return (
     <div className="panel output-panel glass-panel" style={{ flex: '1 1 auto', height: '100%', animation: 'slideUp 0.2s ease' }}>

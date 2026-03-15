@@ -16,6 +16,7 @@ import { analyzeCode as getAIAnalysis, getChatResponse as getAIChatResponse } fr
 import { quotaManager } from './quotaManager';
 import { Lock, ChevronLeft, ChevronUp } from 'lucide-react';
 import type { ChatMessage } from './types';
+import { applyAppTheme } from './themes';
 import './App.css';
 
 function formatTime(seconds: number): string {
@@ -43,6 +44,7 @@ function App() {
   const [cooldown, setCooldown] = useState(0);
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
   const [isChatTyping, setIsChatTyping] = useState(false);
+  const [aiTab, setAiTab] = useState<'analysis' | 'chat'>('analysis');
 
   // Poll for quota cooldown
   useEffect(() => {
@@ -73,6 +75,11 @@ function App() {
     spaceComplexity: 'O(1)',
     suggestions: [{ id: '1', type: 'info', message: 'Start typing to see real-time analysis.' }],
   });
+
+  // Apply application theme dynamically
+  useEffect(() => {
+    applyAppTheme(settings.appTheme);
+  }, [settings.appTheme]);
 
   const handleLanguageChange = (lang: Language) => {
     setSelectedLanguage(lang);
@@ -141,6 +148,21 @@ function App() {
     setIsResultsFolded(false);
     const result = await executeCode(selectedLanguage.id, runnerCode, selectedProblem);
     setRunState({ status: 'done', result });
+
+    // Check if everything passed
+    const isSuccess = result.exitCode === 0 && !result.stderr.trim() && result.stdout.includes('passed');
+    if (isSuccess) {
+      setTimeout(() => {
+        setMentorOpen(true);
+        setIsMentorFolded(false);
+        setIsAiAutoEnabled(true);
+        setAiTab('chat');
+        
+        const suggestionPrompt = `I just solved the problem "${selectedProblem.title}". Can you suggest 3 similar problems from our available problem list that I should try next, and briefly explain why they are good follow-ups?`;
+        
+        handleSendMessage(suggestionPrompt);
+      }, 800);
+    }
   };
 
   const handleSubmit = () => handleRunCode();
@@ -187,6 +209,20 @@ function App() {
       setIsChatTyping(false);
     }
   };
+
+  const handleDebugWithJarvis = (output: string) => {
+    setMentorOpen(true);
+    setIsMentorFolded(false);
+    setIsAiAutoEnabled(true);
+    setAiTab('chat');
+    
+    // Slight timeout ensures panel opens and tab switches before message starts
+    setTimeout(() => {
+      const prompt = `My code is failing. Can you help me debug? Here is the execution output:\n\n${output}`;
+      handleSendMessage(prompt);
+    }, 100);
+  };
+
 
   return (
     <div className="app-container">
@@ -245,7 +281,7 @@ function App() {
                     onResize={(d) => setBottomHeight(h => Math.max(150, Math.min(800, h - d)))} 
                   />
                   <div style={{ height: bottomHeight, flex: `0 0 ${bottomHeight}px`, display: 'flex', flexDirection: 'column' }}>
-                    <OutputPanel runState={runState} onClose={() => setIsResultsFolded(true)} />
+                    <OutputPanel runState={runState} onClose={() => setIsResultsFolded(true)} onDebugWithJarvis={handleDebugWithJarvis} />
                   </div>
                 </>
               )}
@@ -288,6 +324,8 @@ function App() {
                     chatMessages={chatMessages}
                     onSendMessage={handleSendMessage}
                     isChatTyping={isChatTyping}
+                    activeTab={aiTab}
+                    onTabChange={setAiTab}
                   />
                   
                   {runState.status === 'running' && (

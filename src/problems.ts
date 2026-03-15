@@ -284,5 +284,197 @@ export const PROBLEMS: Problem[] = [
       dart: `class Solution {\n  int trap(List<int> height) {\n    \n  }\n}`,
       scala: `object Solution {\n    def trap(height: Array[Int]): Int = {\n        \n    }\n}`
     }
+  },
+  {
+    id: 'climbing-stairs',
+    title: '70. Climbing Stairs',
+    difficulty: 'Easy',
+    tags: ['Dynamic Programming', 'Math', 'Memoization'],
+    description: `
+      <p>You are climbing a staircase. It takes <code>n</code> steps to reach the top.</p>
+      <p>Each time you can either climb <code>1</code> or <code>2</code> steps. In how many distinct ways can you climb to the top?</p>
+    `,
+    examples: [
+      { input: 'n = 2', output: '2', explanation: 'There are two ways to climb to the top.\n1. 1 step + 1 step\n2. 2 steps' },
+      { input: 'n = 3', output: '3', explanation: 'There are three ways to climb to the top.\n1. 1 step + 1 step + 1 step\n2. 1 step + 2 steps\n3. 2 steps + 1 step' }
+    ],
+    constraints: [
+      '1 <= n <= 45'
+    ],
+    templates: {
+      java: `class Solution {\n    public int climbStairs(int n) {\n        \n    }\n}`,
+      typescript: `function climbStairs(n: number): number {\n    \n};`,
+      javascript: `/**\n * @param {number} n\n * @return {number}\n */\nvar climbStairs = function(n) {\n    \n};`,
+      python: `class Solution:\n    def climbStairs(self, n: int) -> int:\n        pass`,
+      cpp: `class Solution {\npublic:\n    int climbStairs(int n) {\n        \n    }\n};`
+    }
+  },
+  {
+    id: 'reverse-linked-list',
+    title: '206. Reverse Linked List',
+    difficulty: 'Easy',
+    tags: ['Linked List', 'Recursion'],
+    description: `
+      <p>Given the <code>head</code> of a singly linked list, reverse the list, and return <em>the reversed list</em>.</p>
+    `,
+    examples: [
+      { input: 'head = [1,2,3,4,5]', output: '[5,4,3,2,1]' },
+      { input: 'head = [1,2]', output: '[2,1]' }
+    ],
+    constraints: [
+      'The number of nodes in the list is the range [0, 5000].',
+      '-5000 <= Node.val <= 5000'
+    ],
+    templates: {
+      java: `/**\n * Definition for singly-linked list.\n * public class ListNode {\n *     int val;\n *     ListNode next;\n *     ListNode() {}\n *     ListNode(int val) { this.val = val; }\n *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }\n * }\n */\nclass Solution {\n    public ListNode reverseList(ListNode head) {\n        \n    }\n}`,
+      typescript: `/**\n * Definition for singly-linked list.\n * class ListNode {\n *     val: number\n *     next: ListNode | null\n *     constructor(val?: number, next?: ListNode | null) {\n *         this.val = (val===undefined ? 0 : val)\n *         this.next = (next===undefined ? null : next)\n *     }\n * }\n */\nfunction reverseList(head: ListNode | null): ListNode | null {\n    \n};`,
+      javascript: `/**\n * Definition for singly-linked list.\n * function ListNode(val, next) {\n *     this.val = (val===undefined ? 0 : val)\n *     this.next = (next===undefined ? null : next)\n * }\n */\n/**\n * @param {ListNode} head\n * @return {ListNode}\n */\nvar reverseList = function(head) {\n    \n};`,
+      python: `# Definition for singly-linked list.\n# class ListNode:\n#     def __init__(self, val=0, next=None):\n#         self.val = val\n#         self.next = next\nclass Solution:\n    def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:\n        pass`
+    }
+  },
+  {
+    id: 'longest-substring-without-repeating-characters',
+    title: '3. Longest Substring Without Repeating Characters',
+    difficulty: 'Medium',
+    tags: ['Hash Table', 'String', 'Sliding Window'],
+    description: `
+      <p>Given a string <code>s</code>, find the length of the <strong>longest substring</strong> without repeating characters.</p>
+    `,
+    examples: [
+      { input: 's = "abcabcbb"', output: '3', explanation: 'The answer is "abc", with the length of 3.' },
+      { input: 's = "bbbbb"', output: '1', explanation: 'The answer is "b", with the length of 1.' }
+    ],
+    constraints: [
+      '0 <= s.length <= 5 * 10^4',
+      's consists of English letters, digits, symbols and spaces.'
+    ],
+    templates: {
+      java: `class Solution {\n    public int lengthOfLongestSubstring(String s) {\n        \n    }\n}`,
+      typescript: `function lengthOfLongestSubstring(s: string): number {\n    \n};`,
+      javascript: `var lengthOfLongestSubstring = function(s) {\n    \n};`,
+      python: `class Solution:\n    def lengthOfLongestSubstring(self, s: str) -> int:\n        pass`
+    }
+  },
+  {
+    id: 'number-of-islands',
+    title: '200. Number of Islands',
+    difficulty: 'Medium',
+    tags: ['Array', 'Depth-First Search', 'Breadth-First Search', 'Matrix'],
+    description: `
+      <p>Given an <code>m x n</code> 2D binary grid <code>grid</code> which represents a map of <code>'1'</code>s (land) and <code>'0'</code>s (water), return <em>the number of islands</em>.</p>
+      <p>An island is surrounded by water and is formed by connecting adjacent lands horizontally or vertically. You may assume all four edges of the grid are all surrounded by water.</p>
+    `,
+    examples: [
+      { input: 'grid = [\n  ["1","1","1","1","0"],\n  ["1","1","0","1","0"],\n  ["1","1","0","0","0"],\n  ["0","0","0","0","0"]\n]', output: '1' },
+      { input: 'grid = [\n  ["1","1","0","0","0"],\n  ["1","1","0","0","0"],\n  ["0","0","1","0","0"],\n  ["0","0","0","1","1"]\n]', output: '3' }
+    ],
+    constraints: [
+      'm == grid.length',
+      'n == grid[i].length',
+      '1 <= m, n <= 300',
+      'grid[i][j] is \'0\' or \'1\'.'
+    ],
+    templates: {
+      java: `class Solution {\n    public int numIslands(char[][] grid) {\n        \n    }\n}`,
+      typescript: `function numIslands(grid: string[][]): number {\n    \n};`,
+      javascript: `var numIslands = function(grid) {\n    \n};`,
+      python: `class Solution:\n    def numIslands(self, grid: list[list[str]]) -> int:\n        pass`
+    }
+  },
+  {
+    id: 'maximum-subarray',
+    title: '53. Maximum Subarray',
+    difficulty: 'Medium',
+    tags: ['Array', 'Divide and Conquer', 'Dynamic Programming'],
+    description: `
+      <p>Given an integer array <code>nums</code>, find the subarray with the largest sum, and return <em>its sum</em>.</p>
+    `,
+    examples: [
+      { input: 'nums = [-2,1,-3,4,-1,2,1,-5,4]', output: '6', explanation: 'The subarray [4,-1,2,1] has the largest sum 6.' },
+      { input: 'nums = [1]', output: '1' }
+    ],
+    constraints: [
+      '1 <= nums.length <= 10^5',
+      '-10^4 <= nums[i] <= 10^4'
+    ],
+    templates: {
+      java: `class Solution {\n    public int maxSubArray(int[] nums) {\n        \n    }\n}`,
+      typescript: `function maxSubArray(nums: number[]): number {\n    \n};`,
+      javascript: `var maxSubArray = function(nums) {\n    \n};`,
+      python: `class Solution:\n    def maxSubArray(self, nums: list[int]) -> int:\n        pass`
+    }
+  },
+  {
+    id: 'kth-largest-element',
+    title: '215. Kth Largest Element in an Array',
+    difficulty: 'Medium',
+    tags: ['Divide and Conquer', 'Heap (Priority Queue)'],
+    description: `
+      <p>Given an integer array <code>nums</code> and an integer <code>k</code>, return <em>the k<sup>th</sup> largest element in the array</em>.</p>
+      <p>Note that it is the <code>k<sup>th</sup></code> largest element in the sorted order, not the <code>k<sup>th</sup></code> distinct element.</p>
+    `,
+    examples: [
+      { input: 'nums = [3,2,1,5,6,4], k = 2', output: '5' },
+      { input: 'nums = [3,2,3,1,2,4,5,5,6], k = 4', output: '4' }
+    ],
+    constraints: [
+      '1 <= k <= nums.length <= 10^5',
+      '-10^4 <= nums[i] <= 10^4'
+    ],
+    templates: {
+      java: `class Solution {\n    public int findKthLargest(int[] nums, int k) {\n        \n    }\n}`,
+      typescript: `function findKthLargest(nums: number[], k: number): number {\n    \n};`,
+      javascript: `var findKthLargest = function(nums, k) {\n    \n};`,
+      python: `class Solution:\n    def findKthLargest(self, nums: list[int], k: int) -> int:\n        pass`
+    }
+  },
+  {
+    id: 'binary-tree-level-order-traversal',
+    title: '102. Binary Tree Level Order Traversal',
+    difficulty: 'Medium',
+    tags: ['Tree', 'Breadth-First Search', 'Binary Tree'],
+    description: `
+      <p>Given the <code>root</code> of a binary tree, return <em>the level order traversal of its nodes\' values</em>. (i.e., from left to right, level by level).</p>
+    `,
+    examples: [
+      { input: 'root = [3,9,20,null,null,15,7]', output: '[[3],[9,20],[15,7]]' },
+      { input: 'root = [1]', output: '[[1]]' }
+    ],
+    constraints: [
+      'The number of nodes in the tree is in the range [0, 2000].',
+      '-1000 <= Node.val <= 1000'
+    ],
+    templates: {
+      java: `/**\n * Definition for a binary tree node.\n * public class TreeNode {\n *     int val;\n *     TreeNode left;\n *     TreeNode right;\n *     TreeNode() {}\n *     TreeNode(int val) { this.val = val; }\n *     TreeNode(int val, TreeNode left, TreeNode right) {\n *         this.val = val;\n *         this.left = left;\n *         this.right = right;\n *     }\n * }\n */\nclass Solution {\n    public List<List<Integer>> levelOrder(TreeNode root) {\n        \n    }\n}`,
+      typescript: `/**\n * Definition for a binary tree node.\n * class TreeNode {\n *     val: number\n *     left: TreeNode | null\n *     right: TreeNode | null\n *     constructor(val?: number, left?: TreeNode | null, right?: TreeNode | null) {\n *         this.val = (val===undefined ? 0 : val)\n *         this.left = (left===undefined ? null : left)\n *         this.right = (right===undefined ? null : right)\n *     }\n * }\n */\nfunction levelOrder(root: TreeNode | null): number[][] {\n    \n};`,
+      javascript: `var levelOrder = function(root) {\n    \n};`,
+      python: `class Solution:\n    def levelOrder(self, root: Optional[TreeNode]) -> list[list[int]]:\n        pass`
+    }
+  },
+  {
+    id: 'coin-change',
+    title: '322. Coin Change',
+    difficulty: 'Medium',
+    tags: ['Array', 'Dynamic Programming', 'Breadth-First Search'],
+    description: `
+      <p>You are given an integer array <code>coins</code> representing coins of different denominations and an integer <code>amount</code> representing a total amount of money.</p>
+      <p>Return <em>the fewest number of coins that you need to make up that amount</em>. If that amount of money cannot be made up by any combination of the coins, return <code>-1</code>.</p>
+      <p>You may assume that you have an infinite number of each kind of coin.</p>
+    `,
+    examples: [
+      { input: 'coins = [1,2,5], amount = 11', output: '3', explanation: '11 = 5 + 5 + 1' },
+      { input: 'coins = [2], amount = 3', output: '-1' }
+    ],
+    constraints: [
+      '1 <= coins.length <= 12',
+      '1 <= coins[i] <= 2^31 - 1',
+      '0 <= amount <= 10^4'
+    ],
+    templates: {
+      java: `class Solution {\n    public int coinChange(int[] coins, int amount) {\n        \n    }\n}`,
+      typescript: `function coinChange(coins: number[], amount: number): number {\n    \n};`,
+      javascript: `var coinChange = function(coins, amount) {\n    \n};`,
+      python: `class Solution:\n    def coinChange(self, coins: list[int], amount: int) -> int:\n        pass`
+    }
   }
 ];

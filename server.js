@@ -39,7 +39,7 @@ const forwardToGemini = (req, res, body, type) => {
   }
 
   const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
-  
+
   const options = {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' }
@@ -50,8 +50,8 @@ const forwardToGemini = (req, res, body, type) => {
     geminiRes.setEncoding('utf8');
     geminiRes.on('data', (chunk) => responseData += chunk);
     geminiRes.on('end', () => {
-      res.writeHead(geminiRes.statusCode, { 
-        'Content-Type': 'application/json', 
+      res.writeHead(geminiRes.statusCode, {
+        'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Headers': 'Content-Type'
       });
@@ -88,10 +88,10 @@ const server = http.createServer((req, res) => {
           const data = JSON.parse(body);
           const geminiBody = JSON.stringify({
             contents: [{ parts: [{ text: data.prompt }] }],
-            generationConfig: { 
-              maxOutputTokens: 2000, 
+            generationConfig: {
+              maxOutputTokens: 2000,
               temperature: 0.1,
-              responseMimeType: "application/json" 
+              responseMimeType: "application/json"
             }
           });
           forwardToGemini(req, res, geminiBody, 'execute');
