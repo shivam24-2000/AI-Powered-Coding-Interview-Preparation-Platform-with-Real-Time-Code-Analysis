@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Terminal, Brain, Sparkles, Zap, ArrowRight, Shield } from 'lucide-react';
+import { Terminal, Brain, Zap, Shield } from 'lucide-react';
 import { PROBLEMS } from '../problems';
 
 interface LandingPageProps {
