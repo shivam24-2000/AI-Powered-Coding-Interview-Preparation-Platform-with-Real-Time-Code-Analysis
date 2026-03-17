@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
+import { supabase } from './supabase';
 import { Navigation } from './components/Navigation';
 import { LandingPage } from './components/LandingPage';
+import { HistoryPage } from './components/HistoryPage';
 import { ProblemDescription } from './components/ProblemDescription';
 import { CodeEditor } from './components/CodeEditor';
 import { AIAnalysis } from './components/AIAnalysis';
@@ -28,21 +30,87 @@ function formatTime(seconds: number): string {
   return `${m}:${s}`;
 }
 
+const AuthToast = ({ type }: { type: 'login' | 'logout' }) => (
+  <div style={{ position: 'fixed', bottom: '24px', right: '24px', background: 'rgba(20,16,28,0.95)', border: `1px solid ${type === 'login' ? 'rgba(168, 85, 247, 0.2)' : 'rgba(220, 38, 38, 0.25)'}`, padding: '16px 20px', borderRadius: '14px', backdropFilter: 'blur(12px)', boxShadow: `0 10px 40px ${type === 'login' ? 'rgba(124, 58, 237, 0.2)' : 'rgba(220, 38, 38, 0.15)'}`, display: 'flex', alignItems: 'center', gap: '12px', zIndex: 1000 }}>
+    <style>{`
+      @keyframes slideInRight {
+        from { opacity: 0; transform: translateX(100px); }
+        to { opacity: 1; transform: translateX(0); }
+      }
+    `}</style>
+    <div style={{ padding: '8px', background: type === 'login' ? 'rgba(168, 85, 247, 0.12)' : 'rgba(220, 38, 38, 0.12)', borderRadius: '10px', animation: 'slideInRight 0.4s ease-out' }}><Terminal size={20} color={type === 'login' ? '#D8B4FE' : '#fca5a5'} /></div>
+    <div style={{ animation: 'slideInRight 0.4s ease-out' }}>
+      <h4 style={{ margin: 0, color: '#fff', fontSize: '0.88rem', fontWeight: 700 }}>{type === 'login' ? 'Successfully Logged In' : 'Successfully Logged Out'}</h4>
+      <p style={{ margin: '2px 0 0 0', color: 'rgba(255,255,255,0.5)', fontSize: '0.75rem' }}>{type === 'login' ? 'Welcome back to NexCode AI' : 'Your session has ended securely'}</p>
+    </div>
+  </div>
+);
+
 function App() {
   const { fire: fireConfetti } = useConfetti();
+  const [problems, setProblems] = useState<any[]>(PROBLEMS);
   const [selectedProblem, setSelectedProblem] = useState(PROBLEMS[0]);
   const [selectedLanguage, setSelectedLanguage] = useState<Language>(DEFAULT_LANGUAGE);
   const [code, setCode] = useState(PROBLEMS[0].templates[DEFAULT_LANGUAGE.id] || '');
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [settings, setSettings] = useState<EditorSettings>(DEFAULT_SETTINGS);
   const [runState, setRunState] = useState<RunState>({ status: 'idle' });
+  const [submitState, setSubmitState] = useState<RunState>({ status: 'idle' });
   const [isAiAutoEnabled, setIsAiAutoEnabled] = useState(false); // Default to off for quota safety
   const [resetModalOpen, setResetModalOpen] = useState(false);
   const [mentorOpen, setMentorOpen] = useState(false);
   const [isMentorFolded, setIsMentorFolded] = useState(false);
   const [isResultsFolded, setIsResultsFolded] = useState(true);
-  const [view, setView] = useState<'landing' | 'workspace'>('landing');
+  const [view, setView] = useState<'landing' | 'workspace' | 'history'>('landing');
   const [shortcutsOpen, setShortcutsOpen] = useState(false);
+  const [session, setSession] = useState<any>(null);
+  const [authToast, setAuthToast] = useState<'login' | 'logout' | null>(null);
+  const isInitialLoadRef = useRef(true);
+
+  useEffect(() => {
+    // Skip if Supabase is not configured yet
+    const isPlaceholder = !import.meta.env.VITE_SUPABASE_URL || import.meta.env.VITE_SUPABASE_URL.includes('placeholder');
+    if (isPlaceholder) return;
+
+    // 🚀 Auto-seeder & Fetcher for problems
+    const seedProblems = async () => {
+      const { data } = await supabase.from('problems').select('*');
+      if (data && data.length > 0) {
+        setProblems(data);
+        setSelectedProblem(data[0]);
+      } else {
+        const { error } = await supabase.from('problems').insert(PROBLEMS);
+        if (error) console.error("Seeding error:", error);
+        else {
+          console.log("Seeded problems successfully!");
+          // Re-fetch to populate state
+          const { data: newData } = await supabase.from('problems').select('*');
+          if (newData) setProblems(newData);
+        }
+      }
+    };
+    seedProblems();
+
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+    });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (_event === 'SIGNED_IN') {
+        if (!isInitialLoadRef.current) {
+          setAuthToast('login');
+          setTimeout(() => setAuthToast(null), 4000);
+        }
+      } else if (_event === 'SIGNED_OUT') {
+        setAuthToast('logout');
+        setTimeout(() => setAuthToast(null), 4000);
+      }
+      setSession(session);
+      isInitialLoadRef.current = false;
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   // Panel sizing state
   const [rightWidth, setRightWidth] = useState(300);
@@ -171,14 +239,40 @@ function App() {
     setIsResultsFolded(false);
     const result = await executeCode(selectedLanguage.id, runnerCode, selectedProblem);
     setRunState({ status: 'done', result });
+  };
 
-    // Check if everything passed
+  const handleSubmit = async () => {
+    if (quotaManager.isBlocked()) return;
+    
+    const runnerCode = buildRunnerCode(selectedProblem.id, selectedLanguage.id, code);
+
+    if (!runnerCode) {
+      setSubmitState({ status: 'unsupported' });
+      return;
+    }
+
+    setSubmitState({ status: 'running' });
+    setIsResultsFolded(false);
+    const result = await executeCode(selectedLanguage.id, runnerCode, selectedProblem);
+    setSubmitState({ status: 'done', result });
+
+    // 📊 Log submission history to Supabase
     const isSuccess = result.exitCode === 0 && !result.stderr.trim() && result.stdout.includes('passed');
+    
+    if (session?.user?.id) {
+       await supabase.from('submissions').insert({
+          user_id: session.user.id,
+          problem_id: selectedProblem.id,
+          problem_title: selectedProblem.title.replace(/^\d+\.\s*/, ''),
+          status: isSuccess ? 'passed' : 'failed',
+          language: selectedLanguage.id,
+          code: code
+       });
+    }
+
     if (isSuccess) {
-      // 🎉 Fire confetti immediately
       fireConfetti();
 
-      // Then open Jarvis to suggest next problems
       setTimeout(() => {
         setMentorOpen(true);
         setIsMentorFolded(false);
@@ -186,13 +280,10 @@ function App() {
         setAiTab('chat');
         
         const suggestionPrompt = `I just solved the problem "${selectedProblem.title}". Can you suggest 3 similar problems from our available problem list that I should try next, and briefly explain why they are good follow-ups?`;
-        
         handleSendMessage(suggestionPrompt);
       }, 800);
     }
   };
-
-  const handleSubmit = () => handleRunCode();
 
   const handleResetCode = () => {
     setResetModalOpen(true);
@@ -251,26 +342,43 @@ function App() {
   };
 
 
-  if (view === 'landing') {
-    return (
-      <LandingPage 
-        onStart={(problemId) => {
-          if (problemId) handleProblemChange(problemId);
-          setView('workspace');
-        }} 
-      />
-    );
-  }
-
   return (
-    <div className="app-container">
+    <div key={view} style={{ animation: 'viewFadeIn 0.4s cubic-bezier(0.1, 0.9, 0.2, 1)', height: '100dvh', overflow: 'hidden' }}>
+      <style>{`
+        @keyframes viewFadeIn {
+          from { opacity: 0; transform: scale(0.992) translateY(6px); }
+          to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+      `}</style>
+      
+      {view === 'landing' ? (
+        <>
+          <LandingPage 
+            onStart={(problemId) => {
+              if (problemId) handleProblemChange(problemId);
+              setView('workspace');
+            }} 
+            session={session}
+            problems={problems}
+            onHistory={() => setView('history')}
+          />
+          {authToast && <AuthToast type={authToast} />}
+        </>
+      ) : view === 'history' ? (
+        <HistoryPage onBack={() => setView('landing')} session={session} />
+      ) : (
+        <div className="app-container">
       <Navigation
         onRunCode={handleRunCode}
         onSubmit={handleSubmit}
         onSettings={() => setSettingsOpen(true)}
         onShortcuts={() => setShortcutsOpen(true)}
+        onBackToLanding={() => setView('landing')}
+        session={session}
+        onHistory={() => setView('history')}
         isAnalyzing={analysisState.isAnalyzing}
         isRunning={runState.status === 'running'}
+        isSubmitting={submitState.status === 'running'}
         cooldownRemaining={cooldown}
         timer={settings.showTimer ? formatTime(elapsed) : null}
         onMentor={() => {
@@ -321,7 +429,7 @@ function App() {
                   onResize={(d) => setBottomHeight(h => Math.max(150, Math.min(800, h - d)))} 
                 />
                 <div style={{ height: bottomHeight, flex: `0 0 ${bottomHeight}px`, display: 'flex', flexDirection: 'column' }}>
-                  <OutputPanel runState={runState} problem={selectedProblem} onClose={() => setIsResultsFolded(true)} onDebugWithJarvis={handleDebugWithJarvis} />
+                  <OutputPanel runState={submitState.status !== 'idle' ? submitState : runState} problem={selectedProblem} onClose={() => setIsResultsFolded(true)} onDebugWithJarvis={handleDebugWithJarvis} />
                 </div>
               </>
             )}
@@ -429,6 +537,10 @@ function App() {
         isOpen={shortcutsOpen}
         onClose={() => setShortcutsOpen(false)}
       />
+
+      {authToast && <AuthToast type={authToast} />}
+        </div>
+      )}
     </div>
   );
 }

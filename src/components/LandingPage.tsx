@@ -1,17 +1,38 @@
 import React, { useState, useEffect } from 'react';
-import { Terminal, Brain, Zap, Shield } from 'lucide-react';
+import { Terminal, Brain, Zap, Shield, LogOut, Award } from 'lucide-react';
 import { PROBLEMS } from '../problems';
+import { supabase } from '../supabase';
+import { AuthModal } from './AuthModal';
 
 interface LandingPageProps {
   onStart: (problemId?: string) => void;
+  session?: any;
+  problems?: any[];
+  onHistory?: () => void;
 }
 
 
 
-export const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
+export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHistory, problems = PROBLEMS }) => {
   const [textIndex, setTextIndex] = useState(0);
   const words = ["Coding Interviews", "Data Structures", "System Thinking", "Logic Challenges"];
-  
+
+  const [problemIndex, setProblemIndex] = useState(0);
+  const [authModal, setAuthModal] = useState<'login' | 'signup' | null>(null);
+  const [showProfileMenu, setShowProfileMenu] = useState(false);
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
+
+  const handleLogout = () => {
+    setShowLogoutConfirm(true);
+  };
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setProblemIndex(prev => (prev + 1) % problems.length);
+    }, 4000); // Cycle problem lists every 4 seconds
+    return () => clearInterval(id);
+  }, [problems.length]);
+
   const [typedCode, setTypedCode] = useState("");
   const fullCode = `def two_sum(nums, target):
     # Jarvis: "Consider how to check previous items in O(1)!"
@@ -60,15 +81,72 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
         <div style={{ ...styles.bgGlow, top: '-200px', left: '-100px', background: 'radial-gradient(circle, rgba(219, 39, 119, 0.25) 0%, transparent 70%)', animation: 'pulseGlow 10s infinite ease-in-out' }}></div>
         <div style={{ ...styles.bgGlow, top: '-200px', right: '-100px', left: 'auto', background: 'radial-gradient(circle, rgba(124, 58, 237, 0.25) 0%, transparent 70%)', animation: 'pulseGlow 12s infinite ease-in-out reverse' }}></div>
         <div style={{ ...styles.bgGlow, top: '400px', left: '30%', background: 'radial-gradient(circle, rgba(6, 182, 212, 0.15) 0%, transparent 70%)', animation: 'pulseGlow 15s infinite ease-in-out' }}></div>
+
+        {/* ⚡ Cyberpunk Grid Beams */}
+        <div className="grid-beam" style={{ left: '15%', animationDelay: '0s' }}></div>
+        <div className="grid-beam" style={{ left: '35%', animationDelay: '4s', background: 'linear-gradient(to bottom, transparent, rgba(6, 182, 212, 0.4), transparent)' }}></div>
+        <div className="grid-beam" style={{ left: '60%', animationDelay: '1.5s' }}></div>
+        <div className="grid-beam" style={{ left: '85%', animationDelay: '6s', background: 'linear-gradient(to bottom, transparent, rgba(219, 39, 119, 0.3), transparent)' }}></div>
       </div>
 
       {/* 🧭 Navbar */}
       <header style={styles.header}>
+        <style>{`
+          .hover-menu-item { transition: all 0.2s ease !important; }
+          .hover-menu-item:hover { background: rgba(168, 85, 247, 0.1) !important; color: #D8B4FE !important; }
+        `}</style>
         <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
           <div className="glass-panel" style={{ padding: '0', borderRadius: '10px', overflow: 'hidden', width: '36px', height: '36px', border: '1px solid rgba(255,255,255,0.15)' }}>
             <img src={`${(import.meta as any).env.BASE_URL}logo.png`} alt="NexCode AI Logo" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
           </div>
           <span className="text-gradient" style={{ fontSize: '1.4rem', fontWeight: 700 }}>NexCode AI</span>
+        </div>
+
+        <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+          {session ? (
+            <div
+              style={{ position: 'relative' }}
+              onMouseEnter={() => setShowProfileMenu(true)}
+              onMouseLeave={() => setShowProfileMenu(false)}
+            >
+              <button style={{ ...styles.logoutBtn, gap: '6px', background: 'rgba(255,255,255,0.01)', border: '1px solid rgba(255,255,255,0.06)' }} className="hover-lift">
+                Welcome, {session?.user?.email?.split('@')[0] || 'User'} <span>👋</span>
+              </button>
+
+              {showProfileMenu && (
+                <div style={{ position: 'absolute', top: '100%', right: 0, paddingTop: '8px', zIndex: 1000 }}>
+                  <div style={{
+                    background: 'rgba(20, 20, 20, 0.85)', backdropFilter: 'blur(10px)',
+                    border: '1px solid rgba(255, 255, 255, 0.08)', borderRadius: '12px',
+                    padding: '8px', minWidth: '150px',
+                    boxShadow: '0 10px 25px rgba(0,0,0,0.4)', display: 'flex', flexDirection: 'column', gap: '4px'
+                  }}>
+                    <button onClick={onHistory} style={{
+                      background: 'transparent', border: 'none', color: '#fff',
+                      padding: '8px 12px', borderRadius: '8px', cursor: 'pointer',
+                      display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.85rem',
+                      textAlign: 'left'
+                    }} className="hover-menu-item">
+                      <Award size={14} color="#A855F7" /> Dashboard
+                    </button>
+                    <button onClick={handleLogout} style={{
+                      background: 'transparent', border: 'none', color: '#EF4444',
+                      padding: '8px 12px', borderRadius: '8px', cursor: 'pointer',
+                      display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.85rem',
+                      textAlign: 'left'
+                    }} className="hover-menu-item">
+                      <LogOut size={14} /> Logout
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+          ) : (
+            <>
+              <button style={styles.loginBtn} className="hover-lift" onClick={() => setAuthModal('login')}>Log in</button>
+              <button style={styles.signUpBtn} className="hover-lift" onClick={() => setAuthModal('signup')}>Sign up</button>
+            </>
+          )}
         </div>
 
       </header>
@@ -78,18 +156,24 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
         <div style={styles.badge} className="float-anim">
           <Zap size={14} color="#D8B4FE" /> Instant AI Code Analysis & Diagnostics
         </div>
-        
+
         <h1 style={styles.title}>
           Ace Your Technical <br />
           <span style={styles.gradientText} className="text-change-anim">{words[textIndex]}</span>
         </h1>
-        
+
         <p style={styles.subtitle}>
           Master algorithms with real-time AI assistance, optimal complexity trace streaming, and structured simulation diagnostic environments instantly setup.
         </p>
 
         <div style={styles.ctaWrapper}>
-          <button style={styles.ctaButton} onClick={() => onStart()} className="pulse-btn">
+          <button style={styles.ctaButton} onClick={() => {
+            if (!session) {
+              setAuthModal('login');
+            } else {
+              onStart();
+            }
+          }} className="pulse-btn">
             <span>Start Solving Problems</span>
             <div style={styles.ctaGlow}></div>
           </button>
@@ -124,8 +208,18 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
         </div>
 
         <div style={styles.problemsGrid} className="problems-grid-scroll">
-          {PROBLEMS.slice(0, 3).map((p) => (
-            <div key={p.id} style={styles.problemCard} className="hover-lift" onClick={() => onStart(p.id)}>
+          {[
+            problems[problemIndex % problems.length],
+            problems[(problemIndex + 1) % problems.length],
+            problems[(problemIndex + 2) % problems.length]
+          ].map((p) => (
+            <div key={p.id} style={styles.problemCard} className="hover-lift" onClick={() => {
+              if (!session) {
+                setAuthModal('login');
+              } else {
+                onStart(p.id);
+              }
+            }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <span style={{ fontSize: '0.9rem', fontWeight: 700, color: '#fff' }}>{p.title.replace(/^\d+\.\s*/, '')}</span>
                 <span style={{
@@ -182,7 +276,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
           <div>
             <h3>Real-time Complexity Gauge</h3>
             <p>Evaluate your suboptimal loops into static trace memory parameters fully streamed in live execution bounds.</p>
-            
+
             <div style={{ display: 'flex', gap: '12px', marginTop: '16px' }}>
               <div style={{ padding: '8px 16px', background: 'rgba(168, 85, 247, 0.1)', border: '1px solid rgba(168, 85, 247, 0.2)', borderRadius: '12px', fontStyle: 'italic', fontWeight: 700, fontSize: '0.9rem', color: '#D8B4FE' }}>Time: O(N)</div>
               <div style={{ padding: '8px 16px', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '12px', fontStyle: 'italic', fontWeight: 600, fontSize: '0.9rem', color: 'var(--text-muted)' }}>Space: O(N)</div>
@@ -233,8 +327,64 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
         </span>
       </footer>
 
+      {authModal && <AuthModal type={authModal} onClose={() => setAuthModal(null)} />}
+
+      {showLogoutConfirm && (
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(3, 1, 8, 0.75)', backdropFilter: 'blur(12px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100, animation: 'fadeIn 0.2s ease-out' }}>
+          <div style={{ width: '100%', maxWidth: '340px', background: 'rgba(20, 16, 28, 0.95)', border: '1px solid rgba(220, 38, 38, 0.25)', borderRadius: '16px', padding: '24px', textAlign: 'center', boxShadow: '0 20px 50px rgba(220, 38, 38, 0.15)' }}>
+            <h3 style={{ fontSize: '1.2rem', color: '#fca5a5', marginBottom: '8px', fontWeight: 800 }}>Confirm Logout</h3>
+            <p style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.5)', marginBottom: '24px' }}>Are you sure you want to log out of your session?</p>
+            <div style={{ display: 'flex', gap: '10px' }}>
+              <button onClick={() => setShowLogoutConfirm(false)} style={{ flex: 1, padding: '10px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '10px', color: 'rgba(255,255,255,0.7)', cursor: 'pointer', fontSize: '0.82rem', fontWeight: 600 }}>Cancel</button>
+              <button onClick={() => { supabase.auth.signOut(); setShowLogoutConfirm(false); }} style={{ flex: 1, padding: '10px', background: 'linear-gradient(135deg, #DC2626, #EF4444)', border: 'none', borderRadius: '10px', color: '#fff', fontWeight: 700, cursor: 'pointer', fontSize: '0.82rem', boxShadow: '0 4px 15px rgba(220, 38, 38, 0.25)' }}>Logout</button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* 🎨 Embed scoped styles to run keyframes */}
       <style>{`
+        /* Welcome Greeting Animations */
+        .welcome-text {
+          animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+        .wave-emoji {
+          display: inline-block;
+          animation: wave 1.5s infinite ease-in-out;
+          transform-origin: 70% 70%;
+        }
+        @keyframes popIn {
+          from { opacity: 0; transform: scale(0.9); }
+          to { opacity: 1; transform: scale(1); }
+        }
+        @keyframes wave {
+          0% { transform: rotate(0deg); }
+          10% { transform: rotate(14deg); }
+          20% { transform: rotate(-8deg); }
+          30% { transform: rotate(14deg); }
+          40% { transform: rotate(-4deg); }
+          50% { transform: rotate(10deg); }
+          60% { transform: rotate(0deg); }
+          100% { transform: rotate(0deg); }
+        }
+
+        /* Cyberpunk Grid Beams */
+        .grid-beam {
+          position: absolute;
+          width: 1px;
+          height: 15vh;
+          background: linear-gradient(to bottom, transparent, rgba(168, 85, 247, 0.4), transparent);
+          animation: beamTravel 8s infinite linear;
+          top: -15vh;
+          opacity: 0;
+        }
+        @keyframes beamTravel {
+          0% { top: -15vh; opacity: 0; }
+          10% { opacity: 1; }
+          90% { opacity: 1; }
+          100% { top: 115vh; opacity: 0; }
+        }
+
         /* Bento Grid Setup */
         .bento-grid {
           display: grid;
@@ -441,11 +591,10 @@ const styles: Record<string, React.CSSProperties> = {
     animation: 'pulseGlow 8s infinite ease-in-out'
   },
   header: {
-    height: '64px',
+    padding: '14px 40px',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
-    padding: '0 32px',
     borderBottom: '1px solid rgba(255, 255, 255, 0.04)',
     backdropFilter: 'blur(10px)',
     zIndex: 10,
@@ -455,10 +604,24 @@ const styles: Record<string, React.CSSProperties> = {
   logo: { display: 'flex', alignItems: 'center', gap: '10px' },
   logoIcon: { background: 'rgba(168, 85, 247, 0.1)', padding: '6px', borderRadius: '8px', border: '1px solid rgba(168, 85, 247, 0.2)' },
   logoText: { fontWeight: 800, fontSize: '1.2rem', letterSpacing: '-0.02em', color: '#fff' },
-  navBtn: { 
-    fontSize: '0.78rem', borderRadius: '20px', padding: '7px 16px', 
-    background: 'rgba(168, 85, 247, 0.12)', border: '1px solid rgba(168, 85, 247, 0.3)', 
+  navBtn: {
+    fontSize: '0.78rem', borderRadius: '20px', padding: '7px 16px',
+    background: 'rgba(168, 85, 247, 0.12)', border: '1px solid rgba(168, 85, 247, 0.3)',
     color: '#D8B4FE', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px'
+  },
+  loginBtn: {
+    background: 'transparent', border: '1px solid rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.85)',
+    padding: '7px 15px', borderRadius: '12px', fontSize: '0.78rem', fontWeight: 600, cursor: 'pointer', transition: 'all 0.3s'
+  },
+  signUpBtn: {
+    background: 'linear-gradient(135deg, #7C3AED, #DB2777)', border: '1px solid rgba(255,255,255,0.15)', color: '#fff',
+    padding: '7px 15px', borderRadius: '12px', fontSize: '0.78rem', fontWeight: 700, cursor: 'pointer',
+    boxShadow: '0 4px 15px rgba(124, 58, 237, 0.25)', transition: 'all 0.3s'
+  },
+  logoutBtn: {
+    background: 'rgba(239, 68, 68, 0.06)', border: '1px solid rgba(239, 68, 68, 0.2)', color: '#fca5a5',
+    padding: '7px 15px', borderRadius: '12px', fontSize: '0.78rem', fontWeight: 600, cursor: 'pointer',
+    transition: 'all 0.3s', display: 'flex', alignItems: 'center', gap: '6px'
   },
   hero: {
     flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',

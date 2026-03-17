@@ -61,6 +61,12 @@ function parseTestCases(stdout: string): TestcaseData[] {
 export const OutputPanel: React.FC<OutputPanelProps> = ({ runState, problem, onClose, onDebugWithJarvis }) => {
   const [activeTab, setActiveTab] = useState<'console' | 'testcases'>('testcases'); // Default to testcase tab
 
+  React.useEffect(() => {
+    if (runState.status === 'running' || runState.status === 'done') {
+      setActiveTab('console');
+    }
+  }, [runState.status]);
+
   const renderConsole = () => {
     if (runState.status === 'idle') {
       return (
@@ -115,42 +121,11 @@ export const OutputPanel: React.FC<OutputPanelProps> = ({ runState, problem, onC
           </div>
         )}
 
-        {testCases.length > 0 ? (
-          <div style={{ overflowX: 'auto' }}>
-            <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.82rem' }}>
-              <thead>
-                <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.06)', color: 'var(--text-muted)' }}>
-                  <th style={{ padding: '10px 12px' }}>Test Case</th>
-                  <th style={{ padding: '10px 12px' }}>Status</th>
-                  <th style={{ padding: '10px 12px' }}>Expected</th>
-                  <th style={{ padding: '10px 12px' }}>Actual</th>
-                </tr>
-              </thead>
-              <tbody>
-                {testCases.map((tc) => (
-                  <tr key={tc.id} style={{ borderBottom: '1px solid rgba(255,255,255,0.03)' }}>
-                    <td style={{ padding: '12px' }}>#{tc.id}</td>
-                    <td style={{ padding: '12px' }}>
-                      <span style={{
-                        padding: '3px 8px', borderRadius: '6px', fontSize: '0.75rem', fontWeight: 700,
-                        background: tc.status === 'pass' ? 'rgba(16,185,129,0.1)' : 'rgba(239,68,68,0.08)',
-                        color: tc.status === 'pass' ? '#10b981' : '#ef4444'
-                      }}>{tc.status.toUpperCase()}</span>
-                    </td>
-                    <td style={{ padding: '12px', color: 'var(--text-muted)' }}>{tc.expected || '—'}</td>
-                    <td style={{ padding: '12px', color: tc.status === 'pass' ? '#10b981' : '#ef4444' }}>{tc.actual || '—'}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        ) : (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-            {result.stdout.split('\n').filter(l => l.trim().length > 0).map((line, i) => (
-              <div key={i} style={{ fontSize: '0.82rem', fontFamily: '"Fira Code", monospace', color: 'var(--text-muted)' }}>{line}</div>
-            ))}
-          </div>
-        )}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', background: 'rgba(255,255,255,0.02)', padding: '12px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.04)' }}>
+          {result.stdout.split('\n').filter(l => l.length > 0).map((line, i) => (
+            <div key={i} style={{ fontSize: '0.82rem', fontFamily: '"Fira Code", monospace', color: 'var(--text-muted)', whiteSpace: 'pre-wrap' }}>{line}</div>
+          ))}
+        </div>
 
         {hasStderr && (
           <pre style={{ fontSize: '0.78rem', color: '#ef4444', background: 'rgba(239,68,68,0.04)', padding: '12px', borderRadius: '8px' }}>{result.stderr}</pre>

@@ -132,23 +132,11 @@ export const ProblemDescription: React.FC<ProblemDescriptionProps> = ({
           <Whiteboard key={problem.id} />
         ) : (
           <>
-            {/* Title + difficulty */}
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
+            {/* Title */}
+            <div style={{ marginBottom: '16px' }}>
               <h1 style={{ fontSize: '1.4rem', color: 'var(--text-main)', margin: 0 }}>
                 {problem.title}
               </h1>
-              <div className={`badge ${difficultyColors[problem.difficulty]}`} style={{ fontSize: '0.7rem', padding: '2px 10px' }}>
-                {problem.difficulty}
-              </div>
-            </div>
-
-            {/* Tags */}
-            <div style={{ marginBottom: '16px', display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
-              {problem.tags.map(tag => (
-                <div key={tag} className="badge badge-purple" style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.68rem', padding: '2px 8px', background: 'rgba(168, 85, 247, 0.08)', border: '1px solid rgba(168, 85, 247, 0.15)' }}>
-                  <Tag size={11} /> {tag}
-                </div>
-              ))}
             </div>
 
             <div className="prose animate-fade-in" dangerouslySetInnerHTML={{ __html: problem.description }} />
