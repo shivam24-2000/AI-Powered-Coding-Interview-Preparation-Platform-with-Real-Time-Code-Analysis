@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Navigation } from './components/Navigation';
+import { LandingPage } from './components/LandingPage';
 import { ProblemDescription } from './components/ProblemDescription';
 import { CodeEditor } from './components/CodeEditor';
 import { AIAnalysis } from './components/AIAnalysis';
@@ -40,6 +41,7 @@ function App() {
   const [mentorOpen, setMentorOpen] = useState(false);
   const [isMentorFolded, setIsMentorFolded] = useState(false);
   const [isResultsFolded, setIsResultsFolded] = useState(true);
+  const [view, setView] = useState<'landing' | 'workspace'>('landing');
   const [shortcutsOpen, setShortcutsOpen] = useState(false);
 
   // Panel sizing state
@@ -248,6 +250,17 @@ function App() {
     }, 100);
   };
 
+
+  if (view === 'landing') {
+    return (
+      <LandingPage 
+        onStart={(problemId) => {
+          if (problemId) handleProblemChange(problemId);
+          setView('workspace');
+        }} 
+      />
+    );
+  }
 
   return (
     <div className="app-container">
