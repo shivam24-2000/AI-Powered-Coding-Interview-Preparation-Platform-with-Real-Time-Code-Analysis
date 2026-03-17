@@ -230,7 +230,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
                 }}>{p.difficulty}</span>
               </div>
               <div style={{ display: 'flex', gap: '4px', marginTop: '10px' }}>
-                {p.tags.slice(0, 2).map(t => (
+                {p.tags.slice(0, 2).map((t: string) => (
                   <span key={t} style={{ fontSize: '0.65rem', color: 'var(--text-muted)', background: 'rgba(255,255,255,0.03)', padding: '2px 6px', borderRadius: '4px' }}>{t}</span>
                 ))}
               </div>

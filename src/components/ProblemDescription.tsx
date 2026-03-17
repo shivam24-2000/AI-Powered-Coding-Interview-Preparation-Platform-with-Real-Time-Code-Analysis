@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BookOpen, PenTool, Tag, Lightbulb } from 'lucide-react';
+import { BookOpen, PenTool, Lightbulb } from 'lucide-react';
 import type { Problem } from '../types';
 import { Whiteboard } from './Whiteboard';
 import { ProblemModal } from './ProblemModal';
@@ -11,11 +11,7 @@ interface ProblemDescriptionProps {
   onProblemChange: (id: string) => void;
 }
 
-const difficultyColors: Record<Problem['difficulty'], string> = {
-  Easy: 'badge-green',
-  Medium: 'badge-yellow',
-  Hard: 'badge-red',
-};
+
 
 export const ProblemDescription: React.FC<ProblemDescriptionProps> = ({
   problem,
