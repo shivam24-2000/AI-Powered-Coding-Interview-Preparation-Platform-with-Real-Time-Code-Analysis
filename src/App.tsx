@@ -48,10 +48,10 @@ const AuthToast = ({ type }: { type: 'login' | 'logout' }) => (
 
 function App() {
   const { fire: fireConfetti } = useConfetti();
-  const [problems, setProblems] = useState<any[]>(PROBLEMS);
-  const [selectedProblem, setSelectedProblem] = useState(PROBLEMS[0]);
+  const [problems, setProblems] = useState<any[]>([]);
+  const [selectedProblem, setSelectedProblem] = useState<any>(null);
   const [selectedLanguage, setSelectedLanguage] = useState<Language>(DEFAULT_LANGUAGE);
-  const [code, setCode] = useState(PROBLEMS[0].templates[DEFAULT_LANGUAGE.id] || '');
+  const [code, setCode] = useState<string>('');
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [settings, setSettings] = useState<EditorSettings>(DEFAULT_SETTINGS);
   const [runState, setRunState] = useState<RunState>({ status: 'idle' });
@@ -72,24 +72,18 @@ function App() {
     const isPlaceholder = !import.meta.env.VITE_SUPABASE_URL || import.meta.env.VITE_SUPABASE_URL.includes('placeholder');
     if (isPlaceholder) return;
 
-    // 🚀 Auto-seeder & Fetcher for problems
-    const seedProblems = async () => {
+        // 🚀 Fetcher for problems
+    const fetchProblems = async () => {
       const { data } = await supabase.from('problems').select('*');
       if (data && data.length > 0) {
         setProblems(data);
         setSelectedProblem(data[0]);
-      } else {
-        const { error } = await supabase.from('problems').insert(PROBLEMS);
-        if (error) console.error("Seeding error:", error);
-        else {
-          console.log("Seeded problems successfully!");
-          // Re-fetch to populate state
-          const { data: newData } = await supabase.from('problems').select('*');
-          if (newData) setProblems(newData);
+        if (data[0].templates) {
+            setCode(data[0].templates[selectedLanguage?.id || 'python'] || '');
         }
       }
     };
-    seedProblems();
+    fetchProblems();
 
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
@@ -179,7 +173,7 @@ function App() {
   };
 
   const handleProblemChange = (problemId: string) => {
-    const problem = PROBLEMS.find(p => p.id === problemId);
+    const problem = (problems || []).find(p => p.id === problemId);
     if (!problem) return;
     setSelectedProblem(problem);
     setCode(problem.templates[selectedLanguage.id] || '');
@@ -366,6 +360,13 @@ function App() {
         </>
       ) : view === 'history' ? (
         <HistoryPage onBack={() => setView('landing')} session={session} />
+      ) : !selectedProblem ? (
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh', color: '#fff', fontSize: '1rem', background: '#030009' }}>
+          <div style={{ textAlign: 'center' }}>
+            <p style={{ margin: 0, fontWeight: 600 }}>Loading workspace...</p>
+            <p style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.4)', marginTop: '4px' }}>Securing execution sandbox</p>
+          </div>
+        </div>
       ) : (
         <div className="app-container">
       <Navigation
@@ -396,7 +397,7 @@ function App() {
         <div className="description-container">
           <ProblemDescription
             problem={selectedProblem}
-            problems={PROBLEMS}
+            problems={problems}
             onProblemChange={handleProblemChange}
           />
         </div>

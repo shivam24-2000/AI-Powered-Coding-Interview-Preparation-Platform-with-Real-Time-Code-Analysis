@@ -208,34 +208,38 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
         </div>
 
         <div style={styles.problemsGrid} className="problems-grid-scroll">
-          {[
-            problems[problemIndex % problems.length],
-            problems[(problemIndex + 1) % problems.length],
-            problems[(problemIndex + 2) % problems.length]
-          ].map((p) => (
-            <div key={p.id} style={styles.problemCard} className="hover-lift" onClick={() => {
-              if (!session) {
-                setAuthModal('login');
-              } else {
-                onStart(p.id);
-              }
-            }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span style={{ fontSize: '0.9rem', fontWeight: 700, color: '#fff' }}>{p.title.replace(/^\d+\.\s*/, '')}</span>
-                <span style={{
-                  fontSize: '0.65rem', fontWeight: 700, padding: '3px 8px', borderRadius: '12px',
-                  background: p.difficulty === 'Easy' ? 'rgba(16,185,129,0.08)' : p.difficulty === 'Medium' ? 'rgba(245,158,11,0.08)' : 'rgba(239,68,68,0.08)',
-                  color: p.difficulty === 'Easy' ? '#10b981' : p.difficulty === 'Medium' ? '#f59e0b' : '#ef4444',
-                  border: `1px solid ${p.difficulty === 'Easy' ? 'rgba(16,185,129,0.2)' : 'rgba(239, 158, 11, 0.2)'}`
-                }}>{p.difficulty}</span>
+          {problems && problems.length > 0 ? (
+            [
+              problems[problemIndex % problems.length],
+              problems[(problemIndex + 1) % problems.length],
+              problems[(problemIndex + 2) % problems.length]
+            ].filter(Boolean).map((p) => (
+              <div key={p.id} style={styles.problemCard} className="hover-lift" onClick={() => {
+                if (!session) {
+                  setAuthModal('login');
+                } else {
+                  onStart(p.id);
+                }
+              }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span style={{ fontSize: '0.9rem', fontWeight: 700, color: '#fff' }}>{p.title?.replace(/^\d+\.\s*/, '')}</span>
+                  <span style={{
+                    fontSize: '0.65rem', fontWeight: 700, padding: '3px 8px', borderRadius: '12px',
+                    background: p.difficulty === 'Easy' ? 'rgba(16,185,129,0.08)' : p.difficulty === 'Medium' ? 'rgba(245,158,11,0.08)' : 'rgba(239,68,68,0.08)',
+                    color: p.difficulty === 'Easy' ? '#10b981' : p.difficulty === 'Medium' ? '#f59e0b' : '#ef4444',
+                    border: `1px solid ${p.difficulty === 'Easy' ? 'rgba(16,185,129,0.2)' : 'rgba(239, 158, 11, 0.2)'}`
+                  }}>{p.difficulty}</span>
+                </div>
+                <div style={{ display: 'flex', gap: '4px', marginTop: '10px' }}>
+                  {p.tags?.slice(0, 2).map((t: string) => (
+                    <span key={t} style={{ fontSize: '0.65rem', color: 'var(--text-muted)', background: 'rgba(255,255,255,0.03)', padding: '2px 6px', borderRadius: '4px' }}>{t}</span>
+                  ))}
+                </div>
               </div>
-              <div style={{ display: 'flex', gap: '4px', marginTop: '10px' }}>
-                {p.tags.slice(0, 2).map((t: string) => (
-                  <span key={t} style={{ fontSize: '0.65rem', color: 'var(--text-muted)', background: 'rgba(255,255,255,0.03)', padding: '2px 6px', borderRadius: '4px' }}>{t}</span>
-                ))}
-              </div>
-            </div>
-          ))}
+            ))
+          ) : (
+            <p style={{ color: 'rgba(255,255,255,0.4)', textAlign: 'center', width: '100%', gridColumn: '1 / -1' }}>Loading curated problems...</p>
+          )}
         </div>
         {/* 📈 Timeline Tracks (How It Works) */}
         <div style={styles.sectionHeader}>
