@@ -12,7 +12,7 @@ import { ResetModal } from './components/ResetModal';
 import { KeyboardShortcutsModal } from './components/KeyboardShortcutsModal';
 import type { AnalysisState } from './types';
 import { LANGUAGES, DEFAULT_LANGUAGE, type Language } from './languages';
-import { PROBLEMS } from './problems';
+
 import { executeCode } from './pistonApi';
 import { buildRunnerCode } from './testRunners';
 import { PanelResizer } from './components/PanelResizer';
