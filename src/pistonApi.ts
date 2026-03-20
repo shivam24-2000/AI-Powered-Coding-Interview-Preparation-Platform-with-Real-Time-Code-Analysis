@@ -62,11 +62,22 @@ export async function executeCode(
       }
     `;
 
-    // Call the relative proxy/serverless endpoint
-    const response = await fetch('/api/execute', {
+    const apiKey = import.meta.env.GEMINI_API_KEY || '';
+    const url = apiKey
+      ? `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`
+      : `/api/execute`;
+
+    const body = apiKey
+      ? JSON.stringify({
+        contents: [{ parts: [{ text: prompt }] }],
+        generationConfig: { maxOutputTokens: 2000, temperature: 0.1, responseMimeType: "application/json" }
+      })
+      : JSON.stringify({ prompt });
+
+    const response = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ prompt }),
+      body,
     });
 
     if (!response.ok) {

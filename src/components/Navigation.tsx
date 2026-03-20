@@ -102,23 +102,6 @@ export const Navigation: React.FC<NavigationProps> = ({
 
 
         <button
-          id="settings-btn"
-          className="btn btn-secondary"
-          onClick={onSettings}
-        >
-          <Settings size={16} />
-          <span>Settings</span>
-        </button>
-        <button
-          id="shortcuts-btn"
-          className="btn btn-secondary"
-          onClick={onShortcuts}
-          title="Keyboard Shortcuts (?)"
-          style={{ padding: '6px 10px', minWidth: 'unset' }}
-        >
-          <Keyboard size={16} />
-        </button>
-        <button
           className="btn btn-secondary"
           onClick={onRunCode}
           disabled={isAnalyzing || isRunning || isBlocked}
@@ -150,19 +133,49 @@ export const Navigation: React.FC<NavigationProps> = ({
         </button>
       </div>
 
-      <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
-        {session && (
-          <div 
-            style={{ position: 'relative', marginLeft: '6px' }} 
-            onMouseEnter={() => setShowProfileMenu(true)} 
-            onMouseLeave={() => setShowProfileMenu(false)}
-          >
-            <button style={{ 
-              display: 'flex', alignItems: 'center', gap: '8px', 
-              padding: '6px 12px', borderRadius: '14px', 
-              background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)',
-              color: '#fff', cursor: 'pointer', transition: 'all 0.3s ease'
-            }} className="hover-lift">
+      <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '8px' }}>
+         <style>{`
+            @keyframes pulseRing {
+                0% { transform: scale(0.9); opacity: 0.8; }
+                50% { transform: scale(1.15); opacity: 0.2; }
+                100% { transform: scale(0.9); opacity: 0.8; }
+            }
+         `}</style>
+         
+         <button
+           id="settings-btn"
+           onClick={onSettings}
+           style={{ width: '34px', height: '34px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.7)', cursor: 'pointer', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.2s', boxShadow: '0 2px 8px rgba(0,0,0,0.15)' }}
+           onMouseEnter={e => { e.currentTarget.style.color = '#fff'; e.currentTarget.style.background = 'rgba(255,255,255,0.08)'; e.currentTarget.style.transform = 'scale(1.05)'; }}
+           onMouseLeave={e => { e.currentTarget.style.color = 'rgba(255,255,255,0.7)'; e.currentTarget.style.background = 'rgba(255,255,255,0.03)'; e.currentTarget.style.transform = 'scale(1)'; }}
+           title="Settings"
+         >
+           <Settings size={15} />
+         </button>
+
+         <button
+           id="shortcuts-btn"
+           onClick={onShortcuts}
+           title="Keyboard Shortcuts (?)"
+           style={{ width: '34px', height: '34px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.7)', cursor: 'pointer', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.2s', boxShadow: '0 2px 8px rgba(0,0,0,0.15)' }}
+           onMouseEnter={e => { e.currentTarget.style.color = '#fff'; e.currentTarget.style.background = 'rgba(255,255,255,0.08)'; e.currentTarget.style.transform = 'scale(1.05)'; }}
+           onMouseLeave={e => { e.currentTarget.style.color = 'rgba(255,255,255,0.7)'; e.currentTarget.style.background = 'rgba(255,255,255,0.03)'; e.currentTarget.style.transform = 'scale(1)'; }}
+         >
+           <Keyboard size={15} />
+         </button>
+
+         {session && (
+           <div 
+             style={{ position: 'relative', marginLeft: '4px' }} 
+             onMouseEnter={() => setShowProfileMenu(true)} 
+             onMouseLeave={() => setShowProfileMenu(false)}
+           >
+             <button style={{ 
+               display: 'flex', alignItems: 'center', gap: '8px', 
+               padding: '6px 12px', borderRadius: '14px', 
+               background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)',
+               color: '#fff', cursor: 'pointer', transition: 'all 0.3s ease'
+             }} className="hover-lift">
               <div style={{ 
                 width: '26px', height: '26px', borderRadius: '50%', 
                 background: 'linear-gradient(135deg, #A855F7 0%, #3B82F6 100%)', 

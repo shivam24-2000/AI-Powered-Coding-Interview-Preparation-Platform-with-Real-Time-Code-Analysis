@@ -65,11 +65,19 @@ export async function analyzeCode(
       IMPORTANT: Return ONLY the JSON object, no markdown formatting.
     `;
 
-    // Call the relative proxy/serverless endpoint
-    const response = await fetch('/api/analyze', {
+    const apiKey = import.meta.env.GEMINI_API_KEY || '';
+    const url = apiKey 
+      ? `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`
+      : `/api/analyze`;
+
+    const body = apiKey 
+      ? JSON.stringify({ contents: [{ parts: [{ text: prompt }] }], generationConfig: { responseMimeType: "application/json" } })
+      : JSON.stringify({ prompt });
+
+    const response = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ prompt }),
+      body,
     });
 
     if (!response.ok) {
@@ -134,8 +142,12 @@ export async function getChatResponse(
       chatHistory[0].parts[0].text = `System Context: ${context}\n\nCandidate's Question: ${chatHistory[0].parts[0].text}`;
     }
 
-    // Call the relative proxy/serverless endpoint
-    const response = await fetch('/api/chat', {
+    const apiKey = import.meta.env.VITE_GEMINI_API_KEY || '';
+    const url = apiKey 
+      ? `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`
+      : `/api/chat`;
+
+    const response = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ contents: chatHistory }),

@@ -166,84 +166,83 @@ export const ProblemDescription: React.FC<ProblemDescriptionProps> = ({
 
 
             {/* ✨ Hints Banner — eye-catching card below tags */}
-            {problem.hints && problem.hints.length > 0 && (
-              <div
-                onClick={() => setHintsOpen(true)}
-                className="animate-fade-in"
-                role="button"
-                tabIndex={0}
-                onKeyDown={e => e.key === 'Enter' && setHintsOpen(true)}
-                style={{
-                  marginTop: '28px',
-                  padding: '16px 20px',
-                  borderRadius: '14px',
-                  background: 'linear-gradient(135deg, rgba(251,191,36,0.08) 0%, rgba(251,146,60,0.05) 100%)',
-                  border: '1px solid rgba(251,191,36,0.2)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  gap: '14px',
-                  cursor: 'pointer',
-                  transition: 'all 0.25s ease',
-                  boxShadow: '0 2px 20px rgba(251,191,36,0.07)',
-                }}
-                onMouseEnter={e => {
-                  (e.currentTarget as HTMLElement).style.background = 'linear-gradient(135deg, rgba(251,191,36,0.14) 0%, rgba(251,146,60,0.09) 100%)';
-                  (e.currentTarget as HTMLElement).style.boxShadow = '0 6px 30px rgba(251,191,36,0.16)';
-                  (e.currentTarget as HTMLElement).style.borderColor = 'rgba(251,191,36,0.38)';
-                  (e.currentTarget as HTMLElement).style.transform = 'translateY(-1px)';
-                }}
-                onMouseLeave={e => {
-                  (e.currentTarget as HTMLElement).style.background = 'linear-gradient(135deg, rgba(251,191,36,0.08) 0%, rgba(251,146,60,0.05) 100%)';
-                  (e.currentTarget as HTMLElement).style.boxShadow = '0 2px 20px rgba(251,191,36,0.07)';
-                  (e.currentTarget as HTMLElement).style.borderColor = 'rgba(251,191,36,0.2)';
-                  (e.currentTarget as HTMLElement).style.transform = 'translateY(0)';
-                }}
-              >
-                {/* Left: icon + text */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-                  <div style={{
-                    width: '38px', height: '38px', borderRadius: '11px', flexShrink: 0,
-                    background: 'rgba(251,191,36,0.15)',
-                    border: '1px solid rgba(251,191,36,0.3)',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    boxShadow: '0 0 16px rgba(251,191,36,0.2)',
-                    animation: 'pulseGlow 2.5s ease-in-out infinite',
-                  }}>
-                    <Lightbulb size={18} color="#fbbf24" />
-                  </div>
-                  <div>
-                    <div style={{ fontSize: '0.82rem', fontWeight: 700, color: '#fbbf24', marginBottom: '3px' }}>
-                      Stuck? Unlock progressive hints 💡
-                    </div>
-                    <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', lineHeight: 1.4 }}>
-                      {problem.hints.length} hints available — reveal one tier at a time
-                    </div>
-                  </div>
-                </div>
-
-                {/* Right: CTA pill */}
+            {/* ✨ Hints Banner — eye-catching card below tags */}
+            <div
+              onClick={() => setHintsOpen(true)}
+              className="animate-fade-in"
+              role="button"
+              tabIndex={0}
+              onKeyDown={e => e.key === 'Enter' && setHintsOpen(true)}
+              style={{
+                marginTop: '28px',
+                padding: '16px 20px',
+                borderRadius: '14px',
+                background: 'linear-gradient(135deg, rgba(251,191,36,0.08) 0%, rgba(251,146,60,0.05) 100%)',
+                border: '1px solid rgba(251,191,36,0.2)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                gap: '14px',
+                cursor: 'pointer',
+                transition: 'all 0.25s ease',
+                boxShadow: '0 2px 20px rgba(251,191,36,0.07)',
+              }}
+              onMouseEnter={e => {
+                (e.currentTarget as HTMLElement).style.background = 'linear-gradient(135deg, rgba(251,191,36,0.14) 0%, rgba(251,146,60,0.09) 100%)';
+                (e.currentTarget as HTMLElement).style.boxShadow = '0 6px 30px rgba(251,191,36,0.16)';
+                (e.currentTarget as HTMLElement).style.borderColor = 'rgba(251,191,36,0.38)';
+                (e.currentTarget as HTMLElement).style.transform = 'translateY(-1px)';
+              }}
+              onMouseLeave={e => {
+                (e.currentTarget as HTMLElement).style.background = 'linear-gradient(135deg, rgba(251,191,36,0.08) 0%, rgba(251,146,60,0.05) 100%)';
+                (e.currentTarget as HTMLElement).style.boxShadow = '0 2px 20px rgba(251,191,36,0.07)';
+                (e.currentTarget as HTMLElement).style.borderColor = 'rgba(251,191,36,0.2)';
+                (e.currentTarget as HTMLElement).style.transform = 'translateY(0)';
+              }}
+            >
+              {/* Left: icon + text */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
                 <div style={{
-                  display: 'flex', alignItems: 'center', gap: '6px',
-                  fontSize: '0.72rem', fontWeight: 700, color: '#fbbf24',
-                  background: 'rgba(251,191,36,0.12)',
-                  border: '1px solid rgba(251,191,36,0.25)',
-                  borderRadius: '8px', padding: '6px 12px', whiteSpace: 'nowrap',
-                  transition: 'background 0.2s',
+                  width: '38px', height: '38px', borderRadius: '11px', flexShrink: 0,
+                  background: 'rgba(251,191,36,0.15)',
+                  border: '1px solid rgba(251,191,36,0.3)',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  boxShadow: '0 0 16px rgba(251,191,36,0.2)',
+                  animation: 'pulseGlow 2.5s ease-in-out infinite',
                 }}>
-                  View Hints
-                  <span style={{ fontSize: '0.85rem' }}>→</span>
+                  <Lightbulb size={18} color="#fbbf24" />
+                </div>
+                <div>
+                  <div style={{ fontSize: '0.82rem', fontWeight: 700, color: '#fbbf24', marginBottom: '3px' }}>
+                    Stuck? Unlock progressive hints 💡
+                  </div>
+                  <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', lineHeight: 1.4 }}>
+                    {problem.hints && problem.hints.length > 0 ? `${problem.hints.length} hints available` : '3 step-by-step hints via JARVIS AI'}
+                  </div>
                 </div>
               </div>
-            )}
+
+              {/* Right: CTA pill */}
+              <div style={{
+                display: 'flex', alignItems: 'center', gap: '6px',
+                fontSize: '0.72rem', fontWeight: 700, color: '#fbbf24',
+                background: 'rgba(251,191,36,0.12)',
+                border: '1px solid rgba(251,191,36,0.25)',
+                borderRadius: '8px', padding: '6px 12px', whiteSpace: 'nowrap',
+                transition: 'background 0.2s',
+              }}>
+                View Hints
+                <span style={{ fontSize: '0.85rem' }}>→</span>
+              </div>
+            </div>
           </>
         )}
       </div>
 
       {/* Hint Panel Modal */}
-      {hintsOpen && problem.hints && (
+      {hintsOpen && (
         <HintPanel
-          hints={problem.hints}
+          hints={problem.hints || []}
           problemTitle={problem.title}
           onClose={() => setHintsOpen(false)}
         />

@@ -38,9 +38,76 @@ const TIER_CONFIG = {
   },
 } as const;
 
-export const HintPanel: React.FC<HintPanelProps> = ({ hints, problemTitle, onClose }) => {
+export const HintPanel: React.FC<HintPanelProps> = ({ hints: initialHints, problemTitle, onClose }) => {
   const [unlockedTiers, setUnlockedTiers] = useState<Set<number>>(new Set());
   const [confirmingTier, setConfirmingTier] = useState<number | null>(null);
+  const [hints, setHints] = useState<ProblemHint[]>(initialHints);
+  const [loading, setLoading] = useState(false);
+
+  React.useEffect(() => {
+    if (initialHints && initialHints.length > 0) {
+      // Parse any hints that got saved as stringified JSON in the DB array
+      const parsedHints = initialHints.map(h => {
+        if (typeof h === 'string') {
+          try { return JSON.parse(h) as ProblemHint; } catch (e) { return null; }
+        }
+        return h;
+      }).filter(Boolean) as ProblemHint[];
+
+      setHints(parsedHints);
+      setLoading(false); // Stop AI generation if DB items load in-between
+    }
+  }, [initialHints]);
+
+  React.useEffect(() => {
+    let isMounted = true;
+    
+    if (initialHints.length === 0 && !loading && hints.length === 0) {
+      setLoading(true);
+      const fetchAiHints = async () => {
+        try {
+          const apiKey = import.meta.env.VITE_GEMINI_API_KEY || '';
+          const url = apiKey 
+            ? `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`
+            : `/api/chat`;
+
+          const response = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ contents: [{ role: 'user', parts: [{ text: `You are Jarvis, an expert technical interviewer. Generate exactly 3 progressive hints for the coding problem: "${problemTitle}". 
+            Tier 1: High-level conceptual clue.
+            Tier 2: Algorithmic approach or data structure to use.
+            Tier 3: Detailed structural breakdown or logic detail (No full code).
+            Return ONLY a JSON array matching this interface and no other text:
+            [{"tier": 1, "content": "..."}, {"tier": 2, "content": "..."}, {"tier": 3, "content": "..."}]` }] }] })
+          });
+          const data = await response.json();
+          let txt = data.candidates[0]?.content?.parts[0]?.text || '';
+          console.log("JARVIS AI Hints Response:", txt);
+          
+          if (!isMounted) return;
+
+          // Bulletproof JSON Array extractor
+          const match = txt.match(/\[[\s\S]*\]/);
+          if (match) {
+             const parsed = JSON.parse(match[0]);
+             setHints(parsed);
+          } else {
+             console.error("Could not find JSON array in response");
+             let cleaned = txt.replace(/```json\n?/, '').replace(/```\n?$/, '').trim();
+             setHints(JSON.parse(cleaned));
+          }
+        } catch (e) {
+          if (isMounted) console.error("Failed to fetch AI hints", e);
+        } finally {
+          if (isMounted) setLoading(false);
+        }
+      };
+      fetchAiHints();
+    }
+    
+    return () => { isMounted = false; };
+  }, [initialHints, problemTitle, loading, hints.length]);
 
   const unlock = (tier: number) => {
     setUnlockedTiers(prev => new Set([...prev, tier]));
@@ -122,15 +189,40 @@ export const HintPanel: React.FC<HintPanelProps> = ({ hints, problemTitle, onClo
 
         {/* Hint Cards */}
         <div style={{ padding: '16px 20px 20px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
-          {sortedHints.map((hint) => {
-            const cfg = TIER_CONFIG[hint.tier];
-            const isUnlocked = unlockedTiers.has(hint.tier);
-            const isConfirming = confirmingTier === hint.tier;
-            const prevTierLocked = hint.tier > 1 && !unlockedTiers.has(hint.tier - 1);
+          {loading && (
+            <div style={{ padding: '40px 20px', textAlign: 'center', color: 'rgba(255,255,255,0.4)', fontSize: '0.82rem', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}>
+              <style>{`@keyframes spin { 100% { transform: rotate(360deg); } }`}</style>
+              <div style={{ width: '24px', height: '24px', border: '2px solid rgba(255,255,255,0.1)', borderTopColor: '#fbbf24', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
+              <span>Generating progressive advice via JARVIS AI...</span>
+            </div>
+          )}
+
+          {!loading && sortedHints.length === 0 && (
+            <div style={{ textAlign: 'center', padding: '30px', color: 'var(--text-muted)', fontSize: '0.85rem' }}>
+              Unable to generate hints right now.
+            </div>
+          )}
+
+          {!loading && sortedHints.map((hint, index) => {
+            let tierNum = Number(hint.tier);
+            if (isNaN(tierNum) && typeof (hint.tier as any) === 'string') {
+              const lower = String(hint.tier).toLowerCase();
+              if (lower.includes('concept')) tierNum = 1;
+              else if (lower.includes('approac')) tierNum = 2;
+              else if (lower.includes('pseudo') || lower.includes('step')) tierNum = 3;
+            }
+            if (isNaN(tierNum)) tierNum = (index + 1) as any; // Fallback mapping
+            
+            const cfg = TIER_CONFIG[tierNum as keyof typeof TIER_CONFIG] || TIER_CONFIG[1];
+            const isUnlocked = unlockedTiers.has(tierNum);
+            const isConfirming = confirmingTier === tierNum;
+            const prevTierLocked = tierNum > 1 && !unlockedTiers.has(tierNum - 1);
+            
+            if (!cfg) return null; // Keep fallback
 
             return (
               <div
-                key={hint.tier}
+                key={tierNum}
                 style={{
                   borderRadius: '12px',
                   border: `1px solid ${isUnlocked ? cfg.border : 'var(--border-color)'}`,
@@ -150,7 +242,7 @@ export const HintPanel: React.FC<HintPanelProps> = ({ hints, problemTitle, onClo
                     <span style={{ fontSize: '16px' }}>{cfg.icon}</span>
                     <div>
                       <div style={{ fontSize: '0.78rem', fontWeight: 700, color: isUnlocked ? cfg.color : 'var(--text-primary)' }}>
-                        Hint {hint.tier} — {cfg.label}
+                        Hint {tierNum} — {cfg.label}
                       </div>
                       <div style={{ fontSize: '0.68rem', color: 'var(--text-muted)', marginTop: '1px' }}>
                         {cfg.description}
@@ -164,7 +256,7 @@ export const HintPanel: React.FC<HintPanelProps> = ({ hints, problemTitle, onClo
                       <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
                         <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>Sure?</span>
                         <button
-                          onClick={() => unlock(hint.tier)}
+                          onClick={() => unlock(tierNum)}
                           style={{
                             padding: '4px 10px', borderRadius: '6px', fontSize: '0.72rem', fontWeight: 700,
                             background: cfg.color, color: '#000', border: 'none', cursor: 'pointer'
@@ -184,7 +276,7 @@ export const HintPanel: React.FC<HintPanelProps> = ({ hints, problemTitle, onClo
                       </div>
                     ) : (
                       <button
-                        onClick={() => setConfirmingTier(hint.tier)}
+                        onClick={() => setConfirmingTier(tierNum)}
                         disabled={prevTierLocked}
                         style={{
                           display: 'flex', alignItems: 'center', gap: '6px',
@@ -234,17 +326,17 @@ export const HintPanel: React.FC<HintPanelProps> = ({ hints, problemTitle, onClo
                     animation: 'fadeIn 0.3s ease',
                   }}>
                     <pre style={{
-                      fontFamily: hint.tier === 3 ? '"Fira Code", monospace' : 'inherit',
-                      fontSize: hint.tier === 3 ? '0.78rem' : '0.82rem',
+                      fontFamily: tierNum === 3 ? '"Fira Code", monospace' : 'inherit',
+                      fontSize: tierNum === 3 ? '0.78rem' : '0.82rem',
                       lineHeight: 1.6,
                       color: 'var(--text-primary)',
                       whiteSpace: 'pre-wrap',
                       wordBreak: 'break-word',
                       margin: 0,
-                      padding: hint.tier === 3 ? '10px 12px' : '0',
-                      background: hint.tier === 3 ? 'rgba(0,0,0,0.3)' : 'transparent',
-                      borderRadius: hint.tier === 3 ? '8px' : '0',
-                      border: hint.tier === 3 ? '1px solid rgba(255,255,255,0.05)' : 'none',
+                      padding: tierNum === 3 ? '10px 12px' : '0',
+                      background: tierNum === 3 ? 'rgba(0,0,0,0.3)' : 'transparent',
+                      borderRadius: tierNum === 3 ? '8px' : '0',
+                      border: tierNum === 3 ? '1px solid rgba(255,255,255,0.05)' : 'none',
                     }}>
                       {hint.content}
                     </pre>
@@ -253,12 +345,6 @@ export const HintPanel: React.FC<HintPanelProps> = ({ hints, problemTitle, onClo
               </div>
             );
           })}
-
-          {hints.length === 0 && (
-            <div style={{ textAlign: 'center', padding: '30px', color: 'var(--text-muted)', fontSize: '0.85rem' }}>
-              No hints available for this problem yet.
-            </div>
-          )}
         </div>
       </div>
     </div>
