@@ -50,10 +50,10 @@ const SHORTCUT_GROUPS: ShortcutGroup[] = [
     ],
   },
   {
-    title: 'AI & Jarvis',
+    title: 'AI & Friday',
     icon: '🤖',
     shortcuts: [
-      { keys: ['Ctrl', 'J'], description: 'Toggle Jarvis panel' },
+      { keys: ['Ctrl', 'J'], description: 'Toggle Friday panel' },
       { keys: ['Ctrl', 'Shift', 'A'], description: 'Trigger AI analysis' },
     ],
   },

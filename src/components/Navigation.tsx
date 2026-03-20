@@ -96,7 +96,7 @@ export const Navigation: React.FC<NavigationProps> = ({
           }}
         >
           <BrainCircuit size={16} />
-          <span>Jarvis</span>
+          <span>Friday</span>
         </button>
 
 

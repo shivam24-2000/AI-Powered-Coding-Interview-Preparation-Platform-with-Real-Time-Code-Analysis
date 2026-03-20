@@ -322,7 +322,7 @@ function App() {
     }
   };
 
-  const handleDebugWithJarvis = (output: string) => {
+  const handleDebugWithFriday = (output: string) => {
     setMentorOpen(true);
     setIsMentorFolded(false);
     setIsAiAutoEnabled(true);
@@ -430,7 +430,7 @@ function App() {
                   onResize={(d) => setBottomHeight(h => Math.max(150, Math.min(800, h - d)))} 
                 />
                 <div style={{ height: bottomHeight, flex: `0 0 ${bottomHeight}px`, display: 'flex', flexDirection: 'column' }}>
-                  <OutputPanel runState={submitState.status !== 'idle' ? submitState : runState} problem={selectedProblem} onClose={() => setIsResultsFolded(true)} onDebugWithJarvis={handleDebugWithJarvis} />
+                  <OutputPanel runState={submitState.status !== 'idle' ? submitState : runState} problem={selectedProblem} onClose={() => setIsResultsFolded(true)} onDebugWithFriday={handleDebugWithFriday} />
                 </div>
               </>
             )}
@@ -445,7 +445,7 @@ function App() {
                 onClick={() => setIsMentorFolded(false)}
               >
                 <ChevronLeft size={14} className="text-gradient" />
-                <span>SUMMON JARVIS</span>
+                <span>SUMMON FRIDAY</span>
               </div>
             ) : (
               <>
@@ -506,7 +506,7 @@ function App() {
                       }}>
                         <Lock size={20} />
                       </div>
-                      <h3 style={{ fontSize: '0.95rem', fontWeight: 600, marginBottom: '6px' }}>Jarvis Paused</h3>
+                      <h3 style={{ fontSize: '0.95rem', fontWeight: 600, marginBottom: '6px' }}>Friday Paused</h3>
                       <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', lineHeight: 1.4 }}>
                         Execution prioritizes performance. Analysis resumed shortly.
                       </p>

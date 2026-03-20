@@ -217,7 +217,7 @@ export const ProblemDescription: React.FC<ProblemDescriptionProps> = ({
                     Stuck? Unlock progressive hints 💡
                   </div>
                   <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', lineHeight: 1.4 }}>
-                    {problem.hints && problem.hints.length > 0 ? `${problem.hints.length} hints available` : '3 step-by-step hints via JARVIS AI'}
+                    {problem.hints && problem.hints.length > 0 ? `${problem.hints.length} hints available` : '3 step-by-step hints via FRIDAY AI'}
                   </div>
                 </div>
               </div>

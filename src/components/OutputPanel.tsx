@@ -13,7 +13,7 @@ interface OutputPanelProps {
   runState: RunState;
   problem: Problem;
   onClose: () => void;
-  onDebugWithJarvis?: (outputStr: string) => void;
+  onDebugWithFriday?: (outputStr: string) => void;
 }
 
 interface TestcaseData {
@@ -58,7 +58,7 @@ function parseTestCases(stdout: string): TestcaseData[] {
   return cases;
 }
 
-export const OutputPanel: React.FC<OutputPanelProps> = ({ runState, problem, onClose, onDebugWithJarvis }) => {
+export const OutputPanel: React.FC<OutputPanelProps> = ({ runState, problem, onClose, onDebugWithFriday }) => {
   const [activeTab, setActiveTab] = useState<'console' | 'testcases'>('testcases'); // Default to testcase tab
 
   React.useEffect(() => {
@@ -131,10 +131,10 @@ export const OutputPanel: React.FC<OutputPanelProps> = ({ runState, problem, onC
           <pre style={{ fontSize: '0.78rem', color: '#ef4444', background: 'rgba(239,68,68,0.04)', padding: '12px', borderRadius: '8px' }}>{result.stderr}</pre>
         )}
 
-        {onDebugWithJarvis && (
+        {onDebugWithFriday && (
           <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-            <button className="btn btn-secondary" onClick={() => onDebugWithJarvis(`Stdout:\n${result.stdout}\nStderr:\n${result.stderr}`)}>
-              Debug with Jarvis
+            <button className="btn btn-secondary" onClick={() => onDebugWithFriday(`Stdout:\n${result.stdout}\nStderr:\n${result.stderr}`)}>
+              Debug with Friday
             </button>
           </div>
         )}

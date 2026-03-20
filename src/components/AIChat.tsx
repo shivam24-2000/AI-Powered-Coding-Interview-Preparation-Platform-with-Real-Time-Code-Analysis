@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, User, Bot } from 'lucide-react';
+import { Send, User, Bot, Mic, MicOff, Volume2, VolumeX } from 'lucide-react';
 import type { ChatMessage } from '../types';
 
 interface AIChatProps {
@@ -10,7 +10,142 @@ interface AIChatProps {
 
 export const AIChat: React.FC<AIChatProps> = ({ messages, onSendMessage, isTyping }) => {
   const [input, setInput] = useState('');
+  const [isListening, setIsListening] = useState(false);
+  const [statusText, setStatusText] = useState('');
+  const [useVoice, setUseVoice] = useState(false);
+  const [isAwake, setIsAwake] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const recognitionRef = useRef<any>(null);
+
+  useEffect(() => {
+    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    if (SpeechRecognition) {
+      recognitionRef.current = new SpeechRecognition();
+      recognitionRef.current.continuous = true;
+      recognitionRef.current.interimResults = true;
+      recognitionRef.current.lang = 'en-US';
+
+      // Auto start in background to listen for Wake Word
+      try {
+         recognitionRef.current.start();
+         setStatusText('Monitoring for "Hi Friday"...');
+      } catch (e) {}
+
+      recognitionRef.current.onresult = (event: any) => {
+        let interimTranscript = '';
+        let finalTranscript = '';
+
+        for (let i = event.resultIndex; i < event.results.length; ++i) {
+          const transcript = event.results[i][0].transcript;
+          if (event.results[i].isFinal) {
+            finalTranscript += transcript;
+          } else {
+            interimTranscript += transcript;
+          }
+        }
+        
+        const text = (finalTranscript || interimTranscript).toLowerCase();
+        
+        // Wake Word Detection
+        if (!isAwake && (text.includes('hi friday') || text.includes('hey friday') || text.includes('hello friday'))) {
+           setIsAwake(true);
+           setIsListening(true);
+           setStatusText('Friday Awake');
+           window.speechSynthesis.cancel();
+           window.speechSynthesis.speak(new SpeechSynthesisUtterance("I'm here. How can I help?"));
+           setInput('');
+           return;
+        }
+
+        if (isAwake && finalTranscript) {
+          // Strip the wake word if it got duplicated
+          const clean = finalTranscript.replace(/hi friday|hey friday|hello friday/gi, '').trim();
+          if (clean) {
+             setInput(prev => prev + (prev.endsWith(' ') || prev === '' ? '' : ' ') + clean + ' ');
+          }
+        }
+      };
+
+      recognitionRef.current.onend = () => {
+        setIsListening(false);
+        if (isAwake) {
+           setStatusText('Listening paused...');
+        } else {
+           setStatusText('Monitoring for "Hi Friday"...');
+           try { recognitionRef.current.start(); } catch(e) {} // Keep alive
+        }
+      };
+
+      recognitionRef.current.onerror = (e: any) => {
+        console.error("Speech error", e.error);
+        setIsListening(false);
+        setStatusText('Error: ' + e.error);
+      };
+    }
+
+    return () => {
+      if (recognitionRef.current) recognitionRef.current.stop();
+    };
+  }, []);
+
+  useEffect(() => {
+    const speakMessage = async (text: string) => {
+      window.speechSynthesis.cancel(); // Stop overlap
+      const speech = new SpeechSynthesisUtterance(text);
+      let voices = window.speechSynthesis.getVoices();
+      
+      // Sometimes voices load asynchronously
+      if (voices.length === 0) {
+         await new Promise(r => setTimeout(r, 100));
+         voices = window.speechSynthesis.getVoices();
+      }
+
+      // Google UK English Female is a Neural high-fidelity voice in Chrome!
+      const idealVoice = voices.find(v => 
+        v.name.includes('Google UK English Female') || 
+        v.name.includes('Samantha') || 
+        v.name.includes('Victoria') ||
+        v.name.toLowerCase().includes('female')
+      ) || voices.find(v => v.name.includes('Google')) || voices[0];
+
+      if (idealVoice) speech.voice = idealVoice;
+      
+      speech.rate = 1.1; // Slightly faster for natural fast-paced speech
+      speech.pitch = 0.95; // Warm, resonant depth
+
+      window.speechSynthesis.speak(speech);
+    };
+
+    if (useVoice && messages.length > 0) {
+      const lastMessage = messages[messages.length - 1];
+      if (lastMessage.role === 'assistant') {
+        speakMessage(lastMessage.content);
+      }
+    }
+  }, [messages, useVoice]);
+
+  const toggleListening = () => {
+    if (!recognitionRef.current) {
+       alert("Speech recognition is not supported in your browser.");
+       return;
+    }
+
+    if (isListening) {
+      recognitionRef.current.stop();
+    } else {
+      setInput('');
+      recognitionRef.current.start();
+      setIsListening(true);
+      setStatusText('Listening...');
+    }
+  };
+
+  const toggleVoiceOutput = () => {
+     setUseVoice(prev => {
+       if (prev) window.speechSynthesis.cancel();
+       return !prev;
+     });
+  };
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -56,7 +191,7 @@ export const AIChat: React.FC<AIChatProps> = ({ messages, onSendMessage, isTypin
               }}>
                 <Bot size={24} />
               </div>
-            <p style={{ fontWeight: 600, color: 'var(--text-primary)', marginBottom: '4px' }}>Jarvis logic stream</p>
+            <p style={{ fontWeight: 600, color: 'var(--text-primary)', marginBottom: '4px' }}>Friday logic stream</p>
             <p style={{ fontSize: '0.78rem', opacity: 0.8 }}>Ask me anything about your logic, time complexity, or how to optimize this solution.</p>
           </div>
         )}
@@ -151,17 +286,48 @@ export const AIChat: React.FC<AIChatProps> = ({ messages, onSendMessage, isTypin
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder="Ask Jarvis..."
+          placeholder={statusText || "Ask Friday..."}
           style={{ 
             flex: 1, 
             background: 'transparent', 
             border: 'none', 
-            color: 'var(--text-primary)',
+            color: isListening ? 'var(--accent-primary)' : 'var(--text-primary)',
             fontSize: '0.82rem',
             outline: 'none',
             padding: '4px 0'
           }}
         />
+
+        {/* Speak Toggle */}
+        <button 
+          type="button" 
+          onClick={toggleVoiceOutput}
+          style={{ background: 'transparent', border: 'none', color: useVoice ? '#fbbf24' : 'rgba(255,255,255,0.3)', cursor: 'pointer', padding: '5px', display: 'flex', transition: 'all 0.2s' }}
+          title={useVoice ? "Mute Friday" : "Speak Friday responses"}
+        >
+          {useVoice ? <Volume2 size={16} /> : <VolumeX size={16} />}
+        </button>
+
+        {/* Mic Toggle */}
+        <button 
+          type="button"
+          onClick={toggleListening}
+          style={{ 
+            background: isListening ? 'rgba(239, 68, 68, 0.15)' : 'transparent', 
+            border: 'none', 
+            color: isListening ? '#EF4444' : 'rgba(255,255,255,0.4)', 
+            cursor: 'pointer', 
+            padding: '6px', 
+            borderRadius: '50%',
+            display: 'flex',
+            animation: isListening ? 'pulse 1.5s infinite' : 'none',
+            transition: 'all 0.2s'
+          }}
+          title={isListening ? "Stop listening" : "Talk with Friday"}
+        >
+          {isListening ? <Mic size={15} /> : <MicOff size={15} />}
+        </button>
+
         <button 
           type="submit" 
           disabled={!input.trim() || isTyping}

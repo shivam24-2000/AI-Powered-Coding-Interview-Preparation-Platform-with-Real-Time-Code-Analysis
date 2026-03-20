@@ -74,7 +74,7 @@ export const HintPanel: React.FC<HintPanelProps> = ({ hints: initialHints, probl
           const response = await fetch(url, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ contents: [{ role: 'user', parts: [{ text: `You are Jarvis, an expert technical interviewer. Generate exactly 3 progressive hints for the coding problem: "${problemTitle}". 
+            body: JSON.stringify({ contents: [{ role: 'user', parts: [{ text: `You are Friday, an expert technical interviewer. Generate exactly 3 progressive hints for the coding problem: "${problemTitle}". 
             Tier 1: High-level conceptual clue.
             Tier 2: Algorithmic approach or data structure to use.
             Tier 3: Detailed structural breakdown or logic detail (No full code).
@@ -83,7 +83,7 @@ export const HintPanel: React.FC<HintPanelProps> = ({ hints: initialHints, probl
           });
           const data = await response.json();
           let txt = data.candidates[0]?.content?.parts[0]?.text || '';
-          console.log("JARVIS AI Hints Response:", txt);
+          console.log("FRIDAY AI Hints Response:", txt);
           
           if (!isMounted) return;
 
@@ -193,7 +193,7 @@ export const HintPanel: React.FC<HintPanelProps> = ({ hints: initialHints, probl
             <div style={{ padding: '40px 20px', textAlign: 'center', color: 'rgba(255,255,255,0.4)', fontSize: '0.82rem', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}>
               <style>{`@keyframes spin { 100% { transform: rotate(360deg); } }`}</style>
               <div style={{ width: '24px', height: '24px', border: '2px solid rgba(255,255,255,0.1)', borderTopColor: '#fbbf24', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
-              <span>Generating progressive advice via JARVIS AI...</span>
+              <span>Generating progressive advice via FRIDAY AI...</span>
             </div>
           )}
 

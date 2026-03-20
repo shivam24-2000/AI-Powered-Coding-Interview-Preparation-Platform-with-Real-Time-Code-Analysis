@@ -64,12 +64,12 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
 
   const [typedCode, setTypedCode] = useState("");
   const fullCode = `def two_sum(nums, target):
-    # Jarvis: "Consider how to check previous items in O(1)!"
+    # Friday: "Consider how to check previous items in O(1)!"
     # Your optimal code here...
     
     pass`;
 
-  const [jarvisText, setJarvisText] = useState("Scanning prompt...");
+  const [fridayText, setFridayText] = useState("Scanning prompt...");
   const answers = ["Scanning code setups...", "Detected O(N²) potential bottlenecks.", "Optimal optimal Hash Map recommended!", "Diagnostics ready ✅"];
 
   useEffect(() => {
@@ -82,7 +82,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
   useEffect(() => {
     let listIndex = 0;
     const answerId = setInterval(() => {
-      setJarvisText(answers[listIndex % answers.length]);
+      setFridayText(answers[listIndex % answers.length]);
       listIndex++;
     }, 3500); // Cycles suggestions interval
     return () => clearInterval(answerId);
@@ -224,9 +224,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
               {typedCode}<span className="cursor">|</span>
             </pre>
           </div>
-          <div style={styles.floatingJarvis} className="jarvis-pulse">
+          <div style={styles.floatingFriday} className="friday-pulse">
             <Brain size={16} className="float-anim" color="#A855F7" />
-            <span style={{ animation: 'textFade 3.5s infinite ease-in-out' }}>{jarvisText}</span>
+            <span style={{ animation: 'textFade 3.5s infinite ease-in-out' }}>{fridayText}</span>
           </div>
         </div>
 
@@ -289,7 +289,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
           </div>
           <div className="timeline-card hover-lift">
             <div className="timeline-dot">3</div>
-            <h4>Summon Jarvis</h4>
+            <h4>Summon Friday</h4>
             <p>Unblock bottlenecks using real-time prompt analysis suggesting optimal space/time setups.</p>
           </div>
           <div className="timeline-card hover-lift">
@@ -317,11 +317,11 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
           </div>
         </div>
 
-        {/* 💬 Card 2: Small (Jarvis Chat) */}
+        {/* 💬 Card 2: Small (Friday Chat) */}
         <div className="bento-item hover-lift" style={{ position: 'relative', overflow: 'hidden' }}>
           <div className="border-beam"></div>
           <div style={styles.iconBox}><Terminal size={20} color="#A855F7" /></div>
-          <h3>Jarvis Assist</h3>
+          <h3>Friday Assist</h3>
           <p>Get subtle contextual assists like optimal solver maps dynamically framing steps natively.</p>
           <div style={{ marginTop: '12px', padding: '6px 12px', background: 'rgba(168,85,247,0.06)', borderRadius: '8px', fontSize: '0.72rem', border: '1px solid rgba(168,85,247,0.1)', color: '#D8B4FE' }}>
             "Use a Hashmap for O(1) searches!"
@@ -634,7 +634,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
 
         .float-anim { animation: float 6s infinite ease-in-out; }
         .preview-float { animation: float 6s infinite ease-in-out; }
-        .jarvis-pulse { animation: pulseGlow 4s infinite ease-in-out; }
+        .friday-pulse { animation: pulseGlow 4s infinite ease-in-out; }
         .text-change-anim { animation: textFade 2.8s infinite ease-in-out; }
         
         .hover-lift {
@@ -801,7 +801,7 @@ const styles: Record<string, React.CSSProperties> = {
   previewTab: { fontSize: '0.75rem', color: 'var(--text-muted)', background: 'rgba(255,255,255,0.03)', padding: '4px 10px', borderRadius: '6px' },
   previewContent: { padding: '16px 20px', fontFamily: '"Fira Code", monospace', fontSize: '0.78rem', color: '#D4D4D4' },
   codeBlock: { margin: 0, lineHeight: 1.5 },
-  floatingJarvis: {
+  floatingFriday: {
     position: 'absolute', bottom: '-16px', right: '20px', background: 'rgba(168, 85, 247, 0.12)',
     border: '1px solid rgba(168, 85, 247, 0.25)', backdropFilter: 'blur(12px)', padding: '8px 14px',
     borderRadius: '12px', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.72rem', fontWeight: 600
