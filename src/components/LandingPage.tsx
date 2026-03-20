@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Terminal, Brain, Zap, Shield, LogOut, Award } from 'lucide-react';
+import { Terminal, Brain, Zap, Shield, LogOut, Award, X } from 'lucide-react';
 import { PROBLEMS } from '../problems';
 import { supabase } from '../supabase';
 import { AuthModal } from './AuthModal';
@@ -25,6 +25,35 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
   const handleLogout = () => {
     setShowLogoutConfirm(true);
   };
+
+  const [tagModalOpen, setTagModalOpen] = useState(false);
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+
+  const allTags = Array.from(new Set((problems || []).flatMap((p: any) => p.tags || []))).sort();
+
+  const handleStartWithTags = () => {
+    if (selectedTags.length === 0) return;
+    
+    let matching = (problems || []).filter((p: any) => 
+      selectedTags.every(t => p.tags?.includes(t))
+    );
+    
+    if (matching.length === 0) {
+      matching = (problems || []).filter((p: any) => 
+        selectedTags.some(t => p.tags?.includes(t))
+      );
+    }
+    
+    if (matching.length > 0) {
+      const randomIdx = Math.floor(Math.random() * matching.length);
+      onStart(matching[randomIdx].id);
+    } else {
+      alert("No problems found with these tags.");
+    }
+    setTagModalOpen(false);
+    setSelectedTags([]);
+  };
+
 
   useEffect(() => {
     const id = setInterval(() => {
@@ -171,7 +200,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
             if (!session) {
               setAuthModal('login');
             } else {
-              onStart();
+              setTagModalOpen(true);
             }
           }} className="pulse-btn">
             <span>Start Solving Problems</span>
@@ -332,6 +361,114 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
       </footer>
 
       {authModal && <AuthModal type={authModal} onClose={() => setAuthModal(null)} />}
+
+      {tagModalOpen && (
+        <div style={styles.modalBackdrop}>
+          <div style={{ ...styles.tagModal, animation: 'viewScaleUp 0.35s cubic-bezier(0.16,1,0.3,1) both', padding: '36px', maxWidth: '480px', position: 'relative', overflow: 'hidden' }} className="glass-panel">
+            {/* ❌ Close Button */}
+            <button 
+              onClick={() => { setTagModalOpen(false); setSelectedTags([]); }} 
+              style={{ position: 'absolute', top: '20px', right: '20px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.4)', cursor: 'pointer', padding: '6px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.2s', backdropFilter: 'blur(4px)', zIndex: 10 }}
+              onMouseEnter={e => { e.currentTarget.style.color = '#fff'; e.currentTarget.style.background = 'rgba(255,255,255,0.08)'; }}
+              onMouseLeave={e => { e.currentTarget.style.color = 'rgba(255,255,255,0.4)'; e.currentTarget.style.background = 'rgba(255,255,255,0.03)'; }}
+            >
+              <X size={16} />
+            </button>
+
+            <div style={{ textAlign: 'center', marginBottom: '28px' }}>
+              <h3 style={{ fontSize: '1.6rem', fontWeight: 900, background: 'linear-gradient(135deg, #ffffff 0%, rgba(255,255,255,0.6) 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', letterSpacing: '-0.02em', marginBottom: '6px' }}>
+                Start Your Simulation
+              </h3>
+              <p style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.5)', maxWidth: '280px', margin: '0 auto' }}>
+                Pick up to 2 domains to generate a targeted execution buffer workspace.
+              </p>
+            </div>
+
+            <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginBottom: '24px' }}>
+              <div style={{ padding: '6px 14px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '20px', fontSize: '0.75rem', color: 'rgba(255,255,255,0.8)', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: selectedTags.length > 0 ? '#10B981' : '#A855F7', boxShadow: `0 0 10px ${selectedTags.length > 0 ? '#10B981' : '#A855F7'}` }} />
+                <span>{selectedTags.length} / 2 Modules Selected</span>
+              </div>
+            </div>
+
+            <div style={{ ...styles.tagGrid, gap: '12px', maxHeight: '280px', padding: '4px', perspective: '1000px' }}>
+              {allTags.length > 0 ? (
+                allTags.map((tag) => {
+                  const isSelected = selectedTags.includes(tag);
+                  return (
+                    <button
+                      key={tag}
+                      onClick={() => {
+                        if (isSelected) {
+                          setSelectedTags(prev => prev.filter(t => t !== tag));
+                        } else if (selectedTags.length < 2) {
+                          setSelectedTags(prev => [...prev, tag]);
+                        }
+                      }}
+                      style={{
+                        padding: '16px 12px',
+                        borderRadius: '16px',
+                        border: '1px solid rgba(255, 255, 255, 0.04)',
+                        background: isSelected ? 'linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(236, 72, 153, 0.12))' : 'rgba(255, 255, 255, 0.015)',
+                        color: isSelected ? '#ffffff' : 'rgba(255, 255, 255, 0.65)',
+                        cursor: 'pointer',
+                        fontSize: '0.82rem',
+                        fontWeight: 700,
+                        transition: 'transform 0.1s ease, background 0.25s, box-shadow 0.25s',
+                        boxShadow: isSelected ? '0 10px 30px rgba(139, 92, 246, 0.22), inset 0 0 10px rgba(255,255,255,0.05)' : 'none',
+                        textAlign: 'center',
+                        textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap',
+                        transformStyle: 'preserve-3d'
+                      }}
+                      onMouseMove={e => {
+                        const r = e.currentTarget.getBoundingClientRect();
+                        const x = e.clientX - r.left - r.width/2;
+                        const y = e.clientY - r.top - r.height/2;
+                        e.currentTarget.style.transform = `scale(1.04) rotateY(${x * 0.12}deg) rotateX(${-y * 0.12}deg)`;
+                      }}
+                      onMouseLeave={e => {
+                        e.currentTarget.style.transform = 'scale(1) rotateY(0deg) rotateX(0deg)';
+                      }}
+                    >
+                      {tag}
+                    </button>
+                  );
+                })
+              ) : (
+                <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.8rem', gridColumn: '1 / -1', textAlign: 'center' }}>No tags found</p>
+              )}
+            </div>
+
+            <div style={{ display: 'flex', gap: '12px', marginTop: '28px' }}>
+              <button 
+                onClick={() => { setTagModalOpen(false); setSelectedTags([]); }} 
+                style={{ flex: 1, padding: '13px', background: 'transparent', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '14px', color: 'rgba(255,255,255,0.6)', cursor: 'pointer', fontSize: '0.85rem', fontWeight: 600, transition: 'all 0.2s' }}
+                onMouseEnter={e => e.currentTarget.style.borderColor = 'rgba(255,255,255,0.15)'}
+                onMouseLeave={e => e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)'}
+              >
+                Cancel
+              </button>
+              <button 
+                disabled={selectedTags.length === 0} 
+                onClick={handleStartWithTags} 
+                style={{ 
+                  flex: 2, padding: '13px', 
+                  background: selectedTags.length > 0 ? 'linear-gradient(135deg, #7C3AED, #DB2777)' : 'rgba(255,255,255,0.05)', 
+                  border: 'none', borderRadius: '14px', 
+                  color: selectedTags.length > 0 ? '#fff' : 'rgba(255,255,255,0.3)', 
+                  fontWeight: 800, cursor: selectedTags.length > 0 ? 'pointer' : 'not-allowed', 
+                  fontSize: '0.85rem', 
+                  boxShadow: selectedTags.length > 0 ? '0 10px 30px rgba(124, 58, 237, 0.3)' : 'none',
+                  transition: 'background 0.2s'
+                }}
+              >
+                {selectedTags.length === 2 ? "Start Simulation" : "Select 2 Modules"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
 
       {showLogoutConfirm && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(3, 1, 8, 0.75)', backdropFilter: 'blur(12px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100, animation: 'fadeIn 0.2s ease-out' }}>
@@ -556,6 +693,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
           from { opacity: 0; transform: translateY(30px); }
           to { opacity: 1; transform: translateY(0px); }
         }
+        @keyframes viewScaleUp {
+          from { opacity: 0; transform: scale(0.94); filter: blur(3px); }
+          to { opacity: 1; transform: scale(1); filter: blur(0px); }
+        }
       `}</style>
     </div>
   );
@@ -682,5 +823,23 @@ const styles: Record<string, React.CSSProperties> = {
     flex: '1 1 260px', background: 'rgba(255, 255, 255, 0.01)', border: '1px solid rgba(255, 255, 255, 0.03)',
     borderRadius: '16px', padding: '20px', display: 'flex', flexDirection: 'column', alignItems: 'flex-start'
   },
-  iconBox: { background: 'rgba(168, 85, 247, 0.1)', padding: '10px', borderRadius: '10px', color: '#A855F7', marginBottom: '12px' }
+  iconBox: { background: 'rgba(168, 85, 247, 0.1)', padding: '10px', borderRadius: '10px', color: '#A855F7', marginBottom: '12px' },
+  modalBackdrop: {
+    position: 'fixed', inset: 0, background: 'rgba(3, 1, 8, 0.75)', backdropFilter: 'blur(12px)',
+    display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100, animation: 'fadeIn 0.2s ease-out'
+  },
+  tagModal: {
+    width: '100%', maxWidth: '440px', background: 'rgba(20, 16, 28, 0.95)',
+    border: '1px solid rgba(255, 255, 255, 0.08)', borderRadius: '16px', padding: '24px',
+    boxShadow: '0 20px 60px rgba(0, 0, 0, 0.6)'
+  },
+  tagGrid: {
+    display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(130px, 1fr))',
+    gap: '8px', maxHeight: '250px', overflowY: 'auto', padding: '4px'
+  },
+  tagButton: {
+    padding: '8px 12px', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.05)',
+    color: 'rgba(255,255,255,0.8)', cursor: 'pointer', fontSize: '0.78rem', textAlign: 'center',
+    transition: 'all 0.2s ease'
+  }
 };
