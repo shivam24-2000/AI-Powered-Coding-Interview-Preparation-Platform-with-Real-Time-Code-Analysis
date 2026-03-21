@@ -16,6 +16,15 @@ Execute your solutions across multiple languages (JavaScript, Java, Python, C++,
 - **Resilient Architecture:** Includes dual-model failover (Gemini 2.0 Flash to Pro) and emergency local fallbacks to ensure test results are returned even when API limits are reached.
 - **Quota Protection:** Visual cooldown timers prevent accidental rate-limiting during intense practice sessions.
 
+### 🎙️ Friday Voice Assistant (AI Mode)
+Formulate hands-free prompts naturally using human-like dictation. Friday can listen and speak directly to help unblock logic bottlenecks using natural client-side processing buffers.
+
+### 👥 Peer-To-Peer Mock Interviews
+Host intervals session links syncing code transparently over standard Supabase Broadcast sockets. Direct deep-link pointers connect remote workspaces smoothly.
+
+### 🎥 Live Video & Audio Call
+Includes native WebRTC socket streams laying floating window feeds inside your layout permitted live P2P Interview stream structures natively flawless !!
+
 ### 🎨 Premium Developer Experience
 - **Glassmorphism Design:** A stunning, modern interface with deep midnight themes and vibrant accents.
 - **Monaco Editor Integration:** The same core engine powering VS Code, featuring full syntax highlighting and custom themes.
