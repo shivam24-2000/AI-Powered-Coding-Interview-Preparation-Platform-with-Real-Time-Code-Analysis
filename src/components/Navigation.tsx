@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Play, Send, Settings, Loader, BrainCircuit, Keyboard, ArrowLeft, Award, LogOut, ChevronDown } from 'lucide-react';
+import { Play, Send, Settings, Loader, BrainCircuit, Keyboard, ArrowLeft, Award, LogOut, ChevronDown, Users, X } from 'lucide-react';
 import { supabase } from '../supabase';
 
 interface NavigationProps {
@@ -16,6 +16,9 @@ interface NavigationProps {
   onBackToLanding?: () => void;
   session?: any;
   onHistory?: () => void;
+  roomCode?: string | null;
+  onShareRoom?: () => void;
+  onLeaveRoom?: () => void;
 }
 
 export const Navigation: React.FC<NavigationProps> = ({
@@ -32,6 +35,9 @@ export const Navigation: React.FC<NavigationProps> = ({
   onBackToLanding,
   session,
   onHistory,
+  roomCode,
+  onShareRoom,
+  onLeaveRoom,
 }) => {
   const isBlocked = cooldownRemaining > 0;
   const [showProfileMenu, setShowProfileMenu] = useState(false);
@@ -85,14 +91,66 @@ export const Navigation: React.FC<NavigationProps> = ({
           </div>
         )}
 
+        {onShareRoom && (
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0' }}>
+            <button
+              className="btn btn-secondary"
+              onClick={onShareRoom}
+              style={{ 
+                color: '#10b981', 
+                borderColor: 'rgba(16, 185, 129, 0.2)',
+                background: 'rgba(16, 185, 129, 0.05)',
+                boxShadow: '0 0 15px rgba(16, 185, 129, 0.1)',
+                display: 'flex', gap: '6px', alignItems: 'center',
+                borderTopRightRadius: roomCode ? '0' : '8px', 
+                borderBottomRightRadius: roomCode ? '0' : '8px',
+                borderRight: roomCode ? 'none' : '1px solid rgba(16, 185, 129, 0.2)'
+              }}
+            >
+              <Users size={16} />
+              <span style={{ fontSize: '0.8rem' }}>{roomCode ? `Room: ${roomCode}` : 'Host Mock'}</span>
+            </button>
+            {roomCode && (
+              <button
+                onClick={onLeaveRoom}
+                className="leave-btn"
+                style={{
+                  background: 'rgba(239, 68, 68, 0.1)',
+                  border: '1px solid rgba(239, 68, 68, 0.25)',
+                  borderLeft: 'none',
+                  color: '#ef4444',
+                  padding: '9px 12px',
+                  borderTopLeftRadius: '0',
+                  borderBottomLeftRadius: '0',
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  transition: 'all 0.3s',
+                  position: 'relative',
+                  boxShadow: '0 0 10px rgba(239, 68, 68, 0.05)'
+                }}
+                title="Leave Mock Room"
+              >
+                <style>{`
+                  .leave-btn:hover { background: rgba(239, 68, 68, 0.2) !important; color: #fca5a5 !important; }
+                  .leave-btn:hover .leave-icon { transform: rotate(90deg) scale(1.1); }
+                  .leave-icon { transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
+                `}</style>
+                <X size={14} className="leave-icon" />
+              </button>
+            )}
+          </div>
+        )}
+
         <button
           className="btn btn-secondary"
           onClick={onMentor}
           style={{ 
             color: 'var(--accent-primary)', 
-            borderColor: 'rgba(168, 85, 247, 0.2)',
-            background: 'rgba(168, 85, 247, 0.05)',
-            boxShadow: '0 0 15px rgba(168, 85, 247, 0.1)'
+            borderColor: 'rgba(16, 85, 247, 0.2)',
+            background: 'rgba(16, 85, 247, 0.05)',
+            boxShadow: '0 0 15px rgba(16, 85, 247, 0.1)'
           }}
         >
           <BrainCircuit size={16} />

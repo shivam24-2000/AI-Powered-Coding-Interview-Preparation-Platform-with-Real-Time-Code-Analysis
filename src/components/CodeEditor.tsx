@@ -14,6 +14,7 @@ interface CodeEditorProps {
   onLanguageChange: (lang: Language) => void;
   onReset?: () => void;
   settings: EditorSettings;
+  readOnly?: boolean;
 }
 
 export const CodeEditor: React.FC<CodeEditorProps> = ({
@@ -24,6 +25,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
   onLanguageChange,
   onReset,
   settings,
+  readOnly = false,
 }) => {
   const editorRef = useRef<any>(null);
   const monacoRef = useRef<any>(null);
@@ -165,6 +167,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
             cursorBlinking: 'smooth',
             cursorSmoothCaretAnimation: 'on',
             formatOnPaste: true,
+            readOnly: readOnly,
           }}
         />
       </div>

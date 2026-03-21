@@ -10,6 +10,9 @@ import { OutputPanel, type RunState } from './components/OutputPanel';
 import { SettingsModal, DEFAULT_SETTINGS, type EditorSettings } from './components/SettingsModal';
 import { ResetModal } from './components/ResetModal';
 import { KeyboardShortcutsModal } from './components/KeyboardShortcutsModal';
+import { ShareRoomModal } from './components/ShareRoomModal';
+import { VideoCall } from './components/VideoCall';
+import { IdleTimeout } from './components/IdleTimeout';
 import type { AnalysisState } from './types';
 import { LANGUAGES, DEFAULT_LANGUAGE, type Language } from './languages';
 
@@ -66,6 +69,35 @@ function App() {
   const [session, setSession] = useState<any>(null);
   const [authToast, setAuthToast] = useState<'login' | 'logout' | null>(null);
   const isInitialLoadRef = useRef(true);
+  const [roomCode, setRoomCode] = useState<string | null>(null);
+  const [peerRole, setPeerRole] = useState<'coder' | 'interviewer' | null>(null);
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+  const channelRef = useRef<any>(null);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const room = params.get('room');
+    if (room) {
+      setRoomCode(room);
+      setView('workspace'); // Send directly to workspace !!
+      const role = params.get('role') === 'interviewer' ? 'interviewer' : 'coder';
+      setPeerRole(role);
+
+      const channel = supabase.channel(`room-${room}`);
+
+      channel
+        .on('broadcast', { event: 'code_change' }, ({ payload }) => {
+           setCode(payload.code);
+        })
+        .subscribe((status) => {
+           if (status === 'SUBSCRIBED') console.log("Connected to room", room);
+        });
+
+      channelRef.current = channel;
+
+      return () => { channel.unsubscribe(); };
+    }
+  }, []);
 
   useEffect(() => {
     // Skip if Supabase is not configured yet
@@ -184,6 +216,54 @@ function App() {
       spaceComplexity: 'O(1)',
       suggestions: [{ id: 'reset', type: 'info', message: 'Start typing to see real-time analysis.' }],
     });
+  };
+
+  const handleCodeChange = (newCode: string | undefined) => {
+    const val = newCode || '';
+    setCode(val);
+    if (roomCode && peerRole === 'coder' && channelRef.current) {
+      channelRef.current.send({
+        type: 'broadcast',
+        event: 'code_change',
+        payload: { code: val }
+      });
+    }
+  };
+
+  const handleShareRoom = () => {
+     if (roomCode) {
+        setIsShareModalOpen(true);
+     } else {
+        const code = Math.random().toString(36).substring(2, 8).toUpperCase();
+        setRoomCode(code);
+        setPeerRole('coder'); // You are the coder creating it
+
+        // Subscribe myself
+        const channel = supabase.channel(`room-${code}`);
+        channel.subscribe();
+        channelRef.current = channel;
+
+        setIsShareModalOpen(true);
+     }
+  };
+
+  const handleLogout = async () => {
+     await supabase.auth.signOut();
+  };
+
+  const handleLeaveRoom = () => {
+    if (channelRef.current) {
+        channelRef.current.unsubscribe();
+        channelRef.current = null;
+    }
+    setRoomCode(null);
+    setPeerRole(null);
+    setIsShareModalOpen(false);
+
+    const url = new URL(window.location.href);
+    url.searchParams.delete('room');
+    url.searchParams.delete('role');
+    window.history.pushState({}, '', url.toString());
   };
 
   // Debounced static analysis
@@ -391,6 +471,9 @@ function App() {
             setMentorOpen(false);
           }
         }}
+        roomCode={roomCode}
+        onShareRoom={handleShareRoom}
+        onLeaveRoom={handleLeaveRoom}
       />
 
       <main className="main-workspace">
@@ -405,11 +488,12 @@ function App() {
         <div className="editor-container" style={{ display: 'flex', flexDirection: 'column', flex: 1, gap: '8px', overflow: 'hidden' }}>
           <CodeEditor
             code={code}
-            onChange={(val) => setCode(val || '')}
+            onChange={handleCodeChange}
             language={selectedLanguage}
             languages={LANGUAGES}
             onLanguageChange={handleLanguageChange}
             onReset={handleResetCode}
+            readOnly={peerRole === 'interviewer'}
             settings={settings}
           />
           <>
@@ -525,6 +609,18 @@ function App() {
           onChange={setSettings}
           onClose={() => setSettingsOpen(false)}
         />
+      )}
+
+      {isShareModalOpen && roomCode && (
+         <ShareRoomModal roomCode={roomCode} onClose={() => setIsShareModalOpen(false)} />
+      )}
+
+      {roomCode && peerRole && channelRef.current && (
+         <VideoCall channel={channelRef.current} peerRole={peerRole} />
+      )}
+
+      {session && (
+         <IdleTimeout onLogout={handleLogout} />
       )}
 
       {resetModalOpen && (

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Terminal, Brain, Zap, Shield, LogOut, Award, X } from 'lucide-react';
+import { Terminal, Brain, Zap, Shield, LogOut, Award, X, Users, Mic } from 'lucide-react';
 import { PROBLEMS } from '../problems';
 import { supabase } from '../supabase';
 import { AuthModal } from './AuthModal';
@@ -349,6 +349,36 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
             <p>Assist unlocks unlocking subtle contextual help models whenever blocked without triggering complete absolute algorithms solver sets setup.</p>
             <div style={{ marginTop: '12px', background: 'rgba(0,0,0,0.2)', padding: '10px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.03)', fontSize: '0.78rem', color: '#B4B4B4' }}>
               💡 <span style={{ filter: 'blur(3px)', userSelect: 'none' }}>Use two pointers converging towards middle target values</span>
+            </div>
+          </div>
+        </div>
+
+        {/* 🎙️ Card 5: Small (Friday Voice) */}
+        <div className="bento-item hover-lift" style={{ position: 'relative', overflow: 'hidden' }}>
+          <div className="border-beam"></div>
+          <div style={styles.iconBox}><Mic size={20} color="#10B981" /></div>
+          <h3>Friday Voice AI</h3>
+          <p>Formulate hands-free prompts using human-like natural dictation triggers native readout layouts.</p>
+          <div style={{ marginTop: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <div style={{ width: '8px', height: '8px', background: '#10B981', borderRadius: '50%', boxShadow: '0 0 8px #10B981' }}></div>
+            <span style={{ fontSize: '0.72rem', color: '#10B981', fontWeight: 600 }}>Adaptive Listening</span>
+          </div>
+        </div>
+
+        {/* 👥 Card 6: Large (Live Mock Interviews) */}
+        <div className="bento-item bento-2x1 hover-lift" style={{ position: 'relative', overflow: 'hidden' }}>
+          <div className="border-beam"></div>
+          <div style={styles.iconBox}><Users size={20} color="#3B82F6" /></div>
+          <div>
+            <h3>Peer-to-Peer Mock Interviews</h3>
+            <p>Collaborative setups sync code instantly over deep-links using isolated isolated WebRTC audio bundles.</p>
+            <div style={{ display: 'flex', gap: '8px', marginTop: '16px', alignItems: 'center' }}>
+               <div style={{ padding: '6px 12px', background: 'rgba(59, 130, 246, 0.08)', border: '1px solid rgba(59, 130, 246, 0.2)', borderRadius: '8px', fontSize: '0.7rem', color: '#60A5FA', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  🎥 Live Video stream
+               </div>
+               <div style={{ padding: '6px 12px', background: 'rgba(16, 185, 129, 0.08)', border: '1px solid rgba(16, 185, 129, 0.2)', borderRadius: '8px', fontSize: '0.7rem', color: '#10B981' }}>
+                  🤝 P2P Sync Code
+               </div>
             </div>
           </div>
         </div>

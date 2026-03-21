@@ -13,7 +13,6 @@ export const AIChat: React.FC<AIChatProps> = ({ messages, onSendMessage, isTypin
   const [isListening, setIsListening] = useState(false);
   const [statusText, setStatusText] = useState('');
   const [useVoice, setUseVoice] = useState(false);
-  const [isAwake, setIsAwake] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const recognitionRef = useRef<any>(null);
 
@@ -24,12 +23,6 @@ export const AIChat: React.FC<AIChatProps> = ({ messages, onSendMessage, isTypin
       recognitionRef.current.continuous = true;
       recognitionRef.current.interimResults = true;
       recognitionRef.current.lang = 'en-US';
-
-      // Auto start in background to listen for Wake Word
-      try {
-         recognitionRef.current.start();
-         setStatusText('Monitoring for "Hi Friday"...');
-      } catch (e) {}
 
       recognitionRef.current.onresult = (event: any) => {
         let interimTranscript = '';
@@ -44,36 +37,14 @@ export const AIChat: React.FC<AIChatProps> = ({ messages, onSendMessage, isTypin
           }
         }
         
-        const text = (finalTranscript || interimTranscript).toLowerCase();
-        
-        // Wake Word Detection
-        if (!isAwake && (text.includes('hi friday') || text.includes('hey friday') || text.includes('hello friday'))) {
-           setIsAwake(true);
-           setIsListening(true);
-           setStatusText('Friday Awake');
-           window.speechSynthesis.cancel();
-           window.speechSynthesis.speak(new SpeechSynthesisUtterance("I'm here. How can I help?"));
-           setInput('');
-           return;
-        }
-
-        if (isAwake && finalTranscript) {
-          // Strip the wake word if it got duplicated
-          const clean = finalTranscript.replace(/hi friday|hey friday|hello friday/gi, '').trim();
-          if (clean) {
-             setInput(prev => prev + (prev.endsWith(' ') || prev === '' ? '' : ' ') + clean + ' ');
-          }
+        if (finalTranscript) {
+           setInput(prev => prev + (prev.endsWith(' ') || prev === '' ? '' : ' ') + finalTranscript.trim() + ' ');
         }
       };
 
       recognitionRef.current.onend = () => {
         setIsListening(false);
-        if (isAwake) {
-           setStatusText('Listening paused...');
-        } else {
-           setStatusText('Monitoring for "Hi Friday"...');
-           try { recognitionRef.current.start(); } catch(e) {} // Keep alive
-        }
+        setStatusText('');
       };
 
       recognitionRef.current.onerror = (e: any) => {
@@ -131,10 +102,12 @@ export const AIChat: React.FC<AIChatProps> = ({ messages, onSendMessage, isTypin
     }
 
     if (isListening) {
-      recognitionRef.current.stop();
+      try { recognitionRef.current.stop(); } catch(e) {}
+      setIsListening(false);
+      setStatusText('');
     } else {
       setInput('');
-      recognitionRef.current.start();
+      try { recognitionRef.current.start(); } catch(e) {}
       setIsListening(true);
       setStatusText('Listening...');
     }
