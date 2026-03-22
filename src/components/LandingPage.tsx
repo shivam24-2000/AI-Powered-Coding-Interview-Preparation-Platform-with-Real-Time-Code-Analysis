@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Terminal, Brain, Zap, Shield, LogOut, Award, X, Users, Mic } from 'lucide-react';
+import { Terminal, Brain, Zap, Shield, LogOut, Award, X, Users, Mic, User } from 'lucide-react';
 import { PROBLEMS } from '../problems';
 import { supabase } from '../supabase';
 import { AuthModal } from './AuthModal';
@@ -9,11 +9,12 @@ interface LandingPageProps {
   session?: any;
   problems?: any[];
   onHistory?: () => void;
+  onEditProfile?: () => void;
 }
 
 
 
-export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHistory, problems = PROBLEMS }) => {
+export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHistory, onEditProfile, problems = PROBLEMS }) => {
   const [textIndex, setTextIndex] = useState(0);
   const words = ["Coding Interviews", "Data Structures", "System Thinking", "Logic Challenges"];
 
@@ -133,13 +134,18 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
 
         <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
           {session ? (
-            <div
-              style={{ position: 'relative' }}
-              onMouseEnter={() => setShowProfileMenu(true)}
-              onMouseLeave={() => setShowProfileMenu(false)}
-            >
-              <button style={{ ...styles.logoutBtn, gap: '6px', background: 'rgba(255,255,255,0.01)', border: '1px solid rgba(255,255,255,0.06)' }} className="hover-lift">
-                Welcome, {session?.user?.email?.split('@')[0] || 'User'} <span>👋</span>
+            <div style={{ position: 'relative' }}>
+              <button 
+                onClick={() => setShowProfileMenu(!showProfileMenu)}
+                style={{ ...styles.logoutBtn, gap: '8px', background: 'rgba(255,255,255,0.01)', border: '1px solid rgba(255,255,255,0.06)', display: 'flex', alignItems: 'center' }} 
+                className="hover-lift"
+              >
+                {session?.user?.user_metadata?.avatar_url ? (
+                  <img src={session.user.user_metadata.avatar_url} alt="Profile" style={{ width: '22px', height: '22px', borderRadius: '50%', objectFit: 'cover', border: '1px solid rgba(168, 85, 247, 0.4)' }} />
+                ) : (
+                  <span>👋</span>
+                )}
+                <span>Welcome, {session?.user?.user_metadata?.full_name || session?.user?.email?.split('@')[0] || 'User'}</span>
               </button>
 
               {showProfileMenu && (
@@ -150,6 +156,15 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
                     padding: '8px', minWidth: '150px',
                     boxShadow: '0 10px 25px rgba(0,0,0,0.4)', display: 'flex', flexDirection: 'column', gap: '4px'
                   }}>
+                    <button onClick={() => { onEditProfile?.(); setShowProfileMenu(false); }} style={{
+                      background: 'transparent', border: 'none', color: '#fff',
+                      padding: '8px 12px', borderRadius: '8px', cursor: 'pointer',
+                      display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.85rem',
+                      textAlign: 'left'
+                    }} className="hover-menu-item">
+                      <User size={14} color="#10B981" /> Edit Profile
+                    </button>
+
                     <button onClick={onHistory} style={{
                       background: 'transparent', border: 'none', color: '#fff',
                       padding: '8px 12px', borderRadius: '8px', cursor: 'pointer',
@@ -386,7 +401,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
 
       <footer style={{ marginTop: 'auto', borderTop: '1px solid rgba(255, 255, 255, 0.04)', padding: '20px', textAlign: 'center', width: '100%', zIndex: 10, background: 'rgba(3, 1, 8, 0.4)', backdropFilter: 'blur(10px)' }}>
         <span style={{ color: 'rgba(255,255,255,0.35)', fontSize: '0.75rem', fontWeight: 500 }}>
-          © {new Date().getFullYear()} NexCode AI. All rights reserved.
+          © {new Date().getFullYear()} Shivam Singhal | NexCode AI. All rights reserved.
         </span>
       </footer>
 

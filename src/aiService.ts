@@ -1,6 +1,7 @@
 import type { Problem, AnalysisState, ChatMessage } from './types';
 import type { Language } from './languages';
 import { quotaManager } from './quotaManager';
+import { PROBLEMS } from './problems';
 
 export async function analyzeCode(
   code: string,
@@ -111,7 +112,6 @@ export async function getChatResponse(
   }
 
   // Get active titles to suggest from
-  const { PROBLEMS } = await import('./problems');
   const availableProblemTitles = PROBLEMS.map(p => `- ${p.title}`).join('\n');
 
   try {

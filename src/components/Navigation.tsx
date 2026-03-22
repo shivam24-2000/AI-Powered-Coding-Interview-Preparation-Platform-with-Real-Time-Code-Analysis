@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Play, Send, Settings, Loader, BrainCircuit, Keyboard, ArrowLeft, Award, LogOut, ChevronDown, Users, X } from 'lucide-react';
+import { Play, Send, Settings, Loader, BrainCircuit, Keyboard, ArrowLeft, Award, LogOut, ChevronDown, Users, X, User } from 'lucide-react';
 import { supabase } from '../supabase';
 
 interface NavigationProps {
@@ -19,6 +19,7 @@ interface NavigationProps {
   roomCode?: string | null;
   onShareRoom?: () => void;
   onLeaveRoom?: () => void;
+  onEditProfile?: () => void;
 }
 
 export const Navigation: React.FC<NavigationProps> = ({
@@ -38,6 +39,7 @@ export const Navigation: React.FC<NavigationProps> = ({
   roomCode,
   onShareRoom,
   onLeaveRoom,
+  onEditProfile,
 }) => {
   const isBlocked = cooldownRemaining > 0;
   const [showProfileMenu, setShowProfileMenu] = useState(false);
@@ -235,16 +237,20 @@ export const Navigation: React.FC<NavigationProps> = ({
                color: '#fff', cursor: 'pointer', transition: 'all 0.3s ease'
              }} className="hover-lift">
               <div style={{ 
-                width: '26px', height: '26px', borderRadius: '50%', 
+                width: '28px', height: '28px', borderRadius: '50%', overflow: 'hidden',
                 background: 'linear-gradient(135deg, #A855F7 0%, #3B82F6 100%)', 
                 display: 'flex', alignItems: 'center', justifyContent: 'center', 
                 fontSize: '0.75rem', fontWeight: 700, color: '#fff',
-                boxShadow: '0 0 12px rgba(168, 85, 247, 0.3)'
+                boxShadow: '0 0 12px rgba(168, 85, 247, 0.2)'
               }}>
-                {(session?.user?.email?.[0] || 'U').toUpperCase()}
+                {session?.user?.user_metadata?.avatar_url ? (
+                  <img src={session.user.user_metadata.avatar_url} alt="Profile" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                ) : (
+                  (session?.user?.user_metadata?.full_name?.[0] || session?.user?.email?.[0] || 'U').toUpperCase()
+                )}
               </div>
               <span style={{ fontSize: '0.85rem', fontWeight: 600 }}>
-                {session?.user?.email?.split('@')[0] || 'User'}
+                {session?.user?.user_metadata?.full_name || session?.user?.email?.split('@')[0] || 'User'}
               </span>
               <ChevronDown size={14} style={{ opacity: 0.6, transform: showProfileMenu ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s' }} />
             </button>
@@ -268,6 +274,15 @@ export const Navigation: React.FC<NavigationProps> = ({
                     <p style={{ margin: '2px 0 0 0', fontSize: '0.82rem', fontWeight: 600, color: '#fff', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{session?.user?.email}</p>
                   </div>
                   
+                  <button onClick={() => { onEditProfile?.(); setShowProfileMenu(false); }} style={{
+                    background: 'transparent', border: 'none', color: '#fff', 
+                    padding: '10px 12px', borderRadius: '10px', cursor: 'pointer',
+                    display: 'flex', alignItems: 'center', gap: '10px', fontSize: '0.85rem',
+                    textAlign: 'left'
+                  }} className="hover-menu-item">
+                    <User size={15} color="#10B981" /> Edit Profile
+                  </button>
+
                   <button onClick={onHistory} style={{
                     background: 'transparent', border: 'none', color: '#fff', 
                     padding: '10px 12px', borderRadius: '10px', cursor: 'pointer',

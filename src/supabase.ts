@@ -9,6 +9,7 @@ if (!supabaseUrl || !supabaseAnonKey) {
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
-    persistSession: false, // Forces session to die when the browser tab is closed !!
+    storage: window.sessionStorage, // Saves into Tab memory (Survives refreshes) !!
+    persistSession: true, // Keep loading from the storage adapter upfront !!
   }
 });

@@ -56,6 +56,7 @@ export const AIChat: React.FC<AIChatProps> = ({ messages, onSendMessage, isTypin
 
     return () => {
       if (recognitionRef.current) recognitionRef.current.stop();
+      window.speechSynthesis.cancel(); // Silence voice output on leave/reload !!
     };
   }, []);
 

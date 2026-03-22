@@ -13,6 +13,7 @@ import { KeyboardShortcutsModal } from './components/KeyboardShortcutsModal';
 import { ShareRoomModal } from './components/ShareRoomModal';
 import { VideoCall } from './components/VideoCall';
 import { IdleTimeout } from './components/IdleTimeout';
+import { ProfileModal } from './components/ProfileModal';
 import type { AnalysisState } from './types';
 import { LANGUAGES, DEFAULT_LANGUAGE, type Language } from './languages';
 
@@ -64,7 +65,12 @@ function App() {
   const [mentorOpen, setMentorOpen] = useState(false);
   const [isMentorFolded, setIsMentorFolded] = useState(false);
   const [isResultsFolded, setIsResultsFolded] = useState(true);
-  const [view, setView] = useState<'landing' | 'workspace' | 'history'>('landing');
+  const [view, setView] = useState<'landing' | 'workspace' | 'history'>(() => {
+    if (typeof window !== 'undefined') {
+       return (sessionStorage.getItem('activeView') as any) || 'landing';
+    }
+    return 'landing';
+  });
   const [shortcutsOpen, setShortcutsOpen] = useState(false);
   const [session, setSession] = useState<any>(null);
   const [authToast, setAuthToast] = useState<'login' | 'logout' | null>(null);
@@ -72,6 +78,7 @@ function App() {
   const [roomCode, setRoomCode] = useState<string | null>(null);
   const [peerRole, setPeerRole] = useState<'coder' | 'interviewer' | null>(null);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
   const channelRef = useRef<any>(null);
 
   useEffect(() => {
@@ -100,42 +107,72 @@ function App() {
   }, []);
 
   useEffect(() => {
+    if (typeof window !== 'undefined') {
+       sessionStorage.setItem('activeView', view);
+    }
+  }, [view]);
+
+  useEffect(() => {
+    // Clear any residual voice output upon reload/refresh !!
+    if (typeof window !== 'undefined') window.speechSynthesis.cancel();
+
     // Skip if Supabase is not configured yet
     const isPlaceholder = !import.meta.env.VITE_SUPABASE_URL || import.meta.env.VITE_SUPABASE_URL.includes('placeholder');
     if (isPlaceholder) return;
 
-        // 🚀 Fetcher for problems
+    // 🚀 Fetcher for problems
     const fetchProblems = async () => {
       const { data } = await supabase.from('problems').select('*');
       if (data && data.length > 0) {
         setProblems(data);
-        setSelectedProblem(data[0]);
-        if (data[0].templates) {
-            setCode(data[0].templates[selectedLanguage?.id || 'python'] || '');
+        
+        const savedId = sessionStorage.getItem('selectedProblemId');
+        const savedObj = data.find(p => p.id === savedId);
+        const activeProb = savedObj || data[0];
+        
+        setSelectedProblem(activeProb);
+
+        const savedCode = sessionStorage.getItem('lastSavedCode');
+        if (savedCode) {
+           setCode(savedCode);
+        } else if (activeProb.templates) {
+            setCode(activeProb.templates[selectedLanguage?.id || 'python'] || '');
         }
       }
     };
     fetchProblems();
 
+    let lastKnownSession: any = null;
+
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
+      lastKnownSession = session;
     });
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       if (_event === 'SIGNED_IN') {
-        if (!isInitialLoadRef.current) {
+        if (!isInitialLoadRef.current && !lastKnownSession) {
           setAuthToast('login');
           setTimeout(() => setAuthToast(null), 4000);
         }
       } else if (_event === 'SIGNED_OUT') {
-        setAuthToast('logout');
-        setTimeout(() => setAuthToast(null), 4000);
+        if (lastKnownSession) {
+          setAuthToast('logout');
+          setTimeout(() => setAuthToast(null), 4000);
+        }
       }
       setSession(session);
-      isInitialLoadRef.current = false;
+      lastKnownSession = session;
     });
 
-    return () => subscription.unsubscribe();
+    const timer = setTimeout(() => {
+      isInitialLoadRef.current = false;
+    }, 3000); // 3 seconds grace period to suppress startup toasts !!
+
+    return () => {
+       subscription.unsubscribe();
+       clearTimeout(timer);
+    };
   }, []);
 
   // Panel sizing state
@@ -207,7 +244,13 @@ function App() {
   const handleProblemChange = (problemId: string) => {
     const problem = (problems || []).find(p => p.id === problemId);
     if (!problem) return;
+    
     setSelectedProblem(problem);
+    if (typeof window !== 'undefined') {
+       sessionStorage.setItem('selectedProblemId', problemId);
+       sessionStorage.removeItem('lastSavedCode'); // Starts fresh on problem switch !!
+    }
+
     setCode(problem.templates[selectedLanguage.id] || '');
     setRunState({ status: 'idle' });
     setAnalysisState({
@@ -221,6 +264,9 @@ function App() {
   const handleCodeChange = (newCode: string | undefined) => {
     const val = newCode || '';
     setCode(val);
+    if (typeof window !== 'undefined') {
+       sessionStorage.setItem('lastSavedCode', val);
+    }
     if (roomCode && peerRole === 'coder' && channelRef.current) {
       channelRef.current.send({
         type: 'broadcast',
@@ -435,6 +481,7 @@ function App() {
             session={session}
             problems={problems}
             onHistory={() => setView('history')}
+            onEditProfile={() => setProfileOpen(true)}
           />
           {authToast && <AuthToast type={authToast} />}
         </>
@@ -456,6 +503,7 @@ function App() {
         onShortcuts={() => setShortcutsOpen(true)}
         onBackToLanding={() => setView('landing')}
         session={session}
+        onEditProfile={() => setProfileOpen(true)}
         onHistory={() => setView('history')}
         isAnalyzing={analysisState.isAnalyzing}
         isRunning={runState.status === 'running'}
@@ -603,6 +651,10 @@ function App() {
         )}
       </main>
 
+      {authToast && <AuthToast type={authToast} />}
+         </div>
+       )}
+
       {settingsOpen && (
         <SettingsModal
           settings={settings}
@@ -623,6 +675,16 @@ function App() {
          <IdleTimeout onLogout={handleLogout} />
       )}
 
+      {profileOpen && (
+         <ProfileModal 
+           onClose={() => setProfileOpen(false)} 
+           session={session} 
+           onUpdate={() => {
+              supabase.auth.getSession().then(({ data }) => setSession(data.session));
+           }} 
+         />
+      )}
+
       {resetModalOpen && (
         <ResetModal
           onConfirm={confirmReset}
@@ -635,9 +697,6 @@ function App() {
         onClose={() => setShortcutsOpen(false)}
       />
 
-      {authToast && <AuthToast type={authToast} />}
-        </div>
-      )}
     </div>
   );
 }
