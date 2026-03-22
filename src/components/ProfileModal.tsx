@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, User, Check, Camera, Sparkles } from 'lucide-react';
+import { X, User, Check, Sparkles } from 'lucide-react';
 import { supabase } from '../supabase';
 
 interface ProfileModalProps {
