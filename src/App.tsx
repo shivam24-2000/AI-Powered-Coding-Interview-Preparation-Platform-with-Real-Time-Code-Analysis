@@ -14,7 +14,10 @@ import { ShareRoomModal } from './components/ShareRoomModal';
 import { VideoCall } from './components/VideoCall';
 import { IdleTimeout } from './components/IdleTimeout';
 import { ProfileModal } from './components/ProfileModal';
-import type { AnalysisState } from './types';
+import { AIVideoInterviewer } from './components/AIVideoInterviewer';
+import type { AnalysisState, ChatMessage, InterviewEvaluation, InterviewPhase } from './types';
+import { InterviewScorecardModal } from './components/InterviewScorecardModal';
+import { generateInterviewEvaluation } from './aiService';
 import { LANGUAGES, DEFAULT_LANGUAGE, type Language } from './languages';
 
 import { executeCode } from './pistonApi';
@@ -22,8 +25,7 @@ import { buildRunnerCode } from './testRunners';
 import { PanelResizer } from './components/PanelResizer';
 import { analyzeCode as getAIAnalysis, getChatResponse as getAIChatResponse } from './aiService';
 import { quotaManager } from './quotaManager';
-import { Lock, ChevronLeft, ChevronUp, Terminal } from 'lucide-react';
-import type { ChatMessage } from './types';
+import { Lock, ChevronLeft, ChevronUp, Terminal, Loader } from 'lucide-react';
 import { applyAppTheme } from './themes';
 import { useConfetti } from './hooks/useConfetti';
 import './App.css';
@@ -182,6 +184,10 @@ function App() {
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
   const [isChatTyping, setIsChatTyping] = useState(false);
   const [aiTab, setAiTab] = useState<'analysis' | 'chat'>('analysis');
+  const [isInterviewMode, setIsInterviewMode] = useState(false);
+  const [interviewPhase, setInterviewPhase] = useState<InterviewPhase>('intro');
+  const [interviewEvaluation, setInterviewEvaluation] = useState<InterviewEvaluation | null>(null);
+  const [isEvaluating, setIsEvaluating] = useState(false);
 
   // Global keyboard shortcuts
   useEffect(() => {
@@ -430,7 +436,9 @@ function App() {
         [...chatMessages, userMsg],
         code,
         selectedProblem,
-        selectedLanguage
+        selectedLanguage,
+        isInterviewMode,
+        interviewPhase
       );
 
       const assistantMsg: ChatMessage = {
@@ -441,10 +449,49 @@ function App() {
       };
 
       setChatMessages(prev => [...prev, assistantMsg]);
+      
+      // If we are in intro phase, move to coding phase after the first message
+      if (isInterviewMode && interviewPhase === 'intro') {
+        setInterviewPhase('coding');
+      }
+
     } catch (error) {
       console.error('Chat failed:', error);
     } finally {
       setIsChatTyping(false);
+    }
+  };
+
+  const handleStartInterview = async () => {
+     setIsInterviewMode(true);
+     setInterviewPhase('intro');
+     setChatMessages([]); // Reset chat for interview
+     // Do NOT open the mentor/chat panel — video overlay handles interaction
+     
+     // Trigger initial AI greeting silently in the background
+     const response = await getAIChatResponse([], code, selectedProblem, selectedLanguage, true, 'intro');
+     const assistantMsg: ChatMessage = {
+      id: Date.now().toString(),
+      role: 'assistant',
+      content: response,
+      timestamp: Date.now()
+    };
+    setChatMessages([assistantMsg]);
+  };
+
+  const handleEndInterview = async () => {
+    setIsEvaluating(true);
+    setAiTab('analysis'); // Switch to analysis for result processing
+    
+    try {
+      const evaluation = await generateInterviewEvaluation(chatMessages, code, selectedProblem, selectedLanguage);
+      setInterviewEvaluation(evaluation);
+    } catch (error) {
+       console.error("Evaluation failed", error);
+    } finally {
+       setIsEvaluating(false);
+       setIsInterviewMode(false);
+       setInterviewPhase('intro');
     }
   };
 
@@ -519,6 +566,9 @@ function App() {
             setMentorOpen(false);
           }
         }}
+        isInterviewMode={isInterviewMode}
+        onStartInterview={handleStartInterview}
+        onEndInterview={handleEndInterview}
         roomCode={roomCode}
         onShareRoom={handleShareRoom}
         onLeaveRoom={handleLeaveRoom}
@@ -696,6 +746,30 @@ function App() {
         isOpen={shortcutsOpen}
         onClose={() => setShortcutsOpen(false)}
       />
+
+      <AIVideoInterviewer 
+        isInterviewMode={isInterviewMode}
+        phase={interviewPhase}
+        messages={chatMessages}
+        isChatTyping={isChatTyping}
+        onSendMessage={handleSendMessage}
+        onEndInterview={handleEndInterview}
+      />
+
+      {interviewEvaluation && (
+        <InterviewScorecardModal 
+          evaluation={interviewEvaluation} 
+          onClose={() => setInterviewEvaluation(null)} 
+        />
+      )}
+
+      {isEvaluating && (
+        <div style={{ position: 'fixed', inset: 0, zIndex: 3000, background: 'rgba(3,0,10,0.8)', backdropFilter: 'blur(10px)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+          <Loader size={48} className="animate-spin" color="var(--accent-primary)" />
+          <h2 style={{ color: '#fff', marginTop: '24px', fontSize: '1.2rem', fontWeight: 800 }}>Generating Scorecard...</h2>
+          <p style={{ color: 'rgba(255,255,255,0.4)', marginTop: '8px' }}>Friday is analyzing your session results</p>
+        </div>
+      )}
 
     </div>
   );

@@ -20,6 +20,9 @@ interface NavigationProps {
   onShareRoom?: () => void;
   onLeaveRoom?: () => void;
   onEditProfile?: () => void;
+  isInterviewMode?: boolean;
+  onStartInterview?: () => void;
+  onEndInterview?: () => void;
 }
 
 export const Navigation: React.FC<NavigationProps> = ({
@@ -40,6 +43,9 @@ export const Navigation: React.FC<NavigationProps> = ({
   onShareRoom,
   onLeaveRoom,
   onEditProfile,
+  isInterviewMode = false,
+  onStartInterview,
+  onEndInterview,
 }) => {
   const isBlocked = cooldownRemaining > 0;
   const [showProfileMenu, setShowProfileMenu] = useState(false);
@@ -152,11 +158,47 @@ export const Navigation: React.FC<NavigationProps> = ({
             color: 'var(--accent-primary)', 
             borderColor: 'rgba(16, 85, 247, 0.2)',
             background: 'rgba(16, 85, 247, 0.05)',
-            boxShadow: '0 0 15px rgba(16, 85, 247, 0.1)'
+            boxShadow: '0 0 15px rgba(16, 85, 247, 0.1)',
+            paddingLeft: '12px',
+            paddingRight: '12px',
+            borderTopRightRadius: '0',
+            borderBottomRightRadius: '0',
+            borderRight: 'none'
           }}
+          title={isInterviewMode ? "Friday is interviewing you" : "Open Friday Mentor"}
         >
           <BrainCircuit size={16} />
           <span>Friday</span>
+        </button>
+
+        <button
+          className="btn btn-secondary"
+          onClick={isInterviewMode ? onEndInterview : onStartInterview}
+          style={{ 
+            color: isInterviewMode ? '#fca5a5' : '#D8B4FE', 
+            borderColor: isInterviewMode ? 'rgba(239, 68, 68, 0.2)' : 'rgba(168, 85, 247, 0.2)',
+            background: isInterviewMode ? 'rgba(239, 68, 68, 0.05)' : 'rgba(168, 85, 247, 0.05)',
+            boxShadow: isInterviewMode ? '0 0 15px rgba(239, 68, 68, 0.1)' : '0 0 15px rgba(168, 85, 247, 0.1)',
+            borderTopLeftRadius: '0',
+            borderBottomLeftRadius: '0',
+            paddingLeft: '10px',
+            paddingRight: '14px',
+            fontSize: '0.75rem',
+            fontWeight: 700,
+            letterSpacing: '0.02em'
+          }}
+        >
+          {isInterviewMode ? (
+            <>
+              <Loader size={14} className="animate-spin" style={{ marginRight: '4px' }} />
+              <span>Finish & Score</span>
+            </>
+          ) : (
+             <>
+               <Award size={14} style={{ marginRight: '4px' }} />
+               <span>Mock Interview</span>
+             </>
+          )}
         </button>
 
 

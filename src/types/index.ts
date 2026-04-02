@@ -45,4 +45,19 @@ export interface ChatMessage {
   timestamp: number;
 }
 
+export type InterviewPhase = 'intro' | 'coding' | 'evaluation';
+
+export interface InterviewEvaluation {
+  status: 'hired' | 'waitlist' | 'rejected';
+  score: number; // 0-100
+  feedback: {
+    communication: string;
+    problemSolving: string;
+    codeQuality: string;
+    efficiency: string;
+  };
+  summary: string;
+  nextSteps: string[];
+}
+
 

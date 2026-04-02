@@ -198,7 +198,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
       {/* 🚀 Hero Section */}
       <main style={styles.hero}>
         <div style={styles.badge} className="float-anim">
-          <Zap size={14} color="#D8B4FE" /> Instant AI Code Analysis & Diagnostics
+          <Zap size={14} color="#D8B4FE" /> Now with AI Video Mock Interviews — Try it live
         </div>
 
         <h1 style={styles.title}>
@@ -207,19 +207,25 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
         </h1>
 
         <p style={styles.subtitle}>
-          Master algorithms with real-time AI assistance, optimal complexity trace streaming, and structured simulation diagnostic environments instantly setup.
+          Practice with a real-time AI interviewer, get instant complexity analysis from Friday, and receive a detailed hiring scorecard — all in your browser.
         </p>
 
-        <div style={styles.ctaWrapper}>
-          <button style={styles.ctaButton} onClick={() => {
-            if (!session) {
-              setAuthModal('login');
-            } else {
-              setTagModalOpen(true);
-            }
-          }} className="pulse-btn">
-            <span>Start Solving Problems</span>
-            <div style={styles.ctaGlow}></div>
+        <div style={{ display:'flex', gap:'12px', flexWrap:'wrap', justifyContent:'center', marginBottom:'40px', position:'relative' }}>
+          <div style={styles.ctaWrapper}>
+            <button style={styles.ctaButton} onClick={() => {
+              if (!session) { setAuthModal('login'); } else { setTagModalOpen(true); }
+            }} className="pulse-btn">
+              <span>Start Solving Problems</span>
+              <div style={styles.ctaGlow}></div>
+            </button>
+          </div>
+          <button
+            onClick={() => { if (!session) { setAuthModal('login'); } else { onStart(); } }}
+            style={{ background:'rgba(255,255,255,0.04)', border:'1px solid rgba(168,85,247,0.35)', color:'#D8B4FE', padding:'14px 24px', borderRadius:'12px', fontWeight:700, fontSize:'0.92rem', cursor:'pointer', display:'flex', alignItems:'center', gap:'8px', backdropFilter:'blur(10px)', transition:'all 0.3s' }}
+            onMouseEnter={e => { e.currentTarget.style.background='rgba(168,85,247,0.12)'; e.currentTarget.style.borderColor='rgba(168,85,247,0.6)'; }}
+            onMouseLeave={e => { e.currentTarget.style.background='rgba(255,255,255,0.04)'; e.currentTarget.style.borderColor='rgba(168,85,247,0.35)'; }}
+          >
+            <Mic size={16} /> Try AI Mock Interview
           </button>
         </div>
 
@@ -288,32 +294,94 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
         {/* 📈 Timeline Tracks (How It Works) */}
         <div style={styles.sectionHeader}>
           <h2 style={styles.sectionTitle}>How It Works</h2>
-          <p style={{ color: 'var(--text-muted)', fontSize: '0.82rem' }}>Ace your technical interview diagnostic loops in 4 simple moves.</p>
+          <p style={{ color: 'var(--text-muted)', fontSize: '0.82rem' }}>From problem selection to a hiring scorecard — in minutes.</p>
         </div>
 
-        <div className="timeline-track" style={{ display: 'flex', gap: '16px', maxWidth: '900px', width: '100%', justifyContent: 'center', flexWrap: 'wrap', marginBottom: '60px', position: 'relative' }}>
+        <div className="timeline-track" style={{ display: 'flex', gap: '16px', maxWidth: '1000px', width: '100%', justifyContent: 'center', flexWrap: 'wrap', marginBottom: '60px', position: 'relative' }}>
           <div className="timeline-card hover-lift">
             <div className="timeline-dot">1</div>
             <h4>Pick a Problem</h4>
-            <p>Browse curated Array, String, and Dynamic Programming interview questions from top-tier pools.</p>
+            <p>Choose from our curated library of Array, DP, Trees, and Graph problems tagged by company & difficulty.</p>
           </div>
           <div className="timeline-card hover-lift">
             <div className="timeline-dot">2</div>
-            <h4>Write Your Code</h4>
-            <p>Write solutions in our Monaco IDE dashboard. Select from JS, Python, or Java setups instantly.</p>
+            <h4>Code in Monaco IDE</h4>
+            <p>Write solutions with VS Code-grade syntax highlighting in Python, Java, C++, Go, and more.</p>
           </div>
-          <div className="timeline-card hover-lift">
-            <div className="timeline-dot">3</div>
-            <h4>Summon Friday</h4>
-            <p>Unblock bottlenecks using real-time prompt analysis suggesting optimal space/time setups.</p>
+          <div className="timeline-card hover-lift" style={{ borderColor: 'rgba(168,85,247,0.2)' }}>
+            <div className="timeline-dot" style={{ background: 'rgba(168,85,247,0.25)', boxShadow: '0 0 16px rgba(168,85,247,0.5)' }}>3</div>
+            <h4>🎥 AI Mock Interview</h4>
+            <p>Face Alex on a live video call. Speak or type your answers. Get asked follow-up questions live.</p>
           </div>
           <div className="timeline-card hover-lift">
             <div className="timeline-dot">4</div>
-            <h4>Verify & Submit</h4>
-            <p>Execute and verify answer outputs against test configurations fully automated layout setups.</p>
+            <h4>Get Your Scorecard</h4>
+            <p>Receive a hire/no-hire verdict plus detailed feedback on communication, efficiency, and code quality.</p>
           </div>
         </div>
       </main>
+
+      {/* 🎥 AI INTERVIEW SHOWCASE */}
+      <section style={{ maxWidth: '1000px', margin: '0 auto 64px auto', padding: '0 24px', position: 'relative', zIndex: 5 }}>
+        <div style={{ textAlign: 'center', marginBottom: '36px' }}>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(168,85,247,0.08)', border: '1px solid rgba(168,85,247,0.25)', padding: '5px 14px', borderRadius: '99px', marginBottom: '16px' }}>
+            <div style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#A855F7', boxShadow: '0 0 8px #A855F7' }} />
+            <span style={{ fontSize: '0.72rem', fontWeight: 800, color: '#D8B4FE', letterSpacing: '0.06em', textTransform: 'uppercase' }}>New — Now Live</span>
+          </div>
+          <h2 style={{ fontSize: '2rem', fontWeight: 900, color: '#fff', letterSpacing: '-0.03em', marginBottom: '10px' }}>AI Video Mock Interview</h2>
+          <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: '0.9rem', maxWidth: '500px', margin: '0 auto', lineHeight: 1.6 }}>
+            Meet Alex — a Senior AI Technical Interviewer who asks real questions, reacts to your code live, and generates a detailed hiring report.
+          </p>
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }} className="interview-showcase-grid">
+          <div style={{ background: 'rgba(14,10,24,0.95)', border: '1px solid rgba(168,85,247,0.2)', borderRadius: '20px', overflow: 'hidden', position: 'relative', minHeight: '340px', boxShadow: '0 24px 60px rgba(0,0,0,0.5)' }} className="hover-lift">
+            <img
+              src={`${(import.meta as any).env.BASE_URL}assets/interviewers/avatar.png`}
+              alt="Alex — AI Interviewer"
+              style={{ width: '100%', height: '340px', objectFit: 'cover', objectPosition: 'center top', display: 'block' }}
+            />
+            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(0,0,0,0.0) 40%, rgba(10,5,20,0.96) 100%)' }} />
+            <div style={{ position: 'absolute', top: '14px', right: '14px', background: 'rgba(16,185,129,0.2)', border: '1px solid rgba(16,185,129,0.4)', padding: '4px 10px', borderRadius: '8px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#10b981' }} />
+              <span style={{ fontSize: '0.6rem', color: '#10b981', fontWeight: 800 }}>LIVE SESSION</span>
+            </div>
+            <div style={{ position: 'absolute', bottom: '20px', left: '16px', right: '16px' }}>
+              <p style={{ margin: 0, fontSize: '0.68rem', color: 'rgba(255,255,255,0.45)', textTransform: 'uppercase', fontWeight: 800, letterSpacing: '0.05em' }}>Alex · NexCode AI Sr. Engineer</p>
+              <p style={{ margin: '5px 0 0', fontSize: '0.88rem', fontWeight: 700, color: '#fff', lineHeight: 1.4 }}>"Why did you choose a hash map here? Walk me through your reasoning."</p>
+            </div>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            {[
+              { icon: '🎙️', title: 'Voice or Type Answers', desc: 'Respond by speaking or typing — live transcription shows your words in real-time.' },
+              { icon: '🧠', title: 'AI Reacts to Your Code', desc: 'Alex spots issues in your editor and asks targeted follow-up questions live.' },
+              { icon: '📊', title: 'Instant Hiring Scorecard', desc: 'Hire / Waitlist / Reject verdict with per-skill feedback: communication, efficiency, code quality.' },
+              { icon: '📷', title: 'Real Video Call Interface', desc: 'Webcam PIP, sound-wave indicators, live subtitles — full interview room pressure.' },
+              { icon: '🔒', title: 'Session Proctoring Active', desc: 'Practice under simulated monitoring for authentic interview-day conditions.' },
+            ].map((f, i) => (
+              <div key={i}
+                style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '14px', padding: '14px 16px', display: 'flex', alignItems: 'flex-start', gap: '12px', transition: 'border-color 0.3s, background 0.3s' }}
+                onMouseEnter={e => { e.currentTarget.style.borderColor='rgba(168,85,247,0.3)'; e.currentTarget.style.background='rgba(168,85,247,0.04)'; }}
+                onMouseLeave={e => { e.currentTarget.style.borderColor='rgba(255,255,255,0.05)'; e.currentTarget.style.background='rgba(255,255,255,0.02)'; }}
+              >
+                <span style={{ fontSize: '1.3rem', lineHeight: 1, flexShrink: 0 }}>{f.icon}</span>
+                <div>
+                  <p style={{ margin: '0 0 2px 0', fontWeight: 700, fontSize: '0.85rem', color: '#fff' }}>{f.title}</p>
+                  <p style={{ margin: 0, fontSize: '0.76rem', color: 'rgba(255,255,255,0.48)', lineHeight: 1.5 }}>{f.desc}</p>
+                </div>
+              </div>
+            ))}
+            <button
+              onClick={() => { if (!session) { setAuthModal('login'); } else { onStart(); } }}
+              style={{ marginTop: '4px', padding: '14px', background: 'linear-gradient(135deg, #7C3AED, #DB2777)', border: 'none', borderRadius: '14px', color: '#fff', fontWeight: 800, fontSize: '0.9rem', cursor: 'pointer', boxShadow: '0 8px 24px rgba(124,58,237,0.35)', transition: 'transform 0.2s', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
+              onMouseEnter={e => e.currentTarget.style.transform='translateY(-2px)'}
+              onMouseLeave={e => e.currentTarget.style.transform='translateY(0)'}
+            >
+              🎥 Launch AI Mock Interview
+            </button>
+          </div>
+        </div>
+      </section>
 
       {/* 🛠️ Features Grid (Bento) */}
       <section className="bento-grid" style={{ maxWidth: '1000px', margin: '0 auto 60px auto', padding: '0 24px' }}>
@@ -386,14 +454,35 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
           <div style={styles.iconBox}><Users size={20} color="#3B82F6" /></div>
           <div>
             <h3>Peer-to-Peer Mock Interviews</h3>
-            <p>Collaborative setups sync code instantly over deep-links using isolated isolated WebRTC audio bundles.</p>
+            <p>Sync code in real-time with a friend over WebRTC. One codes, one interviews — just like a real FAANG round.</p>
             <div style={{ display: 'flex', gap: '8px', marginTop: '16px', alignItems: 'center' }}>
                <div style={{ padding: '6px 12px', background: 'rgba(59, 130, 246, 0.08)', border: '1px solid rgba(59, 130, 246, 0.2)', borderRadius: '8px', fontSize: '0.7rem', color: '#60A5FA', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  🎥 Live Video stream
+                  🎥 Live Video
                </div>
                <div style={{ padding: '6px 12px', background: 'rgba(16, 185, 129, 0.08)', border: '1px solid rgba(16, 185, 129, 0.2)', borderRadius: '8px', fontSize: '0.7rem', color: '#10B981' }}>
-                  🤝 P2P Sync Code
+                  🤝 Real-time Code Sync
                </div>
+            </div>
+          </div>
+        </div>
+
+        {/* 🤖 Card 7: Wide (AI Video Interviewer) */}
+        <div className="bento-item bento-2x1 hover-lift" style={{ position: 'relative', overflow: 'hidden', background: 'rgba(168,85,247,0.04)', border: '1px solid rgba(168,85,247,0.15)' }}>
+          <div className="border-beam" style={{ opacity: 0.3 }}></div>
+          <div style={{ background: 'rgba(168,85,247,0.15)', padding: '10px', borderRadius: '10px', color: '#D8B4FE', marginBottom: '12px', width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <img src={`${(import.meta as any).env.BASE_URL}assets/interviewers/avatar.png`} alt="Alex" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '8px' }} />
+          </div>
+          <div>
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.2)', padding: '2px 8px', borderRadius: '99px', marginBottom: '8px' }}>
+              <div style={{ width: '5px', height: '5px', borderRadius: '50%', background: '#10b981' }} />
+              <span style={{ fontSize: '0.6rem', color: '#10b981', fontWeight: 800 }}>NEW</span>
+            </div>
+            <h3>AI Video Mock Interview</h3>
+            <p>Get interviewed by Alex, your AI Senior Engineer. Speak your answers, get live feedback, and receive a real hiring verdict.</p>
+            <div style={{ display: 'flex', gap: '8px', marginTop: '14px', flexWrap: 'wrap' }}>
+              <span style={{ fontSize: '0.65rem', padding: '3px 10px', borderRadius: '6px', background: 'rgba(168,85,247,0.1)', color: '#D8B4FE', border: '1px solid rgba(168,85,247,0.2)', fontWeight: 700 }}>🎙️ Voice Input</span>
+              <span style={{ fontSize: '0.65rem', padding: '3px 10px', borderRadius: '6px', background: 'rgba(168,85,247,0.1)', color: '#D8B4FE', border: '1px solid rgba(168,85,247,0.2)', fontWeight: 700 }}>📊 Scorecard</span>
+              <span style={{ fontSize: '0.65rem', padding: '3px 10px', borderRadius: '6px', background: 'rgba(168,85,247,0.1)', color: '#D8B4FE', border: '1px solid rgba(168,85,247,0.2)', fontWeight: 700 }}>🎥 Video Call UI</span>
             </div>
           </div>
         </div>
@@ -608,6 +697,12 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
         @media (min-width: 850px) {
           .bento-grid { grid-template-columns: repeat(3, 1fr); }
           .bento-2x1 { grid-column: span 2; flex-direction: row !important; align-items: center !important; gap: 20px; }
+        }
+        .interview-showcase-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+        @media (max-width: 700px) {
+          .interview-showcase-grid { grid-template-columns: 1fr !important; }
         }
         
         /* Timeline Tracks Setup */

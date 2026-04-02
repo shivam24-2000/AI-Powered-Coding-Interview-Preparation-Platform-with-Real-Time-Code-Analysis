@@ -1,4 +1,4 @@
-import type { Problem, AnalysisState, ChatMessage } from './types';
+import type { Problem, AnalysisState, ChatMessage, InterviewPhase, InterviewEvaluation } from './types';
 import type { Language } from './languages';
 import { quotaManager } from './quotaManager';
 import { PROBLEMS } from './problems';
@@ -105,7 +105,9 @@ export async function getChatResponse(
   messages: ChatMessage[],
   code: string,
   problem: Problem,
-  language: Language
+  language: Language,
+  isInterviewMode: boolean = false,
+  interviewPhase: InterviewPhase = 'coding'
 ): Promise<string> {
   if (quotaManager.isBlocked()) {
     return "I'm cooling down for a moment to ensure high-quality responses. Please try again in a few seconds!";
@@ -115,24 +117,53 @@ export async function getChatResponse(
   const availableProblemTitles = PROBLEMS.map(p => `- ${p.title}`).join('\n');
 
   try {
-    const context = `
-      You are Friday, an expert technical interviewer and AI Assistant at NexCode. 
-      The candidate is solving "${problem.title}".
-      Problem: ${problem.description.replace(/<[^>]*>?/gm, '')}
-      Current Language: ${language.label}
-      Candidate's Current Code:
-      \`\`\`${language.monacoId}
-      ${code}
-      \`\`\`
+    let context = "";
+    
+    if (isInterviewMode) {
+      // Strip all HTML and keep only a crisp one-line summary for the AI's reference.
+      // We do NOT pass the full description to prevent the AI from reading it out.
+      const problemTitleOnly = problem.title.replace(/^\d+\.\s*/, '');
+      
+      context = `
+        You are Alex, a Senior Technical Interviewer at NexCode AI.
+        The candidate is being interviewed on the problem: "${problemTitleOnly}".
+        Language chosen: ${language.label}.
+        
+        Candidate's current code (for your reference only — do NOT read it out):
+        \`\`\`${language.monacoId}
+        ${code}
+        \`\`\`
 
-      IMPORTANT: Here are other available problems in the app. If the candidate solves the problem, suggest 3 of these by EXACT name or title:
-      ${availableProblemTitles}
+        STRICT RULES — follow every rule exactly:
+        1. NEVER recite or read out the problem description, constraints, or examples verbatim. The candidate can see the problem on screen.
+        2. During the "intro" phase: Introduce yourself as Alex from NexCode, ask ONE friendly icebreaker or behavioral question (e.g. walk me through a recent DS/Algo challenge you solved).
+        3. During the "coding" phase: Ask focused clarifying questions like a real interviewer would (e.g. "What's your plan for edge cases?", "Why did you choose a hash map here?"). Never give away solutions.
+        4. To refer to the problem, just say the TITLE naturally, e.g. "For ${problemTitleOnly}...". Do NOT describe the problem or list examples.
+        5. Keep every response SHORT — max 3 sentences. You are in a live video call.
+        6. Speak conversationally — no bullet points, no markdown. Plain spoken English only.
+        7. If the candidate's code looks incomplete or has a bug, call it out with a specific line question.
+      `;
+    } else {
+      context = `
+        You are Friday, an expert technical interviewer and AI Assistant at NexCode. 
+        The candidate is solving "${problem.title}".
+        Problem: ${problem.description.replace(/<[^>]*>?/gm, '')}
+        Current Language: ${language.label}
+        
+        Candidate's Current Code:
+        \`\`\`${language.monacoId}
+        ${code}
+        \`\`\`
 
-      Instruction: You are being reads aloud via user systems. Speak in a warm, encouraging, conversational human-like tone. 
-      Use casual conversational fillers naturally (e.g., "Let's see...", "Hmm...", "Interesting approach!"). 
-      Avoid heavy formatting or long bulleted lists when replying to short conversational cues. 
-      Don't just give the full solution unless explicitly asked. Guide the candidate toward the right answer organically like a real interviewer inside a room.
-    `;
+        IMPORTANT: Here are other available problems in the app. If the candidate solves the problem, suggest 3 of these by EXACT name or title:
+        ${availableProblemTitles}
+
+        Instruction: You are being reads aloud via user systems. Speak in a warm, encouraging, conversational human-like tone. 
+        Use casual conversational fillers naturally (e.g., "Let's see...", "Hmm...", "Interesting approach!"). 
+        Avoid heavy formatting or long bulleted lists when replying to short conversational cues. 
+        Don't just give the full solution unless explicitly asked. Guide the candidate toward the right answer organically like a real interviewer inside a room.
+      `;
+    }
 
     const chatHistory = messages.map(m => ({
       role: m.role === 'user' ? 'user' : 'model',
@@ -142,6 +173,10 @@ export async function getChatResponse(
     // Gemini requires alternating roles. We'll prepend the system context to the FIRST user message.
     if (chatHistory.length > 0 && chatHistory[0].role === 'user') {
       chatHistory[0].parts[0].text = `System Context: ${context}\n\nCandidate's Question: ${chatHistory[0].parts[0].text}`;
+    } else if (chatHistory.length === 0) {
+       // Handle empty history (e.g., starting interview)
+       const startMsg = isInterviewMode && interviewPhase === 'intro' ? "Let's begin the interview." : "Hello.";
+       chatHistory.push({ role: 'user', parts: [{ text: `System Context: ${context}\n\nCandidate's Question: ${startMsg}` }] });
     }
 
     const apiKey = import.meta.env.VITE_GEMINI_API_KEY || '';
@@ -166,6 +201,72 @@ export async function getChatResponse(
   } catch (error) {
     console.error("Chat failed:", error);
     return "Connection issues. Please check your network and try again!";
+  }
+}
+
+export async function generateInterviewEvaluation(
+  messages: ChatMessage[],
+  code: string,
+  problem: Problem,
+  language: Language
+): Promise<InterviewEvaluation> {
+  const prompt = `
+    You are a Senior Bar Raiser Interviewer. Evaluate the candidate's performance on the coding problem: "${problem.title}".
+    
+    Candidate's Conversation History:
+    ${messages.map(m => `${m.role.toUpperCase()}: ${m.content}`).join('\n')}
+    
+    Candidate's Final Code:
+    \`\`\`${language.monacoId}
+    ${code}
+    \`\`\`
+    
+    Return a JSON object with this exact structure:
+    {
+      "status": "hired" | "waitlist" | "rejected",
+      "score": number (0-100),
+      "feedback": {
+        "communication": "evaluation of how they explained their thoughts",
+        "problemSolving": "how they handled logic and edge cases",
+        "codeQuality": "readability and naming conventions",
+        "efficiency": "time and space complexity evaluation"
+      },
+      "summary": "overall 2-3 sentence summary",
+      "nextSteps": ["step 1", "step 2", ...]
+    }
+  `;
+
+  try {
+    const apiKey = import.meta.env.VITE_GEMINI_API_KEY || '';
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ 
+        contents: [{ parts: [{ text: prompt }] }],
+        generationConfig: { responseMimeType: "application/json" }
+      }),
+    });
+
+    const data = await response.json();
+    let resultText = data.candidates[0].content.parts[0].text;
+    resultText = resultText.replace(/```json\n?/, '').replace(/```\n?$/, '').trim();
+    return JSON.parse(resultText);
+  } catch (error) {
+    console.error("Evaluation failed:", error);
+    return {
+      status: 'waitlist',
+      score: 50,
+      feedback: {
+        communication: "N/A",
+        problemSolving: "N/A",
+        codeQuality: "N/A",
+        efficiency: "N/A"
+      },
+      summary: "Evaluation engine encountered an error. This is a preliminary report.",
+      nextSteps: ["Try another interview", "Check your code again"]
+    };
   }
 }
 
