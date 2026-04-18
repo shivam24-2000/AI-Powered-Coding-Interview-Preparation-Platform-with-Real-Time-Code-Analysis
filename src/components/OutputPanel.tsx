@@ -86,6 +86,16 @@ export const OutputPanel: React.FC<OutputPanelProps> = ({ runState, problem, onC
       );
     }
 
+    if (runState.status === 'unsupported') {
+      return (
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', gap: '12px', color: 'var(--text-muted)' }}>
+          <Terminal size={32} strokeWidth={1.5} style={{ opacity: 0.4 }} />
+          <p style={{ fontSize: '0.875rem', textAlign: 'center' }}>Auto-execution is <span style={{ color: '#ef4444', fontWeight: 600 }}>not available</span> for this language or problem yet.</p>
+          <p style={{ fontSize: '0.75rem', opacity: 0.6, maxWidth: '300px', textAlign: 'center' }}>You can still use Friday for manual code reviews!</p>
+        </div>
+      );
+    }
+
     const { result } = runState as { result: RunResult };
     if (!result) return null;
 

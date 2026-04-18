@@ -354,10 +354,12 @@ function App() {
   const handleRunCode = async () => {
     if (quotaManager.isBlocked()) return; // Extra safety
     
+    setSubmitState({ status: 'idle' });
     const runnerCode = buildRunnerCode(selectedProblem.id, selectedLanguage.id, code);
 
     if (!runnerCode) {
       setRunState({ status: 'unsupported' });
+      setIsResultsFolded(false);
       return;
     }
 
@@ -370,10 +372,12 @@ function App() {
   const handleSubmit = async () => {
     if (quotaManager.isBlocked()) return;
     
+    setRunState({ status: 'idle' });
     const runnerCode = buildRunnerCode(selectedProblem.id, selectedLanguage.id, code);
 
     if (!runnerCode) {
       setSubmitState({ status: 'unsupported' });
+      setIsResultsFolded(false);
       return;
     }
 

@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Terminal, Brain, Zap, Shield, LogOut, Award, X, Users, Mic, User } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Terminal, Brain, Zap, Shield, LogOut, Award, X, Users, Mic, User, TrendingUp, CheckCircle, Star, ArrowRight, MessageCircle, Sparkles } from 'lucide-react';
 import { PROBLEMS } from '../problems';
 import { supabase } from '../supabase';
 import { AuthModal } from './AuthModal';
@@ -17,6 +17,52 @@ interface LandingPageProps {
 export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHistory, onEditProfile, problems = PROBLEMS }) => {
   const [textIndex, setTextIndex] = useState(0);
   const words = ["Coding Interviews", "Data Structures", "System Thinking", "Logic Challenges"];
+
+  // Live activity feed
+  const [liveActivity, setLiveActivity] = useState<{ text: string; visible: boolean }>({ text: '', visible: false });
+  const activityMessages = [
+    { name: 'Aarav', action: 'solved Two Sum', emoji: '✅', time: '2s ago' },
+    { name: 'Priya', action: 'started a Mock Interview', emoji: '🎥', time: '5s ago' },
+    { name: 'Jake', action: 'passed all test cases', emoji: '🎉', time: '8s ago' },
+    { name: 'Sarah', action: 'got a Hire verdict', emoji: '🏆', time: '12s ago' },
+    { name: 'Ravi', action: 'solved Merge Intervals', emoji: '⚡', time: '15s ago' },
+    { name: 'Emily', action: 'started a Peer Interview', emoji: '👥', time: '20s ago' },
+  ];
+
+  useEffect(() => {
+    let idx = 0;
+    const showNext = () => {
+      const msg = activityMessages[idx % activityMessages.length];
+      setLiveActivity({ text: `${msg.emoji} ${msg.name} ${msg.action} — ${msg.time}`, visible: true });
+      setTimeout(() => setLiveActivity(prev => ({ ...prev, visible: false })), 3500);
+      idx++;
+    };
+    const timer = setInterval(showNext, 5000);
+    setTimeout(showNext, 2000);
+    return () => clearInterval(timer);
+  }, []);
+
+  // Friday AI Companion Logic
+  const [fridayBubble, setFridayBubble] = useState<{ text: string; visible: boolean }>({ text: "Hi! I'm Friday. Just here to help you ace those interviews. 🚀", visible: false });
+  const fridayQuotes = [
+    "Don't forget to talk through your logic out loud!",
+    "Alex (the AI Interviewer) is in a good mood today. Good luck!",
+    "Did you know? NexCode users pass FAANG rounds 4x faster.",
+    "Try the 'Coin Change' problem if you want a challenge!",
+    "Your communication score is just as important as your code.",
+    "Friday tip: Start with a brute force, then optimize! 💡",
+  ];
+
+  useEffect(() => {
+    const showFriday = () => {
+      const quote = fridayQuotes[Math.floor(Math.random() * fridayQuotes.length)];
+      setFridayBubble({ text: quote, visible: true });
+      setTimeout(() => setFridayBubble(prev => ({ ...prev, visible: false })), 6000);
+    };
+    const timer = setInterval(showFriday, 25000); // Show every 25s
+    const firstTimer = setTimeout(showFriday, 10000); // First one at 10s
+    return () => { clearInterval(timer); clearTimeout(firstTimer); };
+  }, []);
 
   const [problemIndex, setProblemIndex] = useState(0);
   const [authModal, setAuthModal] = useState<'login' | 'signup' | null>(null);
@@ -64,11 +110,86 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
   }, [problems.length]);
 
   const [typedCode, setTypedCode] = useState("");
-  const fullCode = `def two_sum(nums, target):
-    # Friday: "Consider how to check previous items in O(1)!"
-    # Your optimal code here...
-    
-    pass`;
+  const fullCodePreview = `def find_median(arr):
+    # Friday: "Remember O(log N) is the goal!"
+    arr.sort() 
+    n = len(arr)
+    mid = n // 2
+    if n % 2 == 0:
+        return (arr[mid-1] + arr[mid]) / 2
+    return arr[mid]`;
+
+  useEffect(() => {
+    let current = "";
+    let i = 0;
+    const interval = setInterval(() => {
+      if (i < fullCodePreview.length) {
+        current += fullCodePreview[i];
+        setTypedCode(current);
+        i++;
+      } else {
+        setTimeout(() => {
+          current = "";
+          i = 0;
+          setTypedCode("");
+        }, 5000);
+      }
+    }, 40);
+    return () => clearInterval(interval);
+  }, []);
+
+  // 📈 Statistics Logic
+  const [statsVisible, setStatsVisible] = useState(false);
+  const [counters, setCounters] = useState({ solved: 0, pass: 0, langs: 0, mocks: 0 });
+  const statsRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!statsRef.current) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) setStatsVisible(true); },
+      { threshold: 0.3 }
+    );
+    observer.observe(statsRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!statsVisible) return;
+    const targets = { solved: 2847, pass: 94, langs: 12, mocks: 500 };
+    let startTime: number;
+    const duration = 2200;
+    const step = (timestamp: number) => {
+      if (!startTime) startTime = timestamp;
+      const progress = Math.min((timestamp - startTime) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setCounters({
+        solved: Math.floor(eased * targets.solved),
+        pass: Math.floor(eased * targets.pass),
+        langs: Math.floor(eased * targets.langs),
+        mocks: Math.floor(eased * targets.mocks),
+      });
+      if (progress < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }, [statsVisible]);
+
+  // 🖱️ 3D Preview Interaction
+  const previewRef = useRef<HTMLDivElement>(null);
+  const handlePreviewMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!previewRef.current) return;
+    const rect = previewRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    const rotateX = (y - centerY) / 25;
+    const rotateY = (centerX - x) / 25;
+    previewRef.current.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+  };
+  const handlePreviewMouseLeave = () => {
+    if (!previewRef.current) return;
+    previewRef.current.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+  };
 
   const [fridayText, setFridayText] = useState("Scanning prompt...");
   const answers = ["Scanning code setups...", "Detected O(N²) potential bottlenecks.", "Optimal optimal Hash Map recommended!", "Diagnostics ready ✅"];
@@ -102,6 +223,21 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
     return () => clearInterval(typingId);
   }, []);
 
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      document.querySelectorAll('.hover-glow').forEach((el: any) => {
+        const rect = el.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        el.style.setProperty('--mouse-x', `${x}px`);
+        el.style.setProperty('--mouse-y', `${y}px`);
+      });
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
+
   return (
     <div style={styles.container}>
       {/* 🌌 Animated background glow structures */}
@@ -117,6 +253,14 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
         <div className="grid-beam" style={{ left: '35%', animationDelay: '4s', background: 'linear-gradient(to bottom, transparent, rgba(6, 182, 212, 0.4), transparent)' }}></div>
         <div className="grid-beam" style={{ left: '60%', animationDelay: '1.5s' }}></div>
         <div className="grid-beam" style={{ left: '85%', animationDelay: '6s', background: 'linear-gradient(to bottom, transparent, rgba(219, 39, 119, 0.3), transparent)' }}></div>
+
+        {/* 🪄 Magical Floating Particles */}
+        <div className="particle float-anim" style={{ left: '10%', animationDelay: '0s', animationDuration: '14s' }}>✦</div>
+        <div className="particle float-anim" style={{ left: '25%', animationDelay: '2s', animationDuration: '18s', fontSize: '0.8rem', color: '#00E5FF' }}>●</div>
+        <div className="particle float-anim" style={{ left: '45%', animationDelay: '1s', animationDuration: '16s', fontSize: '1rem' }}>✖</div>
+        <div className="particle float-anim" style={{ left: '70%', animationDelay: '3s', animationDuration: '20s', fontSize: '1.5rem', color: '#FF007A' }}>✧</div>
+        <div className="particle float-anim" style={{ left: '85%', animationDelay: '0.5s', animationDuration: '15s' }}>●</div>
+        <div className="particle float-anim" style={{ left: '95%', animationDelay: '4s', animationDuration: '19s' }}>✦</div>
       </div>
 
       {/* 🧭 Navbar */}
@@ -198,6 +342,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
       {/* 🚀 Hero Section */}
       <main style={styles.hero}>
         <div style={styles.badge} className="float-anim">
+          <div className="live-dot" />
           <Zap size={14} color="#D8B4FE" /> Now with AI Video Mock Interviews — Try it live
         </div>
 
@@ -210,27 +355,33 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
           Practice with a real-time AI interviewer, get instant complexity analysis from Friday, and receive a detailed hiring scorecard — all in your browser.
         </p>
 
-        <div style={{ display:'flex', gap:'12px', flexWrap:'wrap', justifyContent:'center', marginBottom:'40px', position:'relative' }}>
-          <div style={styles.ctaWrapper}>
-            <button style={styles.ctaButton} onClick={() => {
-              if (!session) { setAuthModal('login'); } else { setTagModalOpen(true); }
-            }} className="pulse-btn">
-              <span>Start Solving Problems</span>
-              <div style={styles.ctaGlow}></div>
+        <div style={{ display:'flex', gap:'14px', flexWrap:'wrap', justifyContent:'center', alignItems:'center', marginBottom:'44px', position:'relative' }}>
+          <div style={{ position: 'relative' }}>
+            <button style={{ background: 'linear-gradient(135deg, #7C3AED, #6D28D9)', color: '#fff', border: 'none', padding: '15px 32px', borderRadius: '14px', fontWeight: 800, fontSize: '0.95rem', cursor: 'pointer', position: 'relative', zIndex: 2, boxShadow: '0 8px 32px rgba(124,58,237,0.4), inset 0 1px 0 rgba(255,255,255,0.15)', display: 'flex', alignItems: 'center', gap: '8px', letterSpacing: '-0.01em' }} onClick={() => {
+              setTagModalOpen(true);
+            }} className="magic-btn">
+              <Zap size={16} /> Start Solving Problems
+              <div style={{ position: 'absolute', inset: '-2px', background: 'linear-gradient(90deg, #FF007A, #7000FF, #00E5FF)', borderRadius: '16px', zIndex: -1, filter: 'blur(8px)', opacity: 0.5 }} className="magic-glow"></div>
             </button>
           </div>
           <button
-            onClick={() => { if (!session) { setAuthModal('login'); } else { onStart(); } }}
-            style={{ background:'rgba(255,255,255,0.04)', border:'1px solid rgba(168,85,247,0.35)', color:'#D8B4FE', padding:'14px 24px', borderRadius:'12px', fontWeight:700, fontSize:'0.92rem', cursor:'pointer', display:'flex', alignItems:'center', gap:'8px', backdropFilter:'blur(10px)', transition:'all 0.3s' }}
-            onMouseEnter={e => { e.currentTarget.style.background='rgba(168,85,247,0.12)'; e.currentTarget.style.borderColor='rgba(168,85,247,0.6)'; }}
-            onMouseLeave={e => { e.currentTarget.style.background='rgba(255,255,255,0.04)'; e.currentTarget.style.borderColor='rgba(168,85,247,0.35)'; }}
+            onClick={() => { onStart(); }}
+            style={{ background:'rgba(255,255,255,0.03)', border:'1px solid rgba(168,85,247,0.3)', color:'#D8B4FE', padding:'15px 28px', borderRadius:'14px', fontWeight:700, fontSize:'0.92rem', cursor:'pointer', display:'flex', alignItems:'center', gap:'8px', backdropFilter:'blur(10px)', transition:'all 0.3s' }}
+            onMouseEnter={e => { e.currentTarget.style.background='rgba(168,85,247,0.12)'; e.currentTarget.style.borderColor='rgba(168,85,247,0.6)'; e.currentTarget.style.transform='translateY(-2px)'; }}
+            onMouseLeave={e => { e.currentTarget.style.background='rgba(255,255,255,0.03)'; e.currentTarget.style.borderColor='rgba(168,85,247,0.3)'; e.currentTarget.style.transform='translateY(0)'; }}
           >
             <Mic size={16} /> Try AI Mock Interview
           </button>
         </div>
 
-        {/* 💻 Floating Glass Preview */}
-        <div style={styles.previewContainer} className="preview-float">
+        {/* 💻 Floating Glass Preview with 3D Tilt */}
+        <div
+          ref={previewRef}
+          style={{ ...styles.previewContainer, transition: 'transform 0.15s ease-out', transformStyle: 'preserve-3d', willChange: 'transform' }}
+          className="hover-glow"
+          onMouseMove={handlePreviewMouseMove}
+          onMouseLeave={handlePreviewMouseLeave}
+        >
           <div className="border-beam"></div>
           <div style={styles.previewHeader}>
             <div style={styles.dots}>
@@ -238,11 +389,29 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
               <div style={{ ...styles.dot, background: '#f59e0b' }}></div>
               <div style={{ ...styles.dot, background: '#10b981' }}></div>
             </div>
-            <div style={styles.previewTab}>two_sum.py</div>
+            <div style={styles.previewTab}>
+              <span style={{ color: '#10b981', marginRight: '6px' }}>●</span>two_sum.py
+            </div>
+            <div style={{ marginLeft: 'auto', display: 'flex', gap: '6px', alignItems: 'center' }}>
+              <span style={{ fontSize: '0.6rem', color: '#10b981', fontWeight: 700, background: 'rgba(16,185,129,0.1)', padding: '2px 8px', borderRadius: '4px' }}>Python</span>
+            </div>
           </div>
-          <div style={styles.previewContent}>
-            <pre style={styles.codeBlock}>
-              {typedCode}<span className="cursor">|</span>
+          <div style={{ ...styles.previewContent, position: 'relative' }}>
+            <div style={{ position: 'absolute', left: '6px', top: '16px', display: 'flex', flexDirection: 'column', gap: '3.5px', color: 'rgba(255,255,255,0.15)', fontSize: '0.68rem', fontFamily: '"Fira Code", monospace', lineHeight: '1.5', userSelect: 'none' }}>
+              {typedCode.split('\n').map((_, i) => <span key={i}>{i + 1}</span>)}
+            </div>
+            <pre style={{ ...styles.codeBlock, paddingLeft: '28px' }}>
+              {typedCode.split('\n').map((line, i) => {
+                const highlighted = line
+                  .replace(/(def |return |for |in |if )/g, '<kw>$1</kw>')
+                  .replace(/(#.*)/g, '<cm>$1</cm>')
+                  .replace(/("[^"]*"|'[^']*')/g, '<st>$1</st>')
+                  .replace(/\b(\d+)\b/g, '<nm>$1</nm>');
+                return (
+                  <span key={i} dangerouslySetInnerHTML={{ __html: highlighted }} />
+                );
+              }).reduce((acc: any[], el, i) => i === 0 ? [el] : [...acc, '\n', el], [])}
+              <span className="cursor">|</span>
             </pre>
           </div>
           <div style={styles.floatingFriday} className="friday-pulse">
@@ -251,10 +420,96 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
           </div>
         </div>
 
-        {/* 🛠️ popular problems grid  */}
-        <div style={styles.sectionHeader}>
-          <h2 style={styles.sectionTitle}>Pick a Challenge to Start</h2>
-          <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>Jump straight into high-tier problems with dynamic verification assists.</p>
+        {/* 📊 Social Proof Stats */}
+        <div ref={statsRef} className="stagger-in" style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', justifyContent: 'center', marginBottom: '48px', width: '100%', maxWidth: '720px' }}>
+          {[
+            { count: counters.solved, suffix: '+', label: 'Problems Solved', icon: <CheckCircle size={20} color="#10b981" />, gradient: 'rgba(16,185,129,0.08)' },
+            { count: counters.pass, suffix: '%', label: 'Pass Rate', icon: <TrendingUp size={20} color="#A855F7" />, gradient: 'rgba(168,85,247,0.06)' },
+            { count: counters.langs, suffix: '+', label: 'Languages', icon: <Terminal size={20} color="#00E5FF" />, gradient: 'rgba(0,229,255,0.05)' },
+            { count: counters.mocks, suffix: '+', label: 'Mock Interviews', icon: <Star size={20} color="#f59e0b" />, gradient: 'rgba(245,158,11,0.06)' },
+          ].map((s, i) => (
+            <div key={i} className="stat-card hover-glow" style={{ flex: '1 1 150px', background: s.gradient, border: '1px solid rgba(255,255,255,0.06)', borderRadius: '18px', padding: '24px 16px', textAlign: 'center', backdropFilter: 'blur(16px)', position: 'relative', overflow: 'hidden' }}>
+              <div style={{ width: '40px', height: '40px', borderRadius: '12px', background: 'rgba(255,255,255,0.04)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 12px auto' }}>{s.icon}</div>
+              <div style={{ fontSize: '2rem', fontWeight: 900, letterSpacing: '-0.04em', background: 'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.65) 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', lineHeight: 1 }}>{s.count.toLocaleString()}{s.suffix}</div>
+              <div style={{ fontSize: '0.68rem', color: 'rgba(255,255,255,0.4)', fontWeight: 700, marginTop: '8px', textTransform: 'uppercase', letterSpacing: '0.08em' }}>{s.label}</div>
+            </div>
+          ))}
+        </div>
+
+      {/* ✨ Interactive Playground Preview */}
+      <section style={{ maxWidth: '1100px', margin: '0 auto 100px auto', padding: '0 24px', position: 'relative' }}>
+        <div style={{ textAlign: 'center', marginBottom: '48px' }}>
+          <h2 style={{ fontSize: '2.4rem', fontWeight: 900, color: '#fff', letterSpacing: '-0.04em', marginBottom: '12px' }}>Experience the <span style={{ background: 'linear-gradient(135deg, #00E5FF, #7C3AED)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>NexCode Magic</span></h2>
+          <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '1rem', maxWidth: '600px', margin: '0 auto' }}>Watch how Friday provides real-time ambient feedback as you type your solutions.</p>
+        </div>
+
+        <div style={{ background: 'rgba(10, 8, 18, 0.8)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '24px', overflow: 'hidden', display: 'grid', gridTemplateColumns: '1.2fr 1.8fr', height: '480px', boxShadow: '0 40px 100px rgba(0,0,0,0.8)', backdropFilter: 'blur(20px)' }} className="hover-glow main-preview-ui">
+          {/* Left: Problem Details */}
+          <div style={{ padding: '32px', borderRight: '1px solid rgba(255,255,255,0.08)', background: 'rgba(255,255,255,0.01)' }}>
+             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '20px' }}>
+                <span style={{ fontSize: '0.65rem', padding: '4px 10px', borderRadius: '6px', background: 'rgba(16,185,129,0.1)', color: '#10b981', fontWeight: 800 }}>MEDIUM</span>
+                <span style={{ color: 'rgba(255,255,255,0.3)', fontSize: '0.75rem' }}>#45 · Array, Math</span>
+             </div>
+             <h3 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#fff', marginBottom: '16px' }}>Find Median from Stream</h3>
+             <p style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.5)', lineHeight: 1.6, marginBottom: '24px' }}>
+                Design a data structure that supports adding integers from a data stream and finding the median of the current elements.
+             </p>
+             <div style={{ background: 'rgba(255,255,255,0.03)', padding: '16px', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.05)' }}>
+                <p style={{ margin: '0 0 8px 0', fontSize: '0.75rem', fontWeight: 800, color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase' }}>Example Input</p>
+                <code style={{ fontSize: '0.8rem', color: '#D8B4FE' }}>add(1), add(2), findMedian() {'->'} 1.5</code>
+             </div>
+          </div>
+          
+          {/* Right: Mock Editor */}
+          <div style={{ position: 'relative', background: '#050408', padding: '24px' }}>
+             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '12px' }}>
+                <div style={{ display: 'flex', gap: '6px' }}>
+                   <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#ff5f56' }} />
+                   <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#ffbd2e' }} />
+                   <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#27c93f' }} />
+                </div>
+                <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.4)', fontWeight: 600 }}>solution.py</div>
+             </div>
+             <pre style={{ margin: 0, fontSize: '0.9rem', color: '#B4B4B4', lineHeight: 1.6, fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace', whiteSpace: 'pre-wrap' }}>
+                <code style={{ color: '#fff' }}>{typedCode}</code>
+                <span style={{ width: '2px', height: '1.2em', background: '#7C3AED', display: 'inline-block', verticalAlign: 'middle', animation: 'blink 1s infinite', marginLeft: '2px' }} />
+             </pre>
+
+             {/* Friday Overlay Tooltip */}
+             <div style={{ position: 'absolute', top: '90px', right: '30px', maxWidth: '200px', background: 'rgba(124, 58, 237, 0.1)', border: '1px solid rgba(168, 85, 247, 0.4)', padding: '12px', borderRadius: '12px', backdropFilter: 'blur(10px)', animation: 'float 4s ease-in-out infinite' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
+                   <Sparkles size={14} color="#D8B4FE" />
+                   <span style={{ fontSize: '0.7rem', fontWeight: 800, color: '#D8B4FE' }}>FRIDAY</span>
+                </div>
+                <p style={{ margin: 0, fontSize: '0.75rem', color: '#fff', lineHeight: 1.4 }}>"Your current sort is <b>O(N log N)</b>. Can you optimize this using Heaps?"</p>
+             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 🏢 Trusted By Bar */}
+      <div className="stagger-in" style={{ width: '100%', maxWidth: '800px', margin: '0 auto 64px auto', textAlign: 'center' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '16px', justifyContent: 'center', marginBottom: '18px' }}>
+          <div style={{ flex: 1, maxWidth: '120px', height: '1px', background: 'linear-gradient(to right, transparent, rgba(168,85,247,0.2))' }} />
+          <p style={{ fontSize: '0.65rem', color: 'rgba(255,255,255,0.35)', textTransform: 'uppercase', letterSpacing: '0.14em', fontWeight: 700, margin: 0 }}>Trusted by engineers at</p>
+          <div style={{ flex: 1, maxWidth: '120px', height: '1px', background: 'linear-gradient(to left, transparent, rgba(168,85,247,0.2))' }} />
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', flexWrap: 'wrap', alignItems: 'center' }}>
+          {['Google', 'Meta', 'Amazon', 'Apple', 'Microsoft', 'Netflix', 'Stripe'].map((co, i) => (
+            <React.Fragment key={co}>
+              <span className="company-name" style={{ fontSize: '1rem', fontWeight: 800, color: 'rgba(255,255,255,0.18)', letterSpacing: '0.01em', transition: 'color 0.3s, text-shadow 0.3s', padding: '4px 8px' }}>{co}</span>
+              {i < 6 && <span style={{ color: 'rgba(168,85,247,0.2)', fontSize: '0.5rem' }}>●</span>}
+            </React.Fragment>
+          ))}
+        </div>
+      </div>
+
+      {/* 🛠️ popular problems grid  */}
+      <div style={{ margin: '0 0 24px 0', textAlign: 'center' }} className="stagger-in">
+          <h2 style={{ fontSize: '1.6rem', fontWeight: 900, color: '#fff', letterSpacing: '-0.02em', marginBottom: '8px' }}>
+            Pick a <span style={{ background: 'linear-gradient(135deg, #A855F7, #EC4899)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Challenge</span> to Start
+          </h2>
+          <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: '0.85rem', margin: 0 }}>Jump straight into curated problems with AI-powered verification.</p>
         </div>
 
         <div style={styles.problemsGrid} className="problems-grid-scroll">
@@ -264,26 +519,27 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
               problems[(problemIndex + 1) % problems.length],
               problems[(problemIndex + 2) % problems.length]
             ].filter(Boolean).map((p) => (
-              <div key={p.id} style={styles.problemCard} className="hover-lift" onClick={() => {
+              <div key={p.id} className="problem-card-enhanced hover-glow" onClick={() => {
                 if (!session) {
-                  setAuthModal('login');
+                  onStart(p.id);
                 } else {
                   onStart(p.id);
                 }
-              }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span style={{ fontSize: '0.9rem', fontWeight: 700, color: '#fff' }}>{p.title?.replace(/^\d+\.\s*/, '')}</span>
+              }} style={{ flex: '1 1 220px', background: 'rgba(255,255,255,0.02)', borderRadius: '16px', padding: '20px', textAlign: 'left', cursor: 'pointer', backdropFilter: 'blur(12px)', boxShadow: '0 4px 24px rgba(0,0,0,0.3)', position: 'relative', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.06)', borderLeft: `3px solid ${p.difficulty === 'Easy' ? '#10b981' : p.difficulty === 'Medium' ? '#f59e0b' : '#ef4444'}` }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                  <span style={{ fontSize: '0.92rem', fontWeight: 700, color: '#fff', lineHeight: 1.3, flex: 1, marginRight: '8px' }}>{p.title?.replace(/^\d+\.\s*/, '')}</span>
                   <span style={{
-                    fontSize: '0.65rem', fontWeight: 700, padding: '3px 8px', borderRadius: '12px',
-                    background: p.difficulty === 'Easy' ? 'rgba(16,185,129,0.08)' : p.difficulty === 'Medium' ? 'rgba(245,158,11,0.08)' : 'rgba(239,68,68,0.08)',
+                    fontSize: '0.62rem', fontWeight: 800, padding: '3px 10px', borderRadius: '20px', flexShrink: 0,
+                    background: p.difficulty === 'Easy' ? 'rgba(16,185,129,0.1)' : p.difficulty === 'Medium' ? 'rgba(245,158,11,0.1)' : 'rgba(239,68,68,0.1)',
                     color: p.difficulty === 'Easy' ? '#10b981' : p.difficulty === 'Medium' ? '#f59e0b' : '#ef4444',
-                    border: `1px solid ${p.difficulty === 'Easy' ? 'rgba(16,185,129,0.2)' : 'rgba(239, 158, 11, 0.2)'}`
+                    border: `1px solid ${p.difficulty === 'Easy' ? 'rgba(16,185,129,0.25)' : p.difficulty === 'Medium' ? 'rgba(245,158,11,0.25)' : 'rgba(239,68,68,0.25)'}`
                   }}>{p.difficulty}</span>
                 </div>
-                <div style={{ display: 'flex', gap: '4px', marginTop: '10px' }}>
+                <div style={{ display: 'flex', gap: '6px', marginTop: '12px', alignItems: 'center' }}>
                   {p.tags?.slice(0, 2).map((t: string) => (
-                    <span key={t} style={{ fontSize: '0.65rem', color: 'var(--text-muted)', background: 'rgba(255,255,255,0.03)', padding: '2px 6px', borderRadius: '4px' }}>{t}</span>
+                    <span key={t} style={{ fontSize: '0.65rem', color: 'rgba(255,255,255,0.5)', background: 'rgba(255,255,255,0.04)', padding: '3px 8px', borderRadius: '6px', border: '1px solid rgba(255,255,255,0.04)' }}>{t}</span>
                   ))}
+                  <ArrowRight size={14} color="rgba(168,85,247,0.4)" style={{ marginLeft: 'auto' }} />
                 </div>
               </div>
             ))
@@ -292,28 +548,30 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
           )}
         </div>
         {/* 📈 Timeline Tracks (How It Works) */}
-        <div style={styles.sectionHeader}>
-          <h2 style={styles.sectionTitle}>How It Works</h2>
-          <p style={{ color: 'var(--text-muted)', fontSize: '0.82rem' }}>From problem selection to a hiring scorecard — in minutes.</p>
+        <div style={{ margin: '0 0 24px 0', textAlign: 'center' }} className="stagger-in">
+          <h2 style={{ fontSize: '1.6rem', fontWeight: 900, color: '#fff', letterSpacing: '-0.02em', marginBottom: '8px' }}>
+            How It <span style={{ background: 'linear-gradient(135deg, #00E5FF, #A855F7)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Works</span>
+          </h2>
+          <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: '0.82rem', margin: 0 }}>From problem selection to a hiring scorecard — in minutes.</p>
         </div>
 
         <div className="timeline-track" style={{ display: 'flex', gap: '16px', maxWidth: '1000px', width: '100%', justifyContent: 'center', flexWrap: 'wrap', marginBottom: '60px', position: 'relative' }}>
-          <div className="timeline-card hover-lift">
+          <div className="timeline-card hover-lift hover-glow">
             <div className="timeline-dot">1</div>
             <h4>Pick a Problem</h4>
             <p>Choose from our curated library of Array, DP, Trees, and Graph problems tagged by company & difficulty.</p>
           </div>
-          <div className="timeline-card hover-lift">
+          <div className="timeline-card hover-lift hover-glow">
             <div className="timeline-dot">2</div>
             <h4>Code in Monaco IDE</h4>
             <p>Write solutions with VS Code-grade syntax highlighting in Python, Java, C++, Go, and more.</p>
           </div>
-          <div className="timeline-card hover-lift" style={{ borderColor: 'rgba(168,85,247,0.2)' }}>
+          <div className="timeline-card hover-lift hover-glow" style={{ borderColor: 'rgba(168,85,247,0.2)' }}>
             <div className="timeline-dot" style={{ background: 'rgba(168,85,247,0.25)', boxShadow: '0 0 16px rgba(168,85,247,0.5)' }}>3</div>
             <h4>🎥 AI Mock Interview</h4>
             <p>Face Alex on a live video call. Speak or type your answers. Get asked follow-up questions live.</p>
           </div>
-          <div className="timeline-card hover-lift">
+          <div className="timeline-card hover-lift hover-glow">
             <div className="timeline-dot">4</div>
             <h4>Get Your Scorecard</h4>
             <p>Receive a hire/no-hire verdict plus detailed feedback on communication, efficiency, and code quality.</p>
@@ -335,11 +593,11 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
         </div>
 
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }} className="interview-showcase-grid">
-          <div style={{ background: 'rgba(14,10,24,0.95)', border: '1px solid rgba(168,85,247,0.2)', borderRadius: '20px', overflow: 'hidden', position: 'relative', minHeight: '340px', boxShadow: '0 24px 60px rgba(0,0,0,0.5)' }} className="hover-lift">
+          <div style={{ background: 'rgba(14,10,24,0.95)', border: '1px solid rgba(168,85,247,0.2)', borderRadius: '20px', overflow: 'hidden', position: 'relative', boxShadow: '0 24px 60px rgba(0,0,0,0.5)', isolation: 'isolate' }} className="hover-lift hover-glow">
             <img
               src={`${(import.meta as any).env.BASE_URL}assets/interviewers/avatar.png`}
               alt="Alex — AI Interviewer"
-              style={{ width: '100%', height: '340px', objectFit: 'cover', objectPosition: 'center top', display: 'block' }}
+              style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top', display: 'block', minHeight: '400px' }}
             />
             <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(0,0,0,0.0) 40%, rgba(10,5,20,0.96) 100%)' }} />
             <div style={{ position: 'absolute', top: '14px', right: '14px', background: 'rgba(16,185,129,0.2)', border: '1px solid rgba(16,185,129,0.4)', padding: '4px 10px', borderRadius: '8px', display: 'flex', alignItems: 'center', gap: '6px' }}>
@@ -372,7 +630,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
               </div>
             ))}
             <button
-              onClick={() => { if (!session) { setAuthModal('login'); } else { onStart(); } }}
+              onClick={() => { onStart(); }}
               style={{ marginTop: '4px', padding: '14px', background: 'linear-gradient(135deg, #7C3AED, #DB2777)', border: 'none', borderRadius: '14px', color: '#fff', fontWeight: 800, fontSize: '0.9rem', cursor: 'pointer', boxShadow: '0 8px 24px rgba(124,58,237,0.35)', transition: 'transform 0.2s', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
               onMouseEnter={e => e.currentTarget.style.transform='translateY(-2px)'}
               onMouseLeave={e => e.currentTarget.style.transform='translateY(0)'}
@@ -386,7 +644,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
       {/* 🛠️ Features Grid (Bento) */}
       <section className="bento-grid" style={{ maxWidth: '1000px', margin: '0 auto 60px auto', padding: '0 24px' }}>
         {/* 🧠 Card 1: Large (Diagnostics + Gauge) */}
-        <div className="bento-item bento-2x1 hover-lift" style={{ position: 'relative', overflow: 'hidden' }}>
+        <div className="bento-item bento-2x1 hover-lift hover-glow">
           <div className="border-beam"></div>
           <div style={styles.iconBox}><Brain size={20} /></div>
           <div>
@@ -401,7 +659,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
         </div>
 
         {/* 💬 Card 2: Small (Friday Chat) */}
-        <div className="bento-item hover-lift" style={{ position: 'relative', overflow: 'hidden' }}>
+        <div className="bento-item hover-lift hover-glow">
           <div className="border-beam"></div>
           <div style={styles.iconBox}><Terminal size={20} color="#A855F7" /></div>
           <h3>Friday Assist</h3>
@@ -412,7 +670,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
         </div>
 
         {/* ✅ Card 3: Small (Testcases) */}
-        <div className="bento-item hover-lift" style={{ position: 'relative', overflow: 'hidden' }}>
+        <div className="bento-item hover-lift hover-glow">
           <div className="border-beam"></div>
           <div style={styles.iconBox}><Zap size={20} /></div>
           <h3>Simulated Execution Loop</h3>
@@ -424,7 +682,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
         </div>
 
         {/* 🛡️ Card 4: Large (Structural Hints) */}
-        <div className="bento-item bento-2x1 hover-lift" style={{ position: 'relative', overflow: 'hidden' }}>
+        <div className="bento-item bento-2x1 hover-lift hover-glow">
           <div className="border-beam"></div>
           <div style={styles.iconBox}><Shield size={20} /></div>
           <div>
@@ -437,7 +695,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
         </div>
 
         {/* 🎙️ Card 5: Small (Friday Voice) */}
-        <div className="bento-item hover-lift" style={{ position: 'relative', overflow: 'hidden' }}>
+        <div className="bento-item hover-lift hover-glow">
           <div className="border-beam"></div>
           <div style={styles.iconBox}><Mic size={20} color="#10B981" /></div>
           <h3>Friday Voice AI</h3>
@@ -449,7 +707,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
         </div>
 
         {/* 👥 Card 6: Large (Live Mock Interviews) */}
-        <div className="bento-item bento-2x1 hover-lift" style={{ position: 'relative', overflow: 'hidden' }}>
+        <div className="bento-item bento-2x1 hover-lift hover-glow">
           <div className="border-beam"></div>
           <div style={styles.iconBox}><Users size={20} color="#3B82F6" /></div>
           <div>
@@ -467,7 +725,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
         </div>
 
         {/* 🤖 Card 7: Wide (AI Video Interviewer) */}
-        <div className="bento-item bento-2x1 hover-lift" style={{ position: 'relative', overflow: 'hidden', background: 'rgba(168,85,247,0.04)', border: '1px solid rgba(168,85,247,0.15)' }}>
+        <div className="bento-item bento-2x1 hover-lift hover-glow" style={{ background: 'rgba(168,85,247,0.04)', border: '1px solid rgba(168,85,247,0.15)' }}>
           <div className="border-beam" style={{ opacity: 0.3 }}></div>
           <div style={{ background: 'rgba(168,85,247,0.15)', padding: '10px', borderRadius: '10px', color: '#D8B4FE', marginBottom: '12px', width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <img src={`${(import.meta as any).env.BASE_URL}assets/interviewers/avatar.png`} alt="Alex" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '8px' }} />
@@ -488,11 +746,156 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
         </div>
       </section>
 
+      {/* ⚖️ Comparison Section */}
+      <section className="stagger-in" style={{ maxWidth: '900px', margin: '0 auto 80px auto', padding: '0 24px', position: 'relative', zIndex: 5 }}>
+        <div style={{ textAlign: 'center', marginBottom: '36px' }}>
+          <h2 style={{ fontSize: '2rem', fontWeight: 900, color: '#fff', letterSpacing: '-0.03em', marginBottom: '10px' }}>Why <span style={{ background: 'linear-gradient(135deg, #00E5FF, #7C3AED)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>NexCode AI?</span></h2>
+          <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: '0.9rem', margin: 0 }}>See how we fundamentally change interview preparation.</p>
+        </div>
+        
+        <div style={{ background: 'rgba(14, 10, 24, 0.7)', borderRadius: '24px', position: 'relative', border: '1px solid rgba(255,255,255,0.05)', backdropFilter: 'blur(20px)', boxShadow: '0 20px 40px rgba(0,0,0,0.6)' }} className="hover-glow">
+          {/* Subtle glow behind the entire table */}
+          <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '100%', height: '100%', background: 'radial-gradient(circle, rgba(168,85,247,0.05) 0%, transparent 70%)', pointerEvents: 'none', zIndex: 0 }} />
+
+          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.9rem', position: 'relative', zIndex: 1, tableLayout: 'fixed' }}>
+            <colgroup>
+              <col style={{ width: '45%' }} />
+              <col style={{ width: '27.5%' }} />
+              <col style={{ width: '27.5%' }} />
+            </colgroup>
+            <thead>
+              <tr>
+                <th style={{ padding: '24px 28px', textAlign: 'left', color: 'rgba(255,255,255,0.5)', fontWeight: 600, borderBottom: '1px solid rgba(255,255,255,0.06)' }}>Feature</th>
+                <th style={{ 
+                  padding: '24px 20px', textAlign: 'center', borderBottom: '1px solid rgba(168,85,247,0.3)', 
+                  background: 'linear-gradient(to bottom, rgba(168,85,247,0.02), rgba(168,85,247,0.15))',
+                  borderLeft: '1px solid rgba(168,85,247,0.3)', borderRight: '1px solid rgba(168,85,247,0.3)',
+                  borderTopLeftRadius: '16px', borderTopRightRadius: '16px'
+                }}>
+                  <div style={{ display: 'inline-block', background: 'linear-gradient(135deg, #fff, #D8B4FE)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', fontWeight: 900, letterSpacing: '0.02em', fontSize: '1.05rem', textShadow: '0 0 20px rgba(168,85,247,0.4)' }}>NexCode AI</div>
+                </th>
+                <th style={{ padding: '24px 20px', textAlign: 'center', color: 'rgba(255,255,255,0.35)', fontWeight: 600, borderBottom: '1px solid rgba(255,255,255,0.06)' }}>Others</th>
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                ['Live AI Video Mock Interviews', true, false],
+                ['Real-time Complexity & Code Analysis', true, false],
+                ['Voice & Speech Recognition', true, false],
+                ['Detailed Hiring Scorecard', true, false],
+                ['Multi-language Support (Python, Java, etc.)', true, true],
+                ['Peer-to-Peer Collaborative Sessions', true, false],
+                ['Monaco (VS Code) Editor UI', true, true],
+                ['Interactive AI Mentor Assistant', true, false],
+              ].map(([feature, us, them], i, arr) => {
+                const isLast = i === arr.length - 1;
+                return (
+                  <tr key={i} style={{ transition: 'background 0.2s', background: 'transparent' }} className="table-row-hover">
+                    <td style={{ padding: '18px 28px', color: 'rgba(255,255,255,0.85)', borderBottom: isLast ? 'none' : '1px solid rgba(255,255,255,0.04)', fontWeight: 500 }}>{feature as string}</td>
+                    
+                    {/* The NexCode highlighted column */}
+                    <td style={{ 
+                      padding: '18px 20px', textAlign: 'center', 
+                      background: 'rgba(168,85,247,0.1)', 
+                      borderLeft: '1px solid rgba(168,85,247,0.3)', 
+                      borderRight: '1px solid rgba(168,85,247,0.3)',
+                      borderBottom: isLast ? '1px solid rgba(168,85,247,0.3)' : '1px solid rgba(168,85,247,0.15)',
+                      borderBottomLeftRadius: isLast ? '16px' : '0',
+                      borderBottomRightRadius: isLast ? '16px' : '0'
+                    }}>
+                      {us ? <CheckCircle size={22} color="#10b981" style={{ filter: 'drop-shadow(0 0 8px rgba(16,185,129,0.4))' }} /> : <X size={22} color="rgba(255,255,255,0.2)" />}
+                    </td>
+                    
+                    <td style={{ padding: '18px 20px', textAlign: 'center', borderBottom: isLast ? 'none' : '1px solid rgba(255,255,255,0.04)' }}>
+                      {them ? <CheckCircle size={22} color="rgba(255,255,255,0.3)" /> : <X size={22} color="rgba(255,255,255,0.15)" />}
+                    </td>
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      {/* 🌟 Infinite Testimonial Marquee */}
+      <section style={{ margin: '80px 0', padding: '0 24px', overflow: 'hidden', position: 'relative' }}>
+        <div style={{ textAlign: 'center', marginBottom: '32px' }}>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', padding: '4px 12px', borderRadius: '99px', marginBottom: '12px' }}>
+            <Star size={12} color="#FBBF24" fill="#FBBF24" />
+            <span style={{ fontSize: '0.65rem', fontWeight: 800, color: 'rgba(255,255,255,0.6)', letterSpacing: '0.05em', textTransform: 'uppercase' }}>Join 50,000+ Developers</span>
+          </div>
+          <h2 style={{ fontSize: '1.8rem', fontWeight: 900, color: '#fff', letterSpacing: '-0.02em' }}>Wall of Love</h2>
+        </div>
+
+        <div className="marquee-container">
+          <div className="marquee-track">
+            {[...Array(2)].map((_, i) => (
+              <React.Fragment key={i}>
+                {[
+                  { name: "Sarah K.", role: "SDE II @ Microsoft", text: "Friday's feedback on my communication was a game-changer for my actual onsite.", color: "#7C3AED" },
+                  { name: "David L.", role: "Senior Engineer @ Google", text: "The most realistic interview simulation I've found. Alex is scary good.", color: "#3B82F6" },
+                  { name: "Mona R.", role: "Frontend Dev @ Vercel", text: "I went from panicking during live coding to being completely calm.", color: "#EC4899" },
+                  { name: "Kevin T.", role: "SDE @ Amazon", text: "The real-time complexity analysis is something I've never seen before.", color: "#10B981" },
+                  { name: "Elena P.", role: "UCLA Student", text: "Helped me land my first internship at a top-tier tech firm. Forever grateful!", color: "#F59E0B" },
+                ].map((t, idx) => (
+                  <div key={idx} className="testimonial-card">
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
+                      <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: `linear-gradient(135deg, ${t.color}, transparent)`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 900, fontSize: '0.8rem', color: '#fff' }}>{t.name[0]}</div>
+                      <div>
+                        <p style={{ margin: 0, fontWeight: 700, fontSize: '0.8rem', color: '#fff' }}>{t.name}</p>
+                        <p style={{ margin: 0, fontSize: '0.65rem', color: 'rgba(255,255,255,0.4)', fontWeight: 600 }}>{t.role}</p>
+                      </div>
+                    </div>
+                    <p style={{ margin: 0, fontSize: '0.78rem', color: 'rgba(255,255,255,0.7)', lineHeight: 1.5 }}>"{t.text}"</p>
+                  </div>
+                ))}
+              </React.Fragment>
+            ))}
+          </div>
+        </div>
+      </section>
+
+
+
+      {/* 🚀 Final CTA Banner */}
+      <section className="stagger-in" style={{ maxWidth: '900px', margin: '0 auto 100px auto', padding: '0 24px', position: 'relative', zIndex: 5 }}>
+        <div style={{ background: 'linear-gradient(135deg, rgba(124,58,237,0.12), rgba(219,39,119,0.08))', border: '1px solid rgba(168,85,247,0.2)', borderRadius: '24px', padding: '48px 32px', textAlign: 'center', position: 'relative', overflow: 'hidden' }} className="hover-glow">
+          <div style={{ position: 'absolute', top: '-50px', right: '-50px', width: '200px', height: '200px', background: 'radial-gradient(circle, rgba(168,85,247,0.2), transparent 70%)', borderRadius: '50%' }} />
+          <div style={{ position: 'absolute', bottom: '-50px', left: '-50px', width: '200px', height: '200px', background: 'radial-gradient(circle, rgba(219,39,119,0.15), transparent 70%)', borderRadius: '50%' }} />
+          <h2 style={{ fontSize: '1.8rem', fontWeight: 900, color: '#fff', letterSpacing: '-0.02em', marginBottom: '12px', position: 'relative', zIndex: 1 }}>Ready to Ace Your Next Interview?</h2>
+          <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: '0.9rem', maxWidth: '460px', margin: '0 auto 28px', lineHeight: 1.6, position: 'relative', zIndex: 1 }}>Join thousands of developers who improved their interview performance with NexCode AI.</p>
+          <button
+            onClick={() => { onStart(); }}
+            className="magic-btn"
+            style={{ padding: '16px 36px', background: 'linear-gradient(135deg, #7C3AED, #DB2777)', border: 'none', borderRadius: '14px', color: '#fff', fontWeight: 800, fontSize: '1rem', cursor: 'pointer', boxShadow: '0 10px 40px rgba(124,58,237,0.35)', display: 'inline-flex', alignItems: 'center', gap: '10px', position: 'relative', zIndex: 1 }}
+          >
+            Get Started Free <ArrowRight size={18} />
+          </button>
+        </div>
+      </section>
+
       <footer style={{ marginTop: 'auto', borderTop: '1px solid rgba(255, 255, 255, 0.04)', padding: '20px', textAlign: 'center', width: '100%', zIndex: 10, background: 'rgba(3, 1, 8, 0.4)', backdropFilter: 'blur(10px)' }}>
         <span style={{ color: 'rgba(255,255,255,0.35)', fontSize: '0.75rem', fontWeight: 500 }}>
           © {new Date().getFullYear()} Shivam Singhal | NexCode AI. All rights reserved.
         </span>
       </footer>
+
+      {/* 📡 Live Activity Feed Toast */}
+      <div className={`live-feed-toast ${liveActivity.visible ? 'live-feed-visible' : ''}`}>
+        <span>{liveActivity.text}</span>
+      </div>
+
+      {/* 🤖 Friday AI Companion Bubble */}
+      <div className={`friday-companion ${fridayBubble.visible ? 'friday-visible' : ''}`}>
+        <div className="friday-bubble">
+          {fridayBubble.text}
+          <div className="friday-arrow"></div>
+        </div>
+        <div className="friday-avatar">
+          <Sparkles size={20} color="#fff" />
+          <div className="friday-pulse"></div>
+        </div>
+      </div>
 
       {authModal && <AuthModal type={authModal} onClose={() => setAuthModal(null)} />}
 
@@ -660,7 +1063,27 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
           100% { top: 115vh; opacity: 0; }
         }
 
+        /* Particles */
+        @keyframes drift {
+          0% { transform: translateY(110vh) rotate(0deg); opacity: 0; }
+          10% { opacity: 0.6; }
+          90% { opacity: 0.6; }
+          100% { transform: translateY(-20vh) rotate(360deg); opacity: 0; }
+        }
+        .particle {
+          position: absolute;
+          bottom: -5vh;
+          color: rgba(168, 85, 247, 0.5);
+          font-size: 1.2rem;
+          animation: drift 15s infinite linear;
+          text-shadow: 0 0 10px currentColor;
+        }
+
         /* Bento Grid Setup */
+        .table-row-hover:hover {
+          background: rgba(255,255,255,0.03) !important;
+        }
+
         .bento-grid {
           display: grid;
           grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -781,11 +1204,29 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
           transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease, border-color 0.3s ease;
         }
         .hover-lift:hover {
-          transform: translateY(-8px);
-          box-shadow: 0 15px 40px rgba(168, 85, 247, 0.15);
-          border-color: rgba(168, 85, 247, 0.4) !important;
-          background: rgba(255,255,255,0.03) !important;
+          transform: translateY(-8px) scale(1.01);
+          box-shadow: 0 15px 40px rgba(168, 85, 247, 0.2);
+          border-color: rgba(168, 85, 247, 0.5) !important;
+          background: rgba(255,255,255,0.04) !important;
         }
+
+        .hover-glow {
+          position: relative;
+          overflow: hidden;
+        }
+        .hover-glow::before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          background: radial-gradient(800px circle at var(--mouse-x, -1000px) var(--mouse-y, -1000px), rgba(255, 255, 255, 0.04), transparent 40%);
+          z-index: 0;
+          pointer-events: none;
+          transition: background 0.3s;
+        }
+        .hover-glow:hover::before {
+          background: radial-gradient(800px circle at var(--mouse-x, -1000px) var(--mouse-y, -1000px), rgba(168, 85, 247, 0.15), transparent 40%);
+        }
+        .hover-glow > * { position: relative; z-index: 1; }
 
         .border-beam {
           position: absolute;
@@ -816,6 +1257,244 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
 
         @keyframes blink { 50% { opacity: 0; } }
 
+        /* Syntax highlighting in code preview */
+        pre kw { color: #c792ea; font-weight: 700; }
+        pre cm { color: #546e7a; font-style: italic; }
+        pre st { color: #c3e88d; }
+        pre nm { color: #f78c6c; }
+
+        /* Friday Companion Styling */
+        .friday-companion {
+          position: fixed;
+          bottom: 24px;
+          right: 24px;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-end;
+          gap: 12px;
+          z-index: 1000;
+          pointer-events: none;
+          transition: transform 0.3s ease, opacity 0.3s ease;
+          opacity: 0;
+          transform: translateY(20px);
+        }
+
+        .friday-visible {
+          opacity: 1;
+          transform: translateY(0);
+          pointer-events: auto;
+        }
+
+        .friday-avatar {
+          width: 50px;
+          height: 50px;
+          background: linear-gradient(135deg, #7C3AED, #DB2777);
+          border-radius: 16px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          box-shadow: 0 8px 32px rgba(124, 58, 237, 0.4);
+          position: relative;
+          cursor: pointer;
+          border: 2px solid rgba(255,255,255,0.2);
+        }
+
+        .friday-pulse {
+          position: absolute;
+          inset: -4px;
+          border-radius: 18px;
+          border: 2px solid #7C3AED;
+          animation: pulse-ring 2s infinite;
+        }
+
+        @keyframes pulse-ring {
+          0% { transform: scale(0.9); opacity: 1; }
+          100% { transform: scale(1.3); opacity: 0; }
+        }
+
+        .friday-bubble {
+          background: rgba(20, 16, 28, 0.95);
+          backdrop-filter: blur(12px);
+          border: 1px solid rgba(168, 85, 247, 0.3);
+          padding: 14px 18px;
+          border-radius: 18px;
+          color: #fff;
+          font-size: 0.85rem;
+          font-weight: 500;
+          max-width: 240px;
+          line-height: 1.4;
+          box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+          position: relative;
+          animation: bounce-in 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .friday-arrow {
+          position: absolute;
+          bottom: -8px;
+          right: 20px;
+          width: 16px;
+          height: 16px;
+          background: rgba(20, 16, 28, 0.95);
+          border-right: 1px solid rgba(168, 85, 247, 0.3);
+          border-bottom: 1px solid rgba(168, 85, 247, 0.3);
+          transform: rotate(45deg);
+        }
+
+        @keyframes bounce-in {
+          0% { transform: scale(0.85); opacity: 0; }
+          100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* Marquee Styling */
+        .marquee-container {
+          width: 100%;
+          mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+          padding: 20px 0;
+        }
+
+        .marquee-track {
+          display: flex;
+          gap: 24px;
+          width: max-content;
+          animation: marquee-scroll 40s linear infinite;
+        }
+
+        .marquee-track:hover {
+          animation-play-state: paused;
+        }
+
+        .testimonial-card {
+          width: 300px;
+          background: rgba(255,255,255,0.03);
+          border: 1px solid rgba(255,255,255,0.05);
+          border-radius: 20px;
+          padding: 24px;
+          flex-shrink: 0;
+          transition: border-color 0.3s, background 0.3s;
+        }
+
+        .testimonial-card:hover {
+          background: rgba(255,255,255,0.05);
+          border-color: rgba(168,85,247,0.3);
+        }
+
+        @keyframes marquee-scroll {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+
+        @keyframes blink {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0; }
+        }
+
+        @keyframes float {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-10px); }
+        }
+
+        .main-preview-ui {
+          transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        
+        .main-preview-ui:hover {
+          transform: translateY(-10px) scale(1.01);
+          border-color: rgba(168, 85, 247, 0.3);
+        }
+
+        .scroll-reveal {
+          opacity: 0;
+          transform: translateY(30px);
+          transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .scroll-reveal-active {
+          opacity: 1;
+          transform: translateY(0);
+        }
+
+        /* Staggered entrance */
+        .stagger-in {
+          animation: staggerFadeIn 0.8s ease-out both;
+          animation-timeline: view();
+          animation-range: entry 5% cover 25%;
+        }
+        @keyframes staggerFadeIn {
+          from { opacity: 0; transform: translateY(32px) scale(0.97); }
+          to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* Stat card pulse on hover */
+        .stat-card {
+          transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+        .stat-card:hover {
+          transform: translateY(-6px);
+          box-shadow: 0 12px 36px rgba(168, 85, 247, 0.18);
+          border-color: rgba(168, 85, 247, 0.3) !important;
+        }
+
+        /* Live dot pulse */
+        .live-dot {
+          width: 6px; height: 6px; border-radius: 50%; background: #10b981;
+          box-shadow: 0 0 8px #10b981;
+          animation: livePulse 2s infinite ease-in-out;
+        }
+        @keyframes livePulse {
+          0%, 100% { opacity: 1; transform: scale(1); }
+          50% { opacity: 0.4; transform: scale(0.7); }
+        }
+
+        /* Live Feed Toast */
+        .live-feed-toast {
+          position: fixed;
+          bottom: 24px;
+          left: 24px;
+          background: rgba(14, 10, 24, 0.9);
+          border: 1px solid rgba(168, 85, 247, 0.25);
+          backdrop-filter: blur(16px);
+          padding: 12px 18px;
+          border-radius: 12px;
+          font-size: 0.78rem;
+          color: rgba(255,255,255,0.8);
+          font-weight: 600;
+          z-index: 50;
+          transform: translateY(80px);
+          opacity: 0;
+          transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+          pointer-events: none;
+          box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        }
+        .live-feed-visible {
+          transform: translateY(0);
+          opacity: 1;
+        }
+
+        /* Company trust bar */
+        .company-name {
+          cursor: default;
+        }
+        .company-name:hover {
+          color: rgba(255,255,255,0.6) !important;
+          text-shadow: 0 0 20px rgba(168, 85, 247, 0.3) !important;
+        }
+
+        /* Problem card enhanced */
+        .problem-card-enhanced {
+          transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+        }
+        .problem-card-enhanced:hover {
+          transform: translateY(-6px) scale(1.01);
+          box-shadow: 0 12px 36px rgba(0,0,0,0.4);
+          background: rgba(255,255,255,0.04) !important;
+          border-color: rgba(168, 85, 247, 0.3) !important;
+        }
+
+        /* Comparison table styling */
+        table th, table td {
+          font-family: 'Outfit', sans-serif;
+        }
+
         @keyframes float {
           0% { transform: translateY(0px); }
           50% { transform: translateY(-10px); }
@@ -826,8 +1505,25 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
           50% { opacity: 0.9; transform: scale(1.02); }
         }
         @keyframes textFade {
-          0%, 100% { opacity: 0.2; transform: translateY(5px); }
-          5%, 95% { opacity: 1; transform: translateY(0); }
+          0%, 100% { filter: hue-rotate(0deg); opacity: 0.7; transform: translateY(2px); }
+          50% { filter: hue-rotate(45deg); opacity: 1; transform: translateY(0); }
+        }
+        @keyframes magicGlowSpin {
+          0% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
+        }
+        .magic-btn {
+          transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .magic-btn:hover {
+          transform: translateY(-4px) scale(1.02);
+        }
+        .magic-btn:hover .magic-glow {
+          opacity: 1 !important;
+          filter: blur(12px) !important;
+          animation: magicGlowSpin 3s linear infinite;
+          background-size: 200% 200% !important;
         }
         @keyframes slideUp {
           from { opacity: 0; transform: translateY(30px); }
@@ -910,26 +1606,19 @@ const styles: Record<string, React.CSSProperties> = {
   },
   hero: {
     flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-    padding: '60px 24px 40px 24px', textAlign: 'center', zIndex: 5, animation: 'slideUp 0.8s ease-out'
+    padding: '48px 24px 32px 24px', textAlign: 'center', zIndex: 5, animation: 'slideUp 0.8s ease-out'
   },
   badge: {
     background: 'rgba(168, 85, 247, 0.08)', border: '1px solid rgba(168, 85, 247, 0.2)',
     color: '#D8B4FE', fontSize: '0.75rem', padding: '4px 12px', borderRadius: '16px',
     display: 'flex', alignItems: 'center', gap: '6px', fontWeight: 600, marginBottom: '20px'
   },
-  title: { fontSize: '3.2rem', fontWeight: 900, lineHeight: 1.1, letterSpacing: '-0.03em', marginBottom: '16px', maxWidth: '800px' },
+  title: { fontSize: '3.4rem', fontWeight: 900, lineHeight: 1.08, letterSpacing: '-0.035em', marginBottom: '18px', maxWidth: '800px' },
   gradientText: {
     background: 'linear-gradient(135deg, #FF007A 0%, #7000FF 50%, #00E5FF 100%)',
     WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', display: 'inline-block', minWidth: '400px'
   },
-  subtitle: { fontSize: '0.95rem', color: 'rgba(255,255,255,0.7)', maxWidth: '540px', lineHeight: 1.6, marginBottom: '26px' },
-  ctaWrapper: { position: 'relative', marginBottom: '40px' },
-  ctaButton: {
-    background: '#7000FF', color: '#fff', border: 'none', padding: '14px 28px', borderRadius: '12px',
-    fontWeight: 700, fontSize: '0.95rem', cursor: 'pointer', position: 'relative', zIndex: 2,
-    boxShadow: '0 8px 30px rgba(112, 0, 255, 0.25)'
-  },
-  ctaGlow: { position: 'absolute', inset: '-2px', background: 'linear-gradient(90deg, #FF007A, #7000FF, #00E5FF)', borderRadius: '14px', zIndex: 1, filter: 'blur(6px)', opacity: 0.6 },
+  subtitle: { fontSize: '1rem', color: 'rgba(255,255,255,0.6)', maxWidth: '520px', lineHeight: 1.65, marginBottom: '28px' },
   previewContainer: {
     width: '100%', maxWidth: '550px', background: 'rgba(3, 1, 8, 0.6)', border: '1px solid rgba(255, 255, 255, 0.06)',
     borderRadius: '14px', boxShadow: '0 20px 80px rgba(0,0,0,0.6)', backdropFilter: 'blur(20px)',
