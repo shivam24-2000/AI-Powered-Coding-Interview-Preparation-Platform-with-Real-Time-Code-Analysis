@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Terminal, Brain, Zap, Shield, LogOut, Award, X, Users, Mic, User, TrendingUp, CheckCircle, Star, ArrowRight, MessageCircle, Sparkles } from 'lucide-react';
+import { Terminal, Brain, Zap, Shield, LogOut, Award, X, Users, Mic, User, TrendingUp, CheckCircle, Star, ArrowRight, Sparkles } from 'lucide-react';
 import { PROBLEMS } from '../problems';
 import { supabase } from '../supabase';
 import { AuthModal } from './AuthModal';
@@ -210,18 +210,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
     return () => clearInterval(answerId);
   }, []);
 
-  useEffect(() => {
-    let index = 0;
-    const typingId = setInterval(() => {
-      if (index <= fullCode.length) {
-        setTypedCode(fullCode.slice(0, index));
-        index++;
-      } else {
-        clearInterval(typingId);
-      }
-    }, 45); // Buttery smooth typing speed
-    return () => clearInterval(typingId);
-  }, []);
+
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
