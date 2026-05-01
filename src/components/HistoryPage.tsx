@@ -39,18 +39,6 @@ export const HistoryPage: React.FC<HistoryPageProps> = ({ onBack, session }) => 
       { name: 'Failed', value: totalFailed, color: '#EF4444' }
     ].filter(d => d.value > 0);
 
-    // Optimized Activity Stream processing (O(N))
-    const dateMap: Record<string, { date: string; passed: number; failed: number }> = {};
-    submissions.forEach(item => {
-      const date = new Date(item.created_at).toLocaleDateString();
-      if (!dateMap[date]) {
-        dateMap[date] = { date, passed: 0, failed: 0 };
-      }
-      if (item.status === 'passed') dateMap[date].passed++;
-      else dateMap[date].failed++;
-    });
-    const chartData = Object.values(dateMap).reverse();
-
     // 🏆 New: Difficulty Distribution
     const diffMap = { Easy: 0, Medium: 0, Hard: 0 };
     const langMap: Record<string, number> = {};
