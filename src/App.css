@@ -15,7 +15,7 @@
   justify-content: space-between;
   padding: 0 24px;
   border-bottom: 1px solid var(--border-color);
-  background: rgba(10, 10, 20, 0.8);
+  background: var(--bg-panel);
   backdrop-filter: blur(10px);
   z-index: 50;
 }
@@ -211,14 +211,14 @@
 }
 
 .prose p { margin-bottom: 20px; }
-.prose strong { color: #ffffff; font-weight: 700; }
-.prose code {
-  background: rgba(255, 255, 255, 0.05);
+.prose strong { color: var(--text-main); font-weight: 700; }
+code {
+  background: var(--bg-panel-light);
   padding: 2px 8px;
   border-radius: 4px;
   font-size: 0.9em;
-  color: #e2e8f0;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
 }
 
 .prose ol, .prose ul {
@@ -247,7 +247,7 @@
 }
 
 .example-box {
-  background: rgba(255, 255, 255, 0.02);
+  background: var(--bg-panel-light);
   border: 1px solid var(--border-color);
   border-radius: 12px;
   padding: 16px;

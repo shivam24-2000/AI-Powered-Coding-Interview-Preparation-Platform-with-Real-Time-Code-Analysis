@@ -65,7 +65,7 @@ export const Navigation: React.FC<NavigationProps> = ({
         )}
         <div className="navbar-brand" style={{ alignItems: 'flex-start', gap: '0', flexDirection: 'column', justifyContent: 'center' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '14px', cursor: 'pointer' }} onClick={onBackToLanding}>
-            <div className="glass-panel" style={{ padding: '0', borderRadius: '10px', overflow: 'hidden', width: '36px', height: '36px', border: '1px solid rgba(255,255,255,0.15)' }}>
+            <div className="glass-panel" style={{ padding: '0', borderRadius: '10px', overflow: 'hidden', width: '36px', height: '36px', border: '1px solid var(--border-color)' }}>
               <img src={`${import.meta.env.BASE_URL}logo.png`} alt="NexCode AI Logo" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
             </div>
             <span className="text-gradient" style={{ fontSize: '1.4rem' }}>NexCode AI</span>
@@ -247,9 +247,9 @@ export const Navigation: React.FC<NavigationProps> = ({
          <button
            id="settings-btn"
            onClick={onSettings}
-           style={{ width: '34px', height: '34px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.7)', cursor: 'pointer', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.2s', boxShadow: '0 2px 8px rgba(0,0,0,0.15)' }}
-           onMouseEnter={e => { e.currentTarget.style.color = '#fff'; e.currentTarget.style.background = 'rgba(255,255,255,0.08)'; e.currentTarget.style.transform = 'scale(1.05)'; }}
-           onMouseLeave={e => { e.currentTarget.style.color = 'rgba(255,255,255,0.7)'; e.currentTarget.style.background = 'rgba(255,255,255,0.03)'; e.currentTarget.style.transform = 'scale(1)'; }}
+           style={{ width: '34px', height: '34px', background: 'var(--bg-panel-light)', border: '1px solid var(--border-color)', color: 'var(--text-muted)', cursor: 'pointer', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.2s', boxShadow: '0 2px 8px rgba(0,0,0,0.15)' }}
+           onMouseEnter={e => { e.currentTarget.style.color = 'var(--text-primary)'; e.currentTarget.style.background = 'var(--bg-panel)'; e.currentTarget.style.transform = 'scale(1.05)'; }}
+           onMouseLeave={e => { e.currentTarget.style.color = 'var(--text-muted)'; e.currentTarget.style.background = 'var(--bg-panel-light)'; e.currentTarget.style.transform = 'scale(1)'; }}
            title="Settings"
          >
            <Settings size={15} />
@@ -259,9 +259,9 @@ export const Navigation: React.FC<NavigationProps> = ({
            id="shortcuts-btn"
            onClick={onShortcuts}
            title="Keyboard Shortcuts (?)"
-           style={{ width: '34px', height: '34px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.7)', cursor: 'pointer', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.2s', boxShadow: '0 2px 8px rgba(0,0,0,0.15)' }}
-           onMouseEnter={e => { e.currentTarget.style.color = '#fff'; e.currentTarget.style.background = 'rgba(255,255,255,0.08)'; e.currentTarget.style.transform = 'scale(1.05)'; }}
-           onMouseLeave={e => { e.currentTarget.style.color = 'rgba(255,255,255,0.7)'; e.currentTarget.style.background = 'rgba(255,255,255,0.03)'; e.currentTarget.style.transform = 'scale(1)'; }}
+           style={{ width: '34px', height: '34px', background: 'var(--bg-panel-light)', border: '1px solid var(--border-color)', color: 'var(--text-muted)', cursor: 'pointer', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.2s', boxShadow: '0 2px 8px rgba(0,0,0,0.15)' }}
+           onMouseEnter={e => { e.currentTarget.style.color = 'var(--text-primary)'; e.currentTarget.style.background = 'var(--bg-panel)'; e.currentTarget.style.transform = 'scale(1.05)'; }}
+           onMouseLeave={e => { e.currentTarget.style.color = 'var(--text-muted)'; e.currentTarget.style.background = 'var(--bg-panel-light)'; e.currentTarget.style.transform = 'scale(1)'; }}
          >
            <Keyboard size={15} />
          </button>
@@ -275,8 +275,8 @@ export const Navigation: React.FC<NavigationProps> = ({
              <button style={{ 
                display: 'flex', alignItems: 'center', gap: '8px', 
                padding: '6px 12px', borderRadius: '14px', 
-               background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)',
-               color: '#fff', cursor: 'pointer', transition: 'all 0.3s ease'
+               background: 'var(--bg-panel-light)', border: '1px solid var(--border-color)',
+               color: 'var(--text-primary)', cursor: 'pointer', transition: 'all 0.3s ease'
              }} className="hover-lift">
               <div style={{ 
                 width: '28px', height: '28px', borderRadius: '50%', overflow: 'hidden',
@@ -306,18 +306,18 @@ export const Navigation: React.FC<NavigationProps> = ({
               }}>
                 
                 <div style={{
-                  background: 'rgba(12, 12, 14, 0.94)', backdropFilter: 'blur(16px)',
-                  border: '1px solid rgba(255, 255, 255, 0.08)', borderRadius: '14px',
+                  background: 'var(--bg-panel)', backdropFilter: 'blur(16px)',
+                  border: '1px solid var(--border-color)', borderRadius: '14px',
                   padding: '6px', minWidth: '180px',
-                  boxShadow: '0 12px 30px rgba(0,0,0,0.5)', display: 'flex', flexDirection: 'column', gap: '4px'
+                  boxShadow: '0 12px 30px rgba(0,0,0,0.15)', display: 'flex', flexDirection: 'column', gap: '4px'
                 }}>
-                  <div style={{ padding: '10px 12px', borderBottom: '1px solid rgba(255,255,255,0.04)', marginBottom: '4px' }}>
-                    <p style={{ margin: 0, fontSize: '0.7rem', color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Account</p>
-                    <p style={{ margin: '2px 0 0 0', fontSize: '0.82rem', fontWeight: 600, color: '#fff', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{session?.user?.email}</p>
+                  <div style={{ padding: '10px 12px', borderBottom: '1px solid var(--border-color)', marginBottom: '4px' }}>
+                    <p style={{ margin: 0, fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Account</p>
+                    <p style={{ margin: '2px 0 0 0', fontSize: '0.82rem', fontWeight: 600, color: 'var(--text-primary)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{session?.user?.email}</p>
                   </div>
                   
                   <button onClick={() => { onEditProfile?.(); setShowProfileMenu(false); }} style={{
-                    background: 'transparent', border: 'none', color: '#fff', 
+                    background: 'transparent', border: 'none', color: 'var(--text-primary)', 
                     padding: '10px 12px', borderRadius: '10px', cursor: 'pointer',
                     display: 'flex', alignItems: 'center', gap: '10px', fontSize: '0.85rem',
                     textAlign: 'left'
@@ -326,7 +326,7 @@ export const Navigation: React.FC<NavigationProps> = ({
                   </button>
 
                   <button onClick={onHistory} style={{
-                    background: 'transparent', border: 'none', color: '#fff', 
+                    background: 'transparent', border: 'none', color: 'var(--text-primary)', 
                     padding: '10px 12px', borderRadius: '10px', cursor: 'pointer',
                     display: 'flex', alignItems: 'center', gap: '10px', fontSize: '0.85rem',
                     textAlign: 'left'

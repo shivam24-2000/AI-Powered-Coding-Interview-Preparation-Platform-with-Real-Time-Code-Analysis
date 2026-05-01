@@ -37,6 +37,24 @@ export const APP_THEMES: AppTheme[] = [
     }
   },
   {
+    id: 'light-mode',
+    name: 'Light Mode',
+    colors: {
+      bgDark: '#f8fafc',
+      bgPanel: 'rgba(255, 255, 255, 0.8)',
+      bgPanelSolid: '#ffffff',
+      bgPanelLight: 'rgba(0, 0, 0, 0.03)',
+      borderColor: 'rgba(0, 0, 0, 0.1)',
+      borderHighlight: 'rgba(139, 92, 246, 0.4)',
+      textMain: '#0f172a',
+      textPrimary: '#0f172a',
+      textMuted: '#64748b',
+      accentPrimary: '#7c3aed',
+      accentSecondary: '#db2777',
+      accentGradient: 'linear-gradient(135deg, #7c3aed 0%, #db2777 100%)'
+    }
+  },
+  {
     id: 'emerald-matrix',
     name: 'Emerald Matrix',
     colors: {

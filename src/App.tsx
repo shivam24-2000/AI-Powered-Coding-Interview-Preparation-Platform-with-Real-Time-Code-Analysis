@@ -28,6 +28,7 @@ import { quotaManager } from './quotaManager';
 import { Lock, ChevronLeft, ChevronUp, Terminal, Loader } from 'lucide-react';
 import { applyAppTheme } from './themes';
 import { useConfetti } from './hooks/useConfetti';
+import { PROBLEMS } from './problems';
 import './App.css';
 
 function formatTime(seconds: number): string {
@@ -54,12 +55,26 @@ const AuthToast = ({ type }: { type: 'login' | 'logout' }) => (
 
 function App() {
   const { fire: fireConfetti } = useConfetti();
-  const [problems, setProblems] = useState<any[]>([]);
-  const [selectedProblem, setSelectedProblem] = useState<any>(null);
+  const [problems, setProblems] = useState<any[]>(PROBLEMS);
+  const [selectedProblem, setSelectedProblem] = useState<any>(PROBLEMS[0] || null);
   const [selectedLanguage, setSelectedLanguage] = useState<Language>(DEFAULT_LANGUAGE);
-  const [code, setCode] = useState<string>('');
+  const [code, setCode] = useState<string>(PROBLEMS[0]?.templates?.python || '');
   const [settingsOpen, setSettingsOpen] = useState(false);
-  const [settings, setSettings] = useState<EditorSettings>(DEFAULT_SETTINGS);
+  const [settings, setSettings] = useState<EditorSettings>(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('nexcode_settings');
+      if (saved) {
+        try { return JSON.parse(saved); } catch (e) {}
+      }
+    }
+    return DEFAULT_SETTINGS;
+  });
+  
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('nexcode_settings', JSON.stringify(settings));
+    }
+  }, [settings]);
   const [runState, setRunState] = useState<RunState>({ status: 'idle' });
   const [submitState, setSubmitState] = useState<RunState>({ status: 'idle' });
   const [isAiAutoEnabled, setIsAiAutoEnabled] = useState(false); // Default to off for quota safety
@@ -355,17 +370,14 @@ function App() {
     if (quotaManager.isBlocked()) return; // Extra safety
     
     setSubmitState({ status: 'idle' });
+    // Use hardcoded test runner if available, otherwise fall back to raw user code
+    // The AI execution engine can evaluate any code against problem.examples
     const runnerCode = buildRunnerCode(selectedProblem.id, selectedLanguage.id, code);
-
-    if (!runnerCode) {
-      setRunState({ status: 'unsupported' });
-      setIsResultsFolded(false);
-      return;
-    }
+    const codeToExecute = runnerCode || code;
 
     setRunState({ status: 'running' });
     setIsResultsFolded(false);
-    const result = await executeCode(selectedLanguage.id, runnerCode, selectedProblem);
+    const result = await executeCode(selectedLanguage.id, codeToExecute, selectedProblem);
     setRunState({ status: 'done', result });
   };
 
@@ -373,17 +385,13 @@ function App() {
     if (quotaManager.isBlocked()) return;
     
     setRunState({ status: 'idle' });
+    // Use hardcoded test runner if available, otherwise fall back to raw user code
     const runnerCode = buildRunnerCode(selectedProblem.id, selectedLanguage.id, code);
-
-    if (!runnerCode) {
-      setSubmitState({ status: 'unsupported' });
-      setIsResultsFolded(false);
-      return;
-    }
+    const codeToExecute = runnerCode || code;
 
     setSubmitState({ status: 'running' });
     setIsResultsFolded(false);
-    const result = await executeCode(selectedLanguage.id, runnerCode, selectedProblem);
+    const result = await executeCode(selectedLanguage.id, codeToExecute, selectedProblem);
     setSubmitState({ status: 'done', result });
 
     // 📊 Log submission history to Supabase
@@ -533,6 +541,15 @@ function App() {
             problems={problems}
             onHistory={() => setView('history')}
             onEditProfile={() => setProfileOpen(true)}
+            isLightMode={settings.appTheme === 'light-mode'}
+            onToggleLightMode={() => {
+              const isLight = settings.appTheme === 'light-mode';
+              setSettings(s => ({
+                ...s, 
+                appTheme: isLight ? 'midnight-purple' : 'light-mode',
+                theme: isLight ? 'nexcode-dark' : 'vs-light'
+              }));
+            }}
           />
           {authToast && <AuthToast type={authToast} />}
         </>
