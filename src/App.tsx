@@ -18,6 +18,7 @@ import { AIVideoInterviewer } from './components/AIVideoInterviewer';
 import type { AnalysisState, ChatMessage, InterviewEvaluation, InterviewPhase } from './types';
 import { InterviewScorecardModal } from './components/InterviewScorecardModal';
 import { generateInterviewEvaluation } from './aiService';
+import { getDailyChallenge } from './utils/dailyChallenge';
 import { LANGUAGES, DEFAULT_LANGUAGE, type Language } from './languages';
 
 import { executeCode } from './pistonApi';
@@ -96,6 +97,7 @@ function App() {
   const [peerRole, setPeerRole] = useState<'coder' | 'interviewer' | null>(null);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
+  const [isSpeedChallenge, setIsSpeedChallenge] = useState(false);
   const channelRef = useRef<any>(null);
 
   useEffect(() => {
@@ -522,7 +524,13 @@ function App() {
 
 
   return (
-    <div key={view} style={{ animation: 'viewFadeIn 0.4s cubic-bezier(0.1, 0.9, 0.2, 1)', height: '100dvh', overflow: 'hidden' }}>
+    <div key={view} style={{ 
+      animation: 'viewFadeIn 0.4s cubic-bezier(0.1, 0.9, 0.2, 1)', 
+      height: '100dvh', 
+      overflowY: view === 'history' ? 'auto' : 'hidden', 
+      overflowX: 'hidden',
+      background: '#030009'
+    }}>
       <style>{`
         @keyframes viewFadeIn {
           from { opacity: 0; transform: scale(0.992) translateY(6px); }
@@ -534,6 +542,13 @@ function App() {
         <>
           <LandingPage 
             onStart={(problemId) => {
+              const daily = getDailyChallenge();
+              if (problemId === daily.id) {
+                setIsSpeedChallenge(true);
+                setSettings(s => ({ ...s, showTimer: true })); // Force timer for speed challenge
+              } else {
+                setIsSpeedChallenge(false);
+              }
               if (problemId) handleProblemChange(problemId);
               setView('workspace');
             }} 
@@ -590,6 +605,7 @@ function App() {
         isInterviewMode={isInterviewMode}
         onStartInterview={handleStartInterview}
         onEndInterview={handleEndInterview}
+        isSpeedChallenge={isSpeedChallenge}
         roomCode={roomCode}
         onShareRoom={handleShareRoom}
         onLeaveRoom={handleLeaveRoom}

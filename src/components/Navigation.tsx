@@ -23,6 +23,7 @@ interface NavigationProps {
   isInterviewMode?: boolean;
   onStartInterview?: () => void;
   onEndInterview?: () => void;
+  isSpeedChallenge?: boolean;
 }
 
 export const Navigation: React.FC<NavigationProps> = ({
@@ -46,6 +47,7 @@ export const Navigation: React.FC<NavigationProps> = ({
   isInterviewMode = false,
   onStartInterview,
   onEndInterview,
+  isSpeedChallenge = false,
 }) => {
   const isBlocked = cooldownRemaining > 0;
   const [showProfileMenu, setShowProfileMenu] = useState(false);
@@ -78,24 +80,42 @@ export const Navigation: React.FC<NavigationProps> = ({
 
       <div className="navbar-actions">
         {timer !== undefined && timer !== null && (
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            padding: '5px 14px',
-            borderRadius: '99px',
-            background: 'rgba(168, 85, 247, 0.1)',
-            border: '1px solid rgba(168, 85, 247, 0.2)',
-            fontFamily: 'monospace',
-            fontSize: '0.85rem',
-            fontWeight: 700,
-            color: 'var(--accent-primary)',
-            minWidth: '80px',
-            justifyContent: 'center',
-            letterSpacing: '0.05em',
-            boxShadow: 'inset 0 0 10px rgba(168, 85, 247, 0.1)'
-          }}>
-            <span style={{ fontSize: '1rem', marginRight: '4px' }}>⏱</span> {timer}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            {isSpeedChallenge && (
+              <div style={{ 
+                padding: '4px 10px', 
+                borderRadius: '6px', 
+                background: 'linear-gradient(135deg, #7C3AED, #DB2777)', 
+                color: '#fff', 
+                fontSize: '0.65rem', 
+                fontWeight: 800, 
+                textTransform: 'uppercase', 
+                letterSpacing: '0.05em',
+                boxShadow: '0 0 10px rgba(124,58,237,0.3)',
+                animation: 'pulse 2s infinite'
+              }}>
+                Speed Challenge
+              </div>
+            )}
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              padding: '5px 14px',
+              borderRadius: '99px',
+              background: 'rgba(168, 85, 247, 0.1)',
+              border: '1px solid rgba(168, 85, 247, 0.2)',
+              fontFamily: 'monospace',
+              fontSize: '0.85rem',
+              fontWeight: 700,
+              color: 'var(--accent-primary)',
+              minWidth: '80px',
+              justifyContent: 'center',
+              letterSpacing: '0.05em',
+              boxShadow: 'inset 0 0 10px rgba(168, 85, 247, 0.1)'
+            }}>
+              <span style={{ fontSize: '1rem', marginRight: '4px' }}>⏱</span> {timer}
+            </div>
           </div>
         )}
 

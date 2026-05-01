@@ -5,6 +5,7 @@ import { supabase } from '../supabase';
 import { AuthModal } from './AuthModal';
 import confetti from 'canvas-confetti';
 import { useMouseTrail, useScrollSpy, useRippleEffect } from '../hooks/useInteractiveEffects';
+import { getDailyChallenge, getTimeUntilNextChallenge } from '../utils/dailyChallenge';
 
 interface LandingPageProps {
   onStart: (problemId?: string) => void;
@@ -36,6 +37,15 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
 
   // Difficulty filter for problems
   const [difficultyFilter, setDifficultyFilter] = useState<'All' | 'Easy' | 'Medium' | 'Hard'>('All');
+  const [dailyChallenge] = useState(getDailyChallenge());
+  const [timeUntilNext, setTimeUntilNext] = useState(getTimeUntilNextChallenge());
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTimeUntilNext(getTimeUntilNextChallenge());
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
 
   // Confetti fired flag
   const [confettiFired, setConfettiFired] = useState(false);
@@ -542,6 +552,86 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
             <Brain size={16} className="float-anim" color="#A855F7" />
             <span style={{ animation: 'textFade 3.5s infinite ease-in-out' }}>{fridayText}</span>
           </div>
+        </div>
+
+        {/* 🏆 Daily Challenge Card */}
+        <div 
+          className="stagger-in hover-lift"
+          style={{ 
+            marginBottom: '48px', 
+            width: '100%', 
+            maxWidth: '720px',
+            background: 'linear-gradient(135deg, rgba(124,58,237,0.1) 0%, rgba(219,39,119,0.05) 100%)',
+            border: '1px solid var(--landing-accent-primary)',
+            borderRadius: '24px',
+            padding: '24px',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '16px',
+            position: 'relative',
+            overflow: 'hidden',
+            backdropFilter: 'blur(20px)',
+            boxShadow: '0 8px 32px rgba(124,58,237,0.15)'
+          }}
+        >
+          <div style={{ position: 'absolute', top: '-20px', right: '-20px', width: '100px', height: '100px', background: 'radial-gradient(circle, rgba(124,58,237,0.2) 0%, transparent 70%)', filter: 'blur(20px)' }} />
+          
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <div style={{ padding: '8px', borderRadius: '12px', background: 'rgba(124,58,237,0.2)', color: '#A855F7' }}>
+                <Zap size={20} fill="currentColor" />
+              </div>
+              <div>
+                <div style={{ fontSize: '0.65rem', fontWeight: 900, color: '#A855F7', textTransform: 'uppercase', letterSpacing: '0.15em' }}>Daily Speed Challenge</div>
+                <div style={{ fontSize: '1.2rem', fontWeight: 900, color: 'var(--landing-text-primary)', letterSpacing: '-0.02em' }}>{dailyChallenge.title}</div>
+              </div>
+            </div>
+            <div style={{ textAlign: 'right' }}>
+              <div style={{ fontSize: '0.65rem', fontWeight: 800, color: 'var(--landing-text-dim)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Next Challenge in</div>
+              <div style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--landing-text-primary)', fontFamily: 'monospace' }}>{timeUntilNext}</div>
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+            {dailyChallenge.tags.slice(0, 3).map(tag => (
+              <span key={tag} style={{ fontSize: '0.65rem', fontWeight: 700, padding: '4px 10px', borderRadius: '6px', background: 'var(--landing-border-light)', color: 'var(--landing-text-dim)' }}>
+                {tag}
+              </span>
+            ))}
+            <span style={{ 
+              fontSize: '0.65rem', 
+              fontWeight: 800, 
+              padding: '4px 10px', 
+              borderRadius: '6px', 
+              background: dailyChallenge.difficulty === 'Easy' ? 'rgba(16,185,129,0.1)' : dailyChallenge.difficulty === 'Medium' ? 'rgba(245,158,11,0.1)' : 'rgba(239,68,68,0.1)', 
+              color: dailyChallenge.difficulty === 'Easy' ? '#10b981' : dailyChallenge.difficulty === 'Medium' ? '#f59e0b' : '#ef4444' 
+            }}>
+              {dailyChallenge.difficulty}
+            </span>
+          </div>
+
+          <button 
+            onClick={() => onStart(dailyChallenge.id)}
+            className="hover-lift"
+            style={{ 
+              marginTop: '8px',
+              padding: '12px', 
+              borderRadius: '12px', 
+              background: 'linear-gradient(135deg, #7C3AED, #DB2777)', 
+              color: '#fff', 
+              fontSize: '0.85rem', 
+              fontWeight: 800, 
+              border: 'none', 
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '8px',
+              boxShadow: '0 4px 15px rgba(124,58,237,0.3)'
+            }}
+          >
+            Start Speed Challenge <ArrowRight size={16} />
+          </button>
         </div>
 
         {/* 📊 Social Proof Stats */}
