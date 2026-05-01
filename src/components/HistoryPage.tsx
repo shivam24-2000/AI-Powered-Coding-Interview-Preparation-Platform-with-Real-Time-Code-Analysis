@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from '../supabase';
-import { ArrowLeft, Clock, Award, Code, CheckCircle, XCircle, BarChart2, PieChart as PieIcon, Globe, Layers, Flame, Calendar, Info } from 'lucide-react';
-import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, AreaChart, Area, XAxis, BarChart, Bar, YAxis, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar } from 'recharts';
+import { ArrowLeft, Clock, Award, Code, CheckCircle, XCircle, BarChart2, Globe, Layers, Flame, Calendar } from 'lucide-react';
+import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, XAxis, BarChart, Bar, YAxis } from 'recharts';
 import { PROBLEMS } from '../problems';
 
 interface HistoryPageProps {
@@ -128,10 +128,10 @@ export const HistoryPage: React.FC<HistoryPageProps> = ({ onBack, session }) => 
       heatmapData.push({ date: dStr, count });
     }
 
-    return { totalPassed, totalFailed, pieData, chartData, diffData, langData, topTags, currentStreak, maxStreak, heatmapData };
+    return { totalPassed, pieData, diffData, langData, topTags, currentStreak, maxStreak, heatmapData };
   }, [submissions]);
 
-  const { totalPassed, pieData, chartData, diffData, langData, topTags, currentStreak, maxStreak, heatmapData } = stats;
+  const { totalPassed, pieData, diffData, langData, topTags, currentStreak, maxStreak, heatmapData } = stats;
 
   return (
     <div style={{ padding: '24px', paddingBottom: '80px', maxWidth: '1200px', margin: '0 auto', color: '#fff', minHeight: '100%', position: 'relative' }}>
