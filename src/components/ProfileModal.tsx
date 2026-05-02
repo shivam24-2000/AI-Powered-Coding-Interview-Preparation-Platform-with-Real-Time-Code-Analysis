@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, User, Check, Sparkles } from 'lucide-react';
+import { X, User, Check, Sparkles, Lock } from 'lucide-react';
 import { supabase } from '../supabase';
 
 interface ProfileModalProps {
@@ -19,8 +19,10 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ onClose, session, on
   const [username, setUsername] = useState(session?.user?.user_metadata?.full_name || '');
   const [avatarStyle, setAvatarStyle] = useState('bottts');
   const [seed, setSeed] = useState(session?.user?.id || 'random');
+  const [newPassword, setNewPassword] = useState('');
   const [isSaving, setIsSaving] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [error, setError] = useState('');
 
   const avatarUrl = `https://api.dicebear.com/7.x/${avatarStyle}/svg?seed=${seed}&backgroundColor=030108,1a1a1a`;
 
@@ -37,24 +39,36 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ onClose, session, on
   }, [session]);
 
   const handleSave = async () => {
-    if (!username.trim()) return;
+    if (!username.trim() && !newPassword) return;
     setIsSaving(true);
+    setError('');
     
-    // Update local Supabase Auth metadata !!
-    const { error } = await supabase.auth.updateUser({
-      data: {
-        full_name: username.trim(),
-        avatar_url: avatarUrl
-      }
-    });
+    try {
+      const updates: any = {
+        data: {
+          full_name: username.trim(),
+          avatar_url: avatarUrl
+        }
+      };
 
-    setIsSaving(false);
-    if (!error) {
-       setSuccess(true);
-       setTimeout(() => {
-          onUpdate();
-          onClose();
-       }, 1500);
+      if (newPassword) {
+        if (newPassword.length < 6) throw new Error('Password must be at least 6 characters');
+        updates.password = newPassword;
+      }
+
+      const { error } = await supabase.auth.updateUser(updates);
+      if (error) throw error;
+
+      setSuccess(true);
+      setNewPassword(''); // Clear after success
+      setTimeout(() => {
+        onUpdate();
+        onClose();
+      }, 1500);
+    } catch (err: any) {
+      setError(err.message || 'Failed to update profile');
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -128,7 +142,7 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ onClose, session, on
           </div>
 
           {/* Username Input */}
-          <div style={{ marginBottom: '24px' }}>
+          <div style={{ marginBottom: '16px' }}>
              <label style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.75rem', fontWeight: 600, display: 'block', marginBottom: '8px' }}>Username</label>
              <div style={{ position: 'relative' }}>
                 <input 
@@ -145,6 +159,31 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ onClose, session, on
                 <User size={16} color="rgba(255,255,255,0.4)" style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)' }} />
              </div>
           </div>
+
+          {/* Password Update (New) */}
+          <div style={{ marginBottom: '24px' }}>
+             <label style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.75rem', fontWeight: 600, display: 'block', marginBottom: '8px' }}>Update Password (Optional)</label>
+             <div style={{ position: 'relative' }}>
+                <input 
+                   type="password"
+                   value={newPassword}
+                   onChange={e => setNewPassword(e.target.value)}
+                   style={{
+                      width: '100%', padding: '12px 12px 12px 36px', background: 'rgba(255,255,255,0.03)',
+                      border: '1px solid rgba(255,255,255,0.08)', borderRadius: '12px', color: '#fff',
+                      fontSize: '0.9rem', outline: 'none', transition: 'all 0.2s'
+                   }}
+                   placeholder="Enter new password..."
+                />
+                <Lock size={16} color="rgba(255,255,255,0.4)" style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)' }} />
+             </div>
+          </div>
+
+          {error && (
+            <div style={{ padding: '10px', background: 'rgba(239, 68, 68, 0.08)', border: '1px solid rgba(239, 68, 68, 0.2)', borderRadius: '10px', color: '#ef4444', fontSize: '0.75rem', marginBottom: '16px', textAlign: 'center' }}>
+              {error}
+            </div>
+          )}
 
           <button 
              onClick={handleSave}

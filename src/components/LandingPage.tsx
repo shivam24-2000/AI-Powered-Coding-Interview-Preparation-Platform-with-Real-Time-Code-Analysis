@@ -3,7 +3,6 @@ import { Terminal, Brain, Zap, Shield, LogOut, Award, X, Users, Mic, User, Trend
 import { PROBLEMS } from '../problems';
 import { supabase } from '../supabase';
 import { AuthModal } from './AuthModal';
-import confetti from 'canvas-confetti';
 import { useMouseTrail, useScrollSpy, useRippleEffect } from '../hooks/useInteractiveEffects';
 import { getDailyChallenge, getTimeUntilNextChallenge } from '../utils/dailyChallenge';
 
@@ -47,9 +46,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
     return () => clearInterval(timer);
   }, []);
 
-  // Confetti fired flag
-  const [confettiFired, setConfettiFired] = useState(false);
-
   // Easter egg: Konami-style sequence
   const [easterEggActive, setEasterEggActive] = useState(false);
   const keySequence = useRef<string[]>([]);
@@ -61,7 +57,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
       if (keySequence.current.length > 4) keySequence.current.shift();
       if (keySequence.current.join(',') === KONAMI.join(',')) {
         setEasterEggActive(true);
-        confetti({ particleCount: 150, spread: 100, origin: { y: 0.6 } });
         setTimeout(() => setEasterEggActive(false), 5000);
       }
     };
@@ -100,7 +95,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
         setSandboxOutput(prev => [...prev, line]);
         if (i === snippet.output.length - 1) {
           setIsSandboxRunning(false);
-          confetti({ particleCount: 30, spread: 60, origin: { x: 0.7, y: 0.5 }, colors: ['#A855F7', '#10B981', '#00E5FF'] });
         }
       }, (i + 1) * 500);
     });
@@ -174,6 +168,14 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
 
   const allTags = Array.from(new Set((problems || []).flatMap((p: any) => p.tags || []))).sort();
 
+  const handleProtectedStart = (problemId?: string) => {
+    if (!session) {
+      setAuthModal('signup');
+    } else {
+      onStart(problemId);
+    }
+  };
+
   const handleStartWithTags = () => {
     if (selectedTags.length === 0) return;
     
@@ -189,7 +191,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
     
     if (matching.length > 0) {
       const randomIdx = Math.floor(Math.random() * matching.length);
-      onStart(matching[randomIdx].id);
+      handleProtectedStart(matching[randomIdx].id);
     } else {
       alert("No problems found with these tags.");
     }
@@ -266,9 +268,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
       });
       if (progress < 1) {
         requestAnimationFrame(step);
-      } else if (!confettiFired) {
-        setConfettiFired(true);
-        confetti({ particleCount: 60, spread: 80, origin: { y: 0.7 }, colors: ['#A855F7', '#10B981', '#00E5FF', '#FF007A'] });
       }
     };
     requestAnimationFrame(step);
@@ -492,14 +491,18 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
         <div style={{ display:'flex', gap:'14px', flexWrap:'wrap', justifyContent:'center', alignItems:'center', marginBottom:'44px', position:'relative' }}>
           <div style={{ position: 'relative' }}>
             <button style={{ background: 'linear-gradient(135deg, #FF007A, #7000FF)', color: '#ffffff', border: 'none', padding: '16px 36px', borderRadius: '16px', fontWeight: 800, fontSize: '1rem', cursor: 'pointer', position: 'relative', zIndex: 2, boxShadow: '0 8px 40px rgba(112,0,255,0.4), inset 0 2px 2px rgba(255,255,255,0.2)', display: 'flex', alignItems: 'center', gap: '10px', letterSpacing: '-0.01em', overflow: 'hidden' }} onClick={() => {
-              setTagModalOpen(true);
+              if (!session) {
+                setAuthModal('signup');
+              } else {
+                setTagModalOpen(true);
+              }
             }} className="magic-btn" onMouseDown={ripple}>
               <div className="btn-sweep"></div>
               <Zap size={18} /> Start Solving Problems
             </button>
           </div>
           <button
-            onClick={() => { onStart(); }}
+            onClick={() => { handleProtectedStart(); }}
             style={{ background:'var(--landing-card-bg)', border:'1px solid rgba(168,85,247,0.3)', color:'var(--landing-accent)', padding:'15px 28px', borderRadius:'14px', fontWeight:700, fontSize:'0.92rem', cursor:'pointer', display:'flex', alignItems:'center', gap:'8px', backdropFilter:'blur(10px)', transition:'all 0.3s' }}
             onMouseEnter={e => { e.currentTarget.style.background='rgba(168,85,247,0.12)'; e.currentTarget.style.borderColor='rgba(168,85,247,0.6)'; e.currentTarget.style.transform='translateY(-2px)'; }}
             onMouseLeave={e => { e.currentTarget.style.background='var(--landing-card-bg)'; e.currentTarget.style.borderColor='rgba(168,85,247,0.3)'; e.currentTarget.style.transform='translateY(0)'; }}
@@ -611,7 +614,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
           </div>
 
           <button 
-            onClick={() => onStart(dailyChallenge.id)}
+            onClick={() => handleProtectedStart(dailyChallenge.id)}
             className="hover-lift"
             style={{ 
               marginTop: '8px',
@@ -842,7 +845,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
             }
 
             return displayed.map((p) => (
-              <div key={p.id} className="problem-card-enhanced hover-glow" onClick={() => onStart(p.id)} style={{ flex: '1 1 220px', background: 'var(--landing-card-bg)', borderRadius: '16px', padding: '20px', textAlign: 'left', cursor: 'pointer', backdropFilter: 'blur(12px)', boxShadow: '0 4px 24px rgba(0,0,0,0.3)', position: 'relative', overflow: 'hidden', border: '1px solid var(--landing-border)', borderLeft: `3px solid ${p.difficulty === 'Easy' ? 'var(--landing-success)' : p.difficulty === 'Medium' ? '#f59e0b' : '#ef4444'}` }}>
+              <div key={p.id} className="problem-card-enhanced hover-glow" onClick={() => handleProtectedStart(p.id)} style={{ flex: '1 1 220px', background: 'var(--landing-card-bg)', borderRadius: '16px', padding: '20px', textAlign: 'left', cursor: 'pointer', backdropFilter: 'blur(12px)', boxShadow: '0 4px 24px rgba(0,0,0,0.3)', position: 'relative', overflow: 'hidden', border: '1px solid var(--landing-border)', borderLeft: `3px solid ${p.difficulty === 'Easy' ? 'var(--landing-success)' : p.difficulty === 'Medium' ? '#f59e0b' : '#ef4444'}` }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                   <span style={{ fontSize: '0.92rem', fontWeight: 700, color: 'var(--landing-text-primary)', lineHeight: 1.3, flex: 1, marginRight: '8px' }}>{p.title?.replace(/^\d+\.\s*/, '')}</span>
                   <span style={{
@@ -946,7 +949,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
               </div>
             ))}
             <button
-              onClick={() => { onStart(); }}
+              onClick={() => { handleProtectedStart(); }}
               style={{ marginTop: '4px', padding: '14px', background: 'linear-gradient(135deg, #7C3AED, #DB2777)', border: 'none', borderRadius: '14px', color: 'var(--landing-text-primary)', fontWeight: 800, fontSize: '0.9rem', cursor: 'pointer', boxShadow: '0 8px 24px rgba(124,58,237,0.35)', transition: 'transform 0.2s', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
               onMouseEnter={e => e.currentTarget.style.transform='translateY(-2px)'}
               onMouseLeave={e => e.currentTarget.style.transform='translateY(0)'}
@@ -1181,7 +1184,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
           <h2 style={{ fontSize: '1.8rem', fontWeight: 900, color: 'var(--landing-text-primary)', letterSpacing: '-0.02em', marginBottom: '12px', position: 'relative', zIndex: 1 }}>Ready to Ace Your Next Interview?</h2>
           <p style={{ color: 'var(--landing-text-muted)', fontSize: '0.9rem', maxWidth: '460px', margin: '0 auto 28px', lineHeight: 1.6, position: 'relative', zIndex: 1 }}>Join thousands of developers who improved their interview performance with NexCode AI.</p>
           <button
-            onClick={() => { onStart(); }}
+            onClick={() => { handleProtectedStart(); }}
             className="magic-btn"
             style={{ padding: '16px 36px', background: 'linear-gradient(135deg, #7C3AED, #DB2777)', border: 'none', borderRadius: '14px', color: '#ffffff', fontWeight: 800, fontSize: '1rem', cursor: 'pointer', boxShadow: '0 10px 40px rgba(124,58,237,0.35)', display: 'inline-flex', alignItems: 'center', gap: '10px', position: 'relative', zIndex: 1 }}
           >

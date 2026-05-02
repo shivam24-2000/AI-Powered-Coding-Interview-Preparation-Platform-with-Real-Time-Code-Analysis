@@ -28,7 +28,6 @@ import { analyzeCode as getAIAnalysis, getChatResponse as getAIChatResponse } fr
 import { quotaManager } from './quotaManager';
 import { Lock, ChevronLeft, ChevronUp, Terminal, Loader } from 'lucide-react';
 import { applyAppTheme } from './themes';
-import { useConfetti } from './hooks/useConfetti';
 import { PROBLEMS } from './problems';
 import './App.css';
 
@@ -55,7 +54,6 @@ const AuthToast = ({ type }: { type: 'login' | 'logout' }) => (
 );
 
 function App() {
-  const { fire: fireConfetti } = useConfetti();
   const [problems, setProblems] = useState<any[]>(PROBLEMS);
   const [selectedProblem, setSelectedProblem] = useState<any>(PROBLEMS[0] || null);
   const [selectedLanguage, setSelectedLanguage] = useState<Language>(DEFAULT_LANGUAGE);
@@ -91,6 +89,7 @@ function App() {
   });
   const [shortcutsOpen, setShortcutsOpen] = useState(false);
   const [session, setSession] = useState<any>(null);
+  const [sessionLoaded, setSessionLoaded] = useState(false);
   const [authToast, setAuthToast] = useState<'login' | 'logout' | null>(null);
   const isInitialLoadRef = useRef(true);
   const [roomCode, setRoomCode] = useState<string | null>(null);
@@ -105,7 +104,6 @@ function App() {
     const room = params.get('room');
     if (room) {
       setRoomCode(room);
-      setView('workspace'); // Send directly to workspace !!
       const role = params.get('role') === 'interviewer' ? 'interviewer' : 'coder';
       setPeerRole(role);
 
@@ -130,6 +128,20 @@ function App() {
        sessionStorage.setItem('activeView', view);
     }
   }, [view]);
+
+  // 🛡️ Redirect to workspace if entering via room link but only if authenticated
+  useEffect(() => {
+    if (roomCode && session && view === 'landing') {
+      setView('workspace');
+    }
+  }, [roomCode, session, view]);
+
+  // 🛡️ Global Auth Guard: Redirect to landing if no session and trying to access protected views
+  useEffect(() => {
+    if (sessionLoaded && !session && view !== 'landing') {
+      setView('landing');
+    }
+  }, [sessionLoaded, session, view]);
 
   useEffect(() => {
     // Clear any residual voice output upon reload/refresh !!
@@ -166,6 +178,7 @@ function App() {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       lastKnownSession = session;
+      setSessionLoaded(true);
     });
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
@@ -179,6 +192,8 @@ function App() {
           setAuthToast('logout');
           setTimeout(() => setAuthToast(null), 4000);
         }
+      } else if (_event === 'PASSWORD_RECOVERY') {
+        setProfileOpen(true);
       }
       setSession(session);
       lastKnownSession = session;
@@ -411,8 +426,6 @@ function App() {
     }
 
     if (isSuccess) {
-      fireConfetti();
-
       setTimeout(() => {
         setMentorOpen(true);
         setIsMentorFolded(false);
