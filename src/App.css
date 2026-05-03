@@ -331,9 +331,9 @@ code {
   width: 95%;
   padding: 12px;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 0 25px 70px -10px rgba(0, 0, 0, 0.8);
-  background: rgba(24, 24, 33, 0.98);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 25px 70px -10px rgba(0, 0, 0, 0.2);
+  background: var(--bg-panel-solid);
   margin-top: -15vh;
   animation: popIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   border-radius: 12px;

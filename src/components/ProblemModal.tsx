@@ -39,8 +39,8 @@ export const ProblemModal: React.FC<ProblemModalProps> = ({
       left: 0,
       right: 0,
       bottom: 0,
-      background: 'rgba(0, 0, 0, 0.75)',
-      backdropFilter: 'blur(4px)',
+      background: 'rgba(0, 0, 0, 0.4)',
+      backdropFilter: 'blur(8px)',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
@@ -53,10 +53,10 @@ export const ProblemModal: React.FC<ProblemModalProps> = ({
           width: '100%',
           maxWidth: '550px',
           maxHeight: '80vh',
-          background: '#1c1c21',
-          border: '1px solid rgba(139, 92, 246, 0.2)',
+          background: 'var(--bg-panel-solid)',
+          border: '1px solid var(--border-color)',
           borderRadius: '16px',
-          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
+          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.2)',
           display: 'flex',
           flexDirection: 'column',
           overflow: 'hidden',
@@ -67,7 +67,7 @@ export const ProblemModal: React.FC<ProblemModalProps> = ({
         {/* Header */}
         <div style={{
           padding: '20px 24px',
-          borderBottom: '1px solid rgba(255, 255, 255, 0.05)',
+          borderBottom: '1px solid var(--border-color)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
@@ -85,7 +85,7 @@ export const ProblemModal: React.FC<ProblemModalProps> = ({
             style={{
               padding: '8px',
               borderRadius: '8px',
-              background: 'rgba(255, 255, 255, 0.05)',
+              background: 'var(--bg-panel-light)',
               border: 'none',
               color: 'var(--text-muted)',
               cursor: 'pointer',
@@ -118,8 +118,8 @@ export const ProblemModal: React.FC<ProblemModalProps> = ({
               style={{
                 width: '100%',
                 padding: '12px 12px 12px 40px',
-                background: 'rgba(0, 0, 0, 0.2)',
-                border: '1px solid rgba(255, 255, 255, 0.1)',
+                background: 'var(--bg-panel-light)',
+                border: '1px solid var(--border-color)',
                 borderRadius: '10px',
                 color: 'var(--text-primary)',
                 fontSize: '0.9rem',
@@ -127,7 +127,7 @@ export const ProblemModal: React.FC<ProblemModalProps> = ({
                 transition: 'border-color 0.2s',
               }}
               onFocus={e => e.currentTarget.style.borderColor = 'var(--accent-primary)'}
-              onBlur={e => e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)'}
+              onBlur={e => e.currentTarget.style.borderColor = 'var(--border-color)'}
             />
           </div>
         </div>
@@ -174,7 +174,7 @@ export const ProblemModal: React.FC<ProblemModalProps> = ({
                   <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '4px' }}>
                     <span style={{ 
                       fontWeight: 600, 
-                      color: p.id === currentProblemId ? 'var(--accent-primary)' : '#ffffff',
+                      color: p.id === currentProblemId ? 'var(--accent-primary)' : 'var(--text-primary)',
                       fontSize: '0.95rem'
                     }}>
                       {p.title}

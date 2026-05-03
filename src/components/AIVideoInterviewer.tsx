@@ -222,15 +222,15 @@ export const AIVideoInterviewer: React.FC<AIVideoInterviewerProps> = ({
           alignItems: 'center',
           gap: '8px',
           padding: '10px 16px',
-          background: 'rgba(14,10,24,0.95)',
-          border: '1px solid rgba(168,85,247,0.3)',
+          background: 'var(--bg-panel-solid)',
+          border: '1px solid var(--border-color)',
           borderRadius: '99px',
-          color: '#D8B4FE',
+          color: 'var(--accent-primary)',
           cursor: 'pointer',
           fontSize: '0.78rem',
           fontWeight: 700,
           backdropFilter: 'blur(12px)',
-          boxShadow: '0 8px 30px rgba(0,0,0,0.4)',
+          boxShadow: '0 8px 30px rgba(0,0,0,0.2)',
           animation: 'slideUp 0.3s ease',
         }}
       >
@@ -267,8 +267,8 @@ export const AIVideoInterviewer: React.FC<AIVideoInterviewerProps> = ({
           width: '28px',
           height: '28px',
           borderRadius: '50%',
-          background: 'rgba(30,20,50,0.95)',
-          border: '1px solid rgba(255,255,255,0.15)',
+          background: 'var(--bg-panel-solid)',
+          border: '1px solid var(--border-color)',
           color: 'rgba(255,255,255,0.6)',
           display: 'flex',
           alignItems: 'center',
@@ -314,10 +314,10 @@ export const AIVideoInterviewer: React.FC<AIVideoInterviewerProps> = ({
         }
         .vid-ctrl-btn {
           width: 38px; height: 38px; border-radius: 12px;
-          border: 1px solid rgba(255,255,255,0.1);
+          border: 1px solid var(--border-color);
           display: flex; align-items: center; justify-content: center;
           cursor: pointer; transition: all 0.2s;
-          color: #fff;
+          color: var(--text-primary);
         }
         .vid-ctrl-btn:hover { transform: scale(1.1); filter: brightness(1.2); }
         .vid-send-btn {
@@ -330,30 +330,31 @@ export const AIVideoInterviewer: React.FC<AIVideoInterviewerProps> = ({
         .vid-send-btn:hover { transform: scale(1.08); filter: brightness(1.15); }
         .vid-send-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
         .vid-input {
-          flex: 1; background: rgba(255,255,255,0.05);
-          border: 1px solid rgba(255,255,255,0.1);
-          border-radius: 10px; padding: 10px 14px; color: #fff;
+          flex: 1; background: var(--bg-panel-light);
+          border: 1px solid var(--border-color);
+          border-radius: 10px; padding: 10px 14px; color: var(--text-primary);
           font-size: 0.82rem; outline: none; resize: none;
           font-family: inherit; line-height: 1.4;
           transition: border-color 0.2s;
         }
-        .vid-input:focus { border-color: rgba(168,85,247,0.5); }
-        .vid-input::placeholder { color: rgba(255,255,255,0.3); }
+        .vid-input:focus { border-color: var(--accent-primary); }
+        .vid-input::placeholder { color: var(--text-muted); opacity: 0.5; }
         .msg-bubble-ai {
-          background: rgba(168,85,247,0.1);
-          border: 1px solid rgba(168,85,247,0.2);
+          background: var(--bg-panel-light);
+          border: 1px solid var(--border-color);
           border-radius: 14px 14px 14px 4px;
           padding: 10px 13px; font-size: 0.78rem;
-          line-height: 1.5; color: #e9d5ff; max-width: 90%;
+          line-height: 1.5; color: var(--text-primary); max-width: 90%;
           align-self: flex-start;
         }
         .msg-bubble-user {
-          background: rgba(59,130,246,0.12);
-          border: 1px solid rgba(59,130,246,0.2);
+          background: var(--bg-panel-light);
+          border: 1px solid var(--border-color);
           border-radius: 14px 14px 4px 14px;
           padding: 10px 13px; font-size: 0.78rem;
-          line-height: 1.5; color: #bfdbfe; max-width: 90%;
+          line-height: 1.5; color: var(--text-primary); max-width: 90%;
           align-self: flex-end;
+          opacity: 0.9;
         }
         .typing-indicator {
           display: flex; gap: 4px; align-items: center; padding: 2px 0;
@@ -367,14 +368,14 @@ export const AIVideoInterviewer: React.FC<AIVideoInterviewerProps> = ({
 
       {/* ── TOP: Avatar card ── */}
       <div style={{
-        background: 'rgba(14, 10, 24, 0.95)',
+        background: 'var(--bg-panel-solid)',
         backdropFilter: 'blur(20px)',
-        border: `1px solid ${isSpeaking ? 'rgba(168,85,247,0.5)' : 'rgba(255,255,255,0.1)'}`,
+        border: `1px solid ${isSpeaking ? 'var(--accent-primary)' : 'var(--border-color)'}`,
         borderRadius: '20px',
         overflow: 'hidden',
         boxShadow: isSpeaking
-          ? '0 24px 60px rgba(0,0,0,0.5), 0 0 40px rgba(168,85,247,0.15)'
-          : '0 24px 60px rgba(0,0,0,0.4)',
+          ? '0 24px 60px rgba(0,0,0,0.2), 0 0 40px rgba(168,85,247,0.1)'
+          : '0 24px 60px rgba(0,0,0,0.2)',
         position: 'relative',
         transition: 'border-color 0.4s, box-shadow 0.4s',
       }}>
@@ -402,7 +403,7 @@ export const AIVideoInterviewer: React.FC<AIVideoInterviewerProps> = ({
           </div>
 
           {/* Sound bars */}
-          <div style={{ position: 'absolute', top: '10px', left: '10px', display: 'flex', alignItems: 'center', gap: '3px', background: 'rgba(0,0,0,0.5)', padding: '5px 10px', borderRadius: '99px', backdropFilter: 'blur(6px)', border: '1px solid rgba(255,255,255,0.08)' }}>
+          <div style={{ position: 'absolute', top: '10px', left: '10px', display: 'flex', alignItems: 'center', gap: '3px', background: 'var(--bg-panel-solid)', opacity: 0.9, padding: '5px 10px', borderRadius: '99px', backdropFilter: 'blur(6px)', border: '1px solid var(--border-color)' }}>
             {Array.from({ length: 5 }).map((_, i) => (
               <div key={i} style={{
                 width: '3px',
@@ -413,13 +414,13 @@ export const AIVideoInterviewer: React.FC<AIVideoInterviewerProps> = ({
                 transition: 'height 0.2s, background 0.3s',
               }} />
             ))}
-            <span style={{ fontSize: '0.6rem', color: '#fff', fontWeight: 700, marginLeft: '5px', letterSpacing: '0.05em' }}>
+            <span style={{ fontSize: '0.6rem', color: 'var(--text-primary)', fontWeight: 700, marginLeft: '5px', letterSpacing: '0.05em' }}>
               {isSpeaking ? 'SPEAKING' : 'LISTENING'}
             </span>
           </div>
 
           {/* Minimize toggle */}
-          <button onClick={() => setIsMinimized(p => !p)} style={{ position: 'absolute', bottom: '8px', right: '8px', background: 'rgba(0,0,0,0.5)', border: 'none', color: 'rgba(255,255,255,0.6)', cursor: 'pointer', borderRadius: '6px', padding: '4px', display: 'flex' }}>
+          <button onClick={() => setIsMinimized(p => !p)} style={{ position: 'absolute', bottom: '8px', right: '8px', background: 'var(--bg-panel-solid)', opacity: 0.7, border: 'none', color: 'var(--text-muted)', cursor: 'pointer', borderRadius: '6px', padding: '4px', display: 'flex' }}>
             {isMinimized ? <ChevronDown size={14} /> : <ChevronUp size={14} />}
           </button>
         </div>
@@ -433,35 +434,35 @@ export const AIVideoInterviewer: React.FC<AIVideoInterviewerProps> = ({
                   {[0, 0.2, 0.4].map((d, i) => (
                     <div key={i} className="typing-dot" style={{ animationDelay: `${d}s` }} />
                   ))}
-                  <span style={{ fontSize: '0.72rem', color: 'rgba(255,255,255,0.4)', marginLeft: '6px' }}>Thinking...</span>
+                  <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginLeft: '6px' }}>Thinking...</span>
                 </div>
               ) : lastAssistantMsg ? (
-                <p style={{ margin: 0, fontSize: '0.75rem', color: 'rgba(255,255,255,0.75)', lineHeight: 1.5, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                <p style={{ margin: 0, fontSize: '0.75rem', color: 'var(--text-primary)', opacity: 0.8, lineHeight: 1.5, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
                   {lastAssistantMsg.content.replace(/```[\s\S]*?```/g, '[code]').replace(/[*_#`]/g, '')}
                 </p>
               ) : null}
             </div>
 
             {/* User PIP */}
-            <div style={{ position: 'absolute', bottom: '70px', right: '10px', width: '80px', height: '104px', borderRadius: '12px', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.2)', background: '#111', boxShadow: '0 4px 16px rgba(0,0,0,0.5)' }}>
+            <div style={{ position: 'absolute', bottom: '70px', right: '10px', width: '80px', height: '104px', borderRadius: '12px', overflow: 'hidden', border: '1px solid var(--border-color)', background: 'var(--bg-panel-solid)', boxShadow: '0 4px 16px rgba(0,0,0,0.3)' }}>
               {isVideoOn
                 ? <video ref={userVideoRef} autoPlay playsInline muted style={{ width: '100%', height: '100%', objectFit: 'cover', transform: 'scaleX(-1)' }} />
-                : <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><VideoOff size={20} color="rgba(255,255,255,0.2)" /></div>
+                : <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><VideoOff size={20} color="var(--text-muted)" /></div>
               }
-              <div style={{ position: 'absolute', bottom: '4px', left: '4px', background: 'rgba(0,0,0,0.6)', borderRadius: '4px', padding: '1px 4px', fontSize: '0.55rem', color: '#fff', fontWeight: 700 }}>YOU</div>
+              <div style={{ position: 'absolute', bottom: '4px', left: '4px', background: 'var(--bg-panel-solid)', opacity: 0.8, borderRadius: '4px', padding: '1px 4px', fontSize: '0.55rem', color: 'var(--text-primary)', fontWeight: 700 }}>YOU</div>
             </div>
 
             {/* Controls row */}
-            <div style={{ padding: '10px 14px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'rgba(0,0,0,0.2)' }}>
+            <div style={{ padding: '10px 14px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'var(--bg-panel-light)' }}>
               <div style={{ display: 'flex', gap: '8px' }}>
-                <button className="vid-ctrl-btn" style={{ background: isMicOn ? 'rgba(255,255,255,0.08)' : 'rgba(239,68,68,0.2)', animation: isListening ? 'micPulse 1s infinite' : 'none' }} onClick={toggleMic} title={isMicOn ? 'Mute' : 'Unmute'}>
-                  {isMicOn ? <Mic size={16} /> : <MicOff size={16} color="#fca5a5" />}
+                <button className="vid-ctrl-btn" style={{ background: isMicOn ? 'var(--bg-panel-light)' : 'rgba(239,68,68,0.1)', animation: isListening ? 'micPulse 1s infinite' : 'none' }} onClick={toggleMic} title={isMicOn ? 'Mute' : 'Unmute'}>
+                  {isMicOn ? <Mic size={16} /> : <MicOff size={16} color="#ef4444" />}
                 </button>
-                <button className="vid-ctrl-btn" style={{ background: isVideoOn ? 'rgba(255,255,255,0.08)' : 'rgba(239,68,68,0.2)' }} onClick={() => setIsVideoOn(p => !p)} title={isVideoOn ? 'Stop Video' : 'Start Video'}>
-                  {isVideoOn ? <VideoIcon size={16} /> : <VideoOff size={16} color="#fca5a5" />}
+                <button className="vid-ctrl-btn" style={{ background: isVideoOn ? 'var(--bg-panel-light)' : 'rgba(239,68,68,0.1)' }} onClick={() => setIsVideoOn(p => !p)} title={isVideoOn ? 'Stop Video' : 'Start Video'}>
+                  {isVideoOn ? <VideoIcon size={16} /> : <VideoOff size={16} color="#ef4444" />}
                 </button>
-                <button className="vid-ctrl-btn" onClick={() => setShowTranscript(p => !p)} style={{ background: showTranscript ? 'rgba(168,85,247,0.15)' : 'rgba(255,255,255,0.05)' }} title="Toggle transcript">
-                  <Activity size={16} color={showTranscript ? '#A855F7' : undefined} />
+                <button className="vid-ctrl-btn" onClick={() => setShowTranscript(p => !p)} style={{ background: showTranscript ? 'rgba(168,85,247,0.1)' : 'var(--bg-panel-light)' }} title="Toggle transcript">
+                  <Activity size={16} color={showTranscript ? 'var(--accent-primary)' : undefined} />
                 </button>
               </div>
 
@@ -479,14 +480,14 @@ export const AIVideoInterviewer: React.FC<AIVideoInterviewerProps> = ({
       {/* ── TRANSCRIPT PANEL ── */}
       {showTranscript && !isMinimized && (
         <div style={{
-          background: 'rgba(10,7,20,0.96)',
+          background: 'var(--bg-panel-solid)',
           backdropFilter: 'blur(20px)',
-          border: `1px solid ${isListening ? 'rgba(239,68,68,0.3)' : 'rgba(255,255,255,0.08)'}`,
+          border: `1px solid ${isListening ? '#ef4444' : 'var(--border-color)'}`,
           borderRadius: '18px',
           display: 'flex',
           flexDirection: 'column',
           overflow: 'hidden',
-          boxShadow: '0 12px 40px rgba(0,0,0,0.5)',
+          boxShadow: '0 12px 40px rgba(0,0,0,0.2)',
           transition: 'border-color 0.3s',
         }}>
 
@@ -494,18 +495,18 @@ export const AIVideoInterviewer: React.FC<AIVideoInterviewerProps> = ({
           {lastAssistantMsg && (
             <div style={{
               padding: '12px 14px',
-              background: 'rgba(168,85,247,0.07)',
-              borderBottom: '1px solid rgba(168,85,247,0.15)',
+              background: 'var(--bg-panel-light)',
+              borderBottom: '1px solid var(--border-color)',
               display: 'flex',
               gap: '10px',
               alignItems: 'flex-start',
             }}>
-              <div style={{ width: '28px', height: '28px', borderRadius: '50%', overflow: 'hidden', flexShrink: 0, border: '1px solid rgba(168,85,247,0.3)' }}>
+              <div style={{ width: '28px', height: '28px', borderRadius: '50%', overflow: 'hidden', flexShrink: 0, border: '1px solid var(--border-color)' }}>
                 <img src={`${import.meta.env.BASE_URL}assets/interviewers/avatar.png`} alt="AI" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top' }} />
               </div>
               <div style={{ flex: 1, minWidth: 0 }}>
-                <p style={{ margin: '0 0 3px 0', fontSize: '0.6rem', fontWeight: 800, color: '#A855F7', textTransform: 'uppercase', letterSpacing: '0.06em' }}>Interviewer asks</p>
-                <p style={{ margin: 0, fontSize: '0.78rem', color: 'rgba(255,255,255,0.85)', lineHeight: 1.5, wordBreak: 'break-word' }}>
+                <p style={{ margin: '0 0 3px 0', fontSize: '0.6rem', fontWeight: 800, color: 'var(--accent-primary)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>Interviewer asks</p>
+                <p style={{ margin: 0, fontSize: '0.78rem', color: 'var(--text-primary)', opacity: 0.9, lineHeight: 1.5, wordBreak: 'break-word' }}>
                   {lastAssistantMsg.content.replace(/```[\s\S]*?```/g, '[code]').replace(/[*_#`]/g, '').slice(0, 200)}
                   {lastAssistantMsg.content.length > 200 ? '…' : ''}
                 </p>
@@ -514,16 +515,16 @@ export const AIVideoInterviewer: React.FC<AIVideoInterviewerProps> = ({
           )}
 
           {/* Header */}
-          <div style={{ padding: '8px 14px', borderBottom: '1px solid rgba(255,255,255,0.04)', display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Shield size={12} color="#A855F7" />
-            <span style={{ fontSize: '0.62rem', fontWeight: 700, color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', letterSpacing: '0.05em', flex: 1 }}>Conversation · {phase} phase</span>
-            {isChatTyping && <span style={{ fontSize: '0.62rem', color: '#A855F7', fontWeight: 700, animation: 'typingDot 1s infinite' }}>AI thinking…</span>}
+          <div style={{ padding: '8px 14px', borderBottom: '1px solid var(--border-color)', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <Shield size={12} color="var(--accent-primary)" />
+            <span style={{ fontSize: '0.62rem', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', flex: 1 }}>Conversation · {phase} phase</span>
+            {isChatTyping && <span style={{ fontSize: '0.62rem', color: 'var(--accent-primary)', fontWeight: 700, animation: 'typingDot 1s infinite' }}>AI thinking…</span>}
           </div>
 
           {/* Message feed */}
           <div style={{ padding: '10px 12px', maxHeight: '180px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '8px' }}>
             {messages.length === 0 && (
-              <p style={{ textAlign: 'center', fontSize: '0.72rem', color: 'rgba(255,255,255,0.2)', margin: '12px 0' }}>Interview starting…</p>
+              <p style={{ textAlign: 'center', fontSize: '0.72rem', color: 'var(--text-muted)', margin: '12px 0' }}>Interview starting…</p>
             )}
             {messages.map(msg => (
               <div key={msg.id} className={msg.role === 'assistant' ? 'msg-bubble-ai' : 'msg-bubble-user'}>
@@ -545,8 +546,8 @@ export const AIVideoInterviewer: React.FC<AIVideoInterviewerProps> = ({
             <div style={{
               margin: '0 12px',
               padding: '10px 13px',
-              background: 'rgba(239,68,68,0.07)',
-              border: '1px dashed rgba(239,68,68,0.35)',
+              background: 'rgba(239,68,68,0.05)',
+              border: '1px dashed rgba(239,68,68,0.3)',
               borderRadius: '12px',
               display: 'flex',
               alignItems: 'flex-start',
@@ -555,8 +556,8 @@ export const AIVideoInterviewer: React.FC<AIVideoInterviewerProps> = ({
             }}>
               <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#ef4444', flexShrink: 0, marginTop: '4px', boxShadow: '0 0 6px #ef4444' }} />
               <div style={{ flex: 1, minWidth: 0 }}>
-                <p style={{ margin: '0 0 2px 0', fontSize: '0.6rem', fontWeight: 800, color: '#fca5a5', textTransform: 'uppercase', letterSpacing: '0.06em' }}>You are speaking…</p>
-                <p style={{ margin: 0, fontSize: '0.8rem', color: transcript ? '#fff' : 'rgba(255,255,255,0.35)', fontStyle: transcript ? 'normal' : 'italic', lineHeight: 1.4 }}>
+                <p style={{ margin: '0 0 2px 0', fontSize: '0.6rem', fontWeight: 800, color: '#ef4444', textTransform: 'uppercase', letterSpacing: '0.06em' }}>You are speaking…</p>
+                <p style={{ margin: 0, fontSize: '0.8rem', color: transcript ? 'var(--text-primary)' : 'var(--text-muted)', fontStyle: transcript ? 'normal' : 'italic', lineHeight: 1.4 }}>
                   {transcript || 'Listening for speech…'}
                 </p>
               </div>
@@ -564,7 +565,7 @@ export const AIVideoInterviewer: React.FC<AIVideoInterviewerProps> = ({
           )}
 
           {/* Input row */}
-          <div style={{ padding: '10px 12px', marginTop: '6px', borderTop: '1px solid rgba(255,255,255,0.05)', display: 'flex', gap: '8px', alignItems: 'flex-end' }}>
+          <div style={{ padding: '10px 12px', marginTop: '6px', borderTop: '1px solid var(--border-color)', display: 'flex', gap: '8px', alignItems: 'flex-end' }}>
             <textarea
               className="vid-input"
               rows={2}
@@ -577,8 +578,8 @@ export const AIVideoInterviewer: React.FC<AIVideoInterviewerProps> = ({
               <button
                 className="vid-ctrl-btn"
                 style={{
-                  background: isListening ? 'rgba(239,68,68,0.3)' : 'rgba(255,255,255,0.06)',
-                  border: isListening ? '1px solid rgba(239,68,68,0.5)' : '1px solid rgba(255,255,255,0.1)',
+                  background: isListening ? 'rgba(239,68,68,0.1)' : 'var(--bg-panel-light)',
+                  border: isListening ? '1px solid #ef4444' : '1px solid var(--border-color)',
                   animation: isListening ? 'micPulse 1s infinite' : 'none',
                 }}
                 onClick={isListening ? stopListening : startListening}

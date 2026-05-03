@@ -24,6 +24,15 @@
   --glow-primary: rgba(168, 85, 247, 0.2);
 }
 
+.hover-menu-item {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hover-menu-item:hover {
+  background: var(--bg-panel-light) !important;
+  color: var(--accent-primary) !important;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;

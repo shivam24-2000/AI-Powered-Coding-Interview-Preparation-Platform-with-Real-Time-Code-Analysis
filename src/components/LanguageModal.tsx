@@ -70,19 +70,19 @@ export const LanguageModal: React.FC<LanguageModalProps> = ({
                 cursor: 'pointer',
                 transition: 'all 0.1s',
                 textAlign: 'left',
-                color: currentLanguage.id === lang.id ? '#fff' : 'rgba(255, 255, 255, 0.5)',
+                color: currentLanguage.id === lang.id ? 'var(--text-primary)' : 'var(--text-muted)',
                 fontSize: '0.85rem',
               }}
               onMouseOver={e => {
                 if (currentLanguage.id !== lang.id) {
-                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
-                  e.currentTarget.style.color = 'rgba(255, 255, 255, 0.9)';
+                  e.currentTarget.style.background = 'var(--bg-panel-light)';
+                  e.currentTarget.style.color = 'var(--text-primary)';
                 }
               }}
               onMouseOut={e => {
                 if (currentLanguage.id !== lang.id) {
                   e.currentTarget.style.background = 'transparent';
-                  e.currentTarget.style.color = 'rgba(255, 255, 255, 0.5)';
+                  e.currentTarget.style.color = 'var(--text-muted)';
                 }
               }}
             >

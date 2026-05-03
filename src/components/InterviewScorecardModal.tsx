@@ -33,7 +33,7 @@ export const InterviewScorecardModal: React.FC<InterviewScorecardModalProps> = (
     <div style={{
       position: 'fixed',
       inset: 0,
-      background: 'rgba(3, 0, 15, 0.85)',
+      background: 'rgba(0, 0, 0, 0.4)',
       backdropFilter: 'blur(12px)',
       display: 'flex',
       alignItems: 'center',
@@ -50,7 +50,7 @@ export const InterviewScorecardModal: React.FC<InterviewScorecardModalProps> = (
         .score-bar {
           height: 8px;
           border-radius: 4px;
-          background: rgba(255,255,255,0.05);
+          background: var(--bg-panel-light);
           overflow: hidden;
           margin-top: 8px;
         }
@@ -62,20 +62,20 @@ export const InterviewScorecardModal: React.FC<InterviewScorecardModalProps> = (
       `}</style>
 
       <div style={{
-        background: 'rgba(18, 14, 28, 0.95)',
-        border: `1px solid rgba(255,255,255,0.1)`,
+        background: 'var(--bg-panel-solid)',
+        border: `1px solid var(--border-color)`,
         width: '100%',
         maxWidth: '700px',
         borderRadius: '24px',
         position: 'relative',
-        boxShadow: `0 20px 60px rgba(0,0,0,0.6), 0 0 100px ${getStatusColor()}15`,
+        boxShadow: `0 20px 60px rgba(0,0,0,0.2), 0 0 100px ${getStatusColor()}15`,
         overflow: 'hidden'
       }}>
         {/* Header */}
         <div style={{
           padding: '32px',
           background: `linear-gradient(135deg, ${getStatusColor()}10 0%, transparent 100%)`,
-          borderBottom: '1px solid rgba(255,255,255,0.05)',
+          borderBottom: '1px solid var(--border-color)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between'
@@ -85,8 +85,8 @@ export const InterviewScorecardModal: React.FC<InterviewScorecardModalProps> = (
               width: '56px',
               height: '56px',
               borderRadius: '16px',
-              background: 'rgba(255,255,255,0.03)',
-              border: '1px solid rgba(255,255,255,0.1)',
+              background: 'var(--bg-panel-light)',
+              border: '1px solid var(--border-color)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center'
@@ -94,13 +94,13 @@ export const InterviewScorecardModal: React.FC<InterviewScorecardModalProps> = (
               {getStatusIcon()}
             </div>
             <div>
-              <h2 style={{ margin: 0, fontSize: '1.5rem', fontWeight: 800, color: '#fff' }}>Interview Report</h2>
+              <h2 style={{ margin: 0, fontSize: '1.5rem', fontWeight: 800, color: 'var(--text-primary)' }}>Interview Report</h2>
               <p style={{ margin: '4px 0 0 0', color: getStatusColor(), fontWeight: 700, textTransform: 'uppercase', fontSize: '0.8rem', letterSpacing: '0.1em' }}>
                 Outcome: {evaluation.status}
               </p>
             </div>
           </div>
-          <button onClick={onClose} style={{ background: 'transparent', border: 'none', color: 'rgba(255,255,255,0.3)', cursor: 'pointer', padding: '8px' }}>
+          <button onClick={onClose} style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', padding: '8px' }}>
             <X size={24} />
           </button>
         </div>
@@ -111,9 +111,9 @@ export const InterviewScorecardModal: React.FC<InterviewScorecardModalProps> = (
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px', marginBottom: '32px' }}>
             <div className="glass-panel" style={{ padding: '20px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
-                <Trophy size={18} color="#A855F7" />
-                <span style={{ fontSize: '0.9rem', fontWeight: 700 }}>Overall Score</span>
-                <span style={{ marginLeft: 'auto', fontWeight: 800, color: '#fff', fontSize: '1.2rem' }}>{evaluation.score}/100</span>
+                <Trophy size={18} color="var(--accent-primary)" />
+                <span style={{ fontSize: '0.9rem', fontWeight: 700, color: 'var(--text-primary)' }}>Overall Score</span>
+                <span style={{ marginLeft: 'auto', fontWeight: 800, color: 'var(--text-primary)', fontSize: '1.2rem' }}>{evaluation.score}/100</span>
               </div>
               <div className="score-bar">
                 <div className="score-fill" style={{ width: `${evaluation.score}%`, background: 'linear-gradient(90deg, #A855F7, #3B82F6)' }} />
@@ -123,9 +123,9 @@ export const InterviewScorecardModal: React.FC<InterviewScorecardModalProps> = (
             <div className="glass-panel" style={{ padding: '20px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
                 <Target size={18} color="#10B981" />
-                <span style={{ fontSize: '0.9rem', fontWeight: 700 }}>Decision</span>
+                <span style={{ fontSize: '0.9rem', fontWeight: 700, color: 'var(--text-primary)' }}>Decision</span>
               </div>
-              <div style={{ fontSize: '1rem', fontWeight: 600, color: '#fff' }}>
+              <div style={{ fontSize: '1rem', fontWeight: 600, color: 'var(--text-primary)' }}>
                 {evaluation.status === 'hired' ? 'Strong Hire Recommendation' : evaluation.status === 'waitlist' ? 'Consider for Future Roles' : 'Does Not Meet Bar'}
               </div>
             </div>
@@ -143,8 +143,8 @@ export const InterviewScorecardModal: React.FC<InterviewScorecardModalProps> = (
               { label: 'Efficiency', value: evaluation.feedback.efficiency },
             ].map((item, idx) => (
               <React.Fragment key={idx}>
-                <div style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.85rem', fontWeight: 600, paddingTop: '4px' }}>{item.label}</div>
-                <div style={{ color: '#fff', fontSize: '0.85rem', lineHeight: 1.5, paddingBottom: '12px', borderBottom: '1px solid rgba(255,255,255,0.03)' }}>{item.value}</div>
+                <div style={{ color: 'var(--text-muted)', fontSize: '0.85rem', fontWeight: 600, paddingTop: '4px' }}>{item.label}</div>
+                <div style={{ color: 'var(--text-primary)', fontSize: '0.85rem', lineHeight: 1.5, paddingBottom: '12px', borderBottom: '1px solid var(--border-color)' }}>{item.value}</div>
               </React.Fragment>
             ))}
           </div>
@@ -155,7 +155,7 @@ export const InterviewScorecardModal: React.FC<InterviewScorecardModalProps> = (
             </h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
               {evaluation.nextSteps.map((step, i) => (
-                <div key={i} style={{ padding: '12px 16px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '12px', fontSize: '0.85rem', color: 'rgba(255,255,255,0.8)' }}>
+                <div key={i} style={{ padding: '12px 16px', background: 'var(--bg-panel-light)', border: '1px solid var(--border-color)', borderRadius: '12px', fontSize: '0.85rem', color: 'var(--text-primary)' }}>
                   • {step}
                 </div>
               ))}

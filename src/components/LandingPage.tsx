@@ -1,10 +1,14 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { Terminal, Brain, Zap, Shield, LogOut, Award, X, Users, Mic, User, TrendingUp, CheckCircle, Star, ArrowRight, Sparkles, Sun, Moon, Command, Play, ChevronDown } from 'lucide-react';
+import { Terminal, Brain, Zap, Shield, LogOut, Award, X, Users, Mic, User, TrendingUp, CheckCircle, Star, ArrowRight, Sparkles, Sun, Moon, Command, Play, ChevronDown, Linkedin, Globe, Mail } from 'lucide-react';
 import { PROBLEMS } from '../problems';
 import { supabase } from '../supabase';
 import { AuthModal } from './AuthModal';
 import { useMouseTrail, useScrollSpy, useRippleEffect } from '../hooks/useInteractiveEffects';
 import { getDailyChallenge, getTimeUntilNextChallenge } from '../utils/dailyChallenge';
+import { PrivacyPolicyModal } from './PrivacyPolicyModal';
+import { TermsOfUseModal } from './TermsOfUseModal';
+import { SecurityModal } from './SecurityModal';
+import { ComplianceModal } from './ComplianceModal';
 
 interface LandingPageProps {
   onStart: (problemId?: string) => void;
@@ -88,7 +92,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
     setIsSandboxRunning(true);
     setSandboxOutput([]);
     const snippet = sandboxSnippets[activeSandbox];
-    
+
     // Simulate line-by-line output
     snippet.output.forEach((line, i) => {
       setTimeout(() => {
@@ -158,6 +162,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
   const [authModal, setAuthModal] = useState<'login' | 'signup' | null>(null);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
+  const [showPrivacyModal, setShowPrivacyModal] = useState(false);
+  const [showTermsModal, setShowTermsModal] = useState(false);
+  const [showSecurityModal, setShowSecurityModal] = useState(false);
+  const [showComplianceModal, setShowComplianceModal] = useState(false);
 
   const handleLogout = () => {
     setShowLogoutConfirm(true);
@@ -178,17 +186,17 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
 
   const handleStartWithTags = () => {
     if (selectedTags.length === 0) return;
-    
-    let matching = (problems || []).filter((p: any) => 
+
+    let matching = (problems || []).filter((p: any) =>
       selectedTags.every(t => p.tags?.includes(t))
     );
-    
+
     if (matching.length === 0) {
-      matching = (problems || []).filter((p: any) => 
+      matching = (problems || []).filter((p: any) =>
         selectedTags.some(t => p.tags?.includes(t))
       );
     }
-    
+
     if (matching.length > 0) {
       const randomIdx = Math.floor(Math.random() * matching.length);
       handleProtectedStart(matching[randomIdx].id);
@@ -392,7 +400,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
       <header style={styles.header}>
         <style>{`
           .hover-menu-item { transition: all 0.2s ease !important; }
-          .hover-menu-item:hover { background: rgba(168, 85, 247, 0.1) !important; color: #D8B4FE !important; }
+          .hover-menu-item:hover { background: var(--landing-border) !important; color: var(--landing-accent) !important; }
         `}</style>
         <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
           <div className="glass-panel" style={{ padding: '0', borderRadius: '10px', overflow: 'hidden', width: '36px', height: '36px', border: '1px solid var(--landing-border-strong)' }}>
@@ -402,19 +410,19 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
         </div>
 
         <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-          <button 
-             onClick={onToggleLightMode} 
-             style={{ background: 'var(--landing-border-light)', border: '1px solid var(--landing-border-strong)', cursor: 'pointer', borderRadius: '50%', width: '36px', height: '36px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--landing-text-primary)', transition: 'all 0.2s ease' }}
-             className="hover-lift invert-protect"
+          <button
+            onClick={onToggleLightMode}
+            style={{ background: 'var(--landing-border-light)', border: '1px solid var(--landing-border-strong)', cursor: 'pointer', borderRadius: '50%', width: '36px', height: '36px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--landing-text-primary)', transition: 'all 0.2s ease' }}
+            className="hover-lift invert-protect"
           >
             {isLightMode ? <Sun size={18} color="#f59e0b" /> : <Moon size={18} color="#D8B4FE" />}
           </button>
-          
+
           {session ? (
             <div style={{ position: 'relative' }}>
-              <button 
+              <button
                 onClick={() => setShowProfileMenu(!showProfileMenu)}
-                style={{ ...styles.logoutBtn, gap: '8px', background: 'var(--landing-card-bg)', border: '1px solid var(--landing-border)', display: 'flex', alignItems: 'center' }} 
+                style={{ ...styles.logoutBtn, gap: '8px', background: 'var(--landing-card-bg)', border: '1px solid var(--landing-border)', display: 'flex', alignItems: 'center' }}
                 className="hover-lift"
               >
                 {session?.user?.user_metadata?.avatar_url ? (
@@ -428,15 +436,20 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
               {showProfileMenu && (
                 <div style={{ position: 'absolute', top: '100%', right: 0, paddingTop: '8px', zIndex: 1000 }}>
                   <div style={{
-                    background: 'rgba(20, 20, 20, 0.85)', backdropFilter: 'blur(10px)',
+                    background: 'var(--landing-glass-heavy)', backdropFilter: 'blur(10px)',
                     border: '1px solid var(--landing-border)', borderRadius: '12px',
-                    padding: '8px', minWidth: '150px',
-                    boxShadow: '0 10px 25px rgba(0,0,0,0.4)', display: 'flex', flexDirection: 'column', gap: '4px'
+                    padding: '8px', minWidth: '180px',
+                    boxShadow: '0 10px 25px rgba(0,0,0,0.1)', display: 'flex', flexDirection: 'column', gap: '4px'
                   }}>
+                    <div style={{ padding: '8px 12px', borderBottom: '1px solid var(--landing-border)', marginBottom: '4px', opacity: 0.8 }}>
+                      <p style={{ margin: 0, fontSize: '0.65rem', color: 'var(--landing-text-dim)', textTransform: 'uppercase', letterSpacing: '0.04em', fontWeight: 800 }}>Account</p>
+                      <p style={{ margin: '2px 0 0 0', fontSize: '0.78rem', fontWeight: 600, color: 'var(--landing-text-primary)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{session?.user?.email}</p>
+                    </div>
+
                     <button onClick={() => { onEditProfile?.(); setShowProfileMenu(false); }} style={{
                       background: 'transparent', border: 'none', color: 'var(--landing-text-primary)',
                       padding: '8px 12px', borderRadius: '8px', cursor: 'pointer',
-                      display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.85rem',
+                      display: 'flex', alignItems: 'center', gap: '10px', fontSize: '0.85rem',
                       textAlign: 'left'
                     }} className="hover-menu-item">
                       <User size={14} color="#10B981" /> Edit Profile
@@ -453,7 +466,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
                     <button onClick={handleLogout} style={{
                       background: 'transparent', border: 'none', color: '#EF4444',
                       padding: '8px 12px', borderRadius: '8px', cursor: 'pointer',
-                      display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.85rem',
+                      display: 'flex', alignItems: 'center', gap: '10px', fontSize: '0.85rem',
                       textAlign: 'left'
                     }} className="hover-menu-item">
                       <LogOut size={14} /> Logout
@@ -488,7 +501,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
           Practice with a real-time AI interviewer, get instant complexity analysis from Friday, and receive a detailed hiring scorecard — all in your browser.
         </p>
 
-        <div style={{ display:'flex', gap:'14px', flexWrap:'wrap', justifyContent:'center', alignItems:'center', marginBottom:'44px', position:'relative' }}>
+        <div style={{ display: 'flex', gap: '14px', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center', marginBottom: '44px', position: 'relative' }}>
           <div style={{ position: 'relative' }}>
             <button style={{ background: 'linear-gradient(135deg, #FF007A, #7000FF)', color: '#ffffff', border: 'none', padding: '16px 36px', borderRadius: '16px', fontWeight: 800, fontSize: '1rem', cursor: 'pointer', position: 'relative', zIndex: 2, boxShadow: '0 8px 40px rgba(112,0,255,0.4), inset 0 2px 2px rgba(255,255,255,0.2)', display: 'flex', alignItems: 'center', gap: '10px', letterSpacing: '-0.01em', overflow: 'hidden' }} onClick={() => {
               if (!session) {
@@ -503,9 +516,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
           </div>
           <button
             onClick={() => { handleProtectedStart(); }}
-            style={{ background:'var(--landing-card-bg)', border:'1px solid rgba(168,85,247,0.3)', color:'var(--landing-accent)', padding:'15px 28px', borderRadius:'14px', fontWeight:700, fontSize:'0.92rem', cursor:'pointer', display:'flex', alignItems:'center', gap:'8px', backdropFilter:'blur(10px)', transition:'all 0.3s' }}
-            onMouseEnter={e => { e.currentTarget.style.background='rgba(168,85,247,0.12)'; e.currentTarget.style.borderColor='rgba(168,85,247,0.6)'; e.currentTarget.style.transform='translateY(-2px)'; }}
-            onMouseLeave={e => { e.currentTarget.style.background='var(--landing-card-bg)'; e.currentTarget.style.borderColor='rgba(168,85,247,0.3)'; e.currentTarget.style.transform='translateY(0)'; }}
+            style={{ background: 'var(--landing-card-bg)', border: '1px solid rgba(168,85,247,0.3)', color: 'var(--landing-accent)', padding: '15px 28px', borderRadius: '14px', fontWeight: 700, fontSize: '0.92rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', backdropFilter: 'blur(10px)', transition: 'all 0.3s' }}
+            onMouseEnter={e => { e.currentTarget.style.background = 'rgba(168,85,247,0.12)'; e.currentTarget.style.borderColor = 'rgba(168,85,247,0.6)'; e.currentTarget.style.transform = 'translateY(-2px)'; }}
+            onMouseLeave={e => { e.currentTarget.style.background = 'var(--landing-card-bg)'; e.currentTarget.style.borderColor = 'rgba(168,85,247,0.3)'; e.currentTarget.style.transform = 'translateY(0)'; }}
           >
             <Mic size={16} /> Try AI Mock Interview
           </button>
@@ -558,11 +571,11 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
         </div>
 
         {/* 🏆 Daily Challenge Card */}
-        <div 
+        <div
           className="stagger-in hover-lift"
-          style={{ 
-            marginBottom: '48px', 
-            width: '100%', 
+          style={{
+            marginBottom: '48px',
+            width: '100%',
             maxWidth: '720px',
             background: 'linear-gradient(135deg, rgba(124,58,237,0.1) 0%, rgba(219,39,119,0.05) 100%)',
             border: '1px solid var(--landing-accent-primary)',
@@ -578,7 +591,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
           }}
         >
           <div style={{ position: 'absolute', top: '-20px', right: '-20px', width: '100px', height: '100px', background: 'radial-gradient(circle, rgba(124,58,237,0.2) 0%, transparent 70%)', filter: 'blur(20px)' }} />
-          
+
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
               <div style={{ padding: '8px', borderRadius: '12px', background: 'rgba(124,58,237,0.2)', color: '#A855F7' }}>
@@ -601,30 +614,30 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
                 {tag}
               </span>
             ))}
-            <span style={{ 
-              fontSize: '0.65rem', 
-              fontWeight: 800, 
-              padding: '4px 10px', 
-              borderRadius: '6px', 
-              background: dailyChallenge.difficulty === 'Easy' ? 'rgba(16,185,129,0.1)' : dailyChallenge.difficulty === 'Medium' ? 'rgba(245,158,11,0.1)' : 'rgba(239,68,68,0.1)', 
-              color: dailyChallenge.difficulty === 'Easy' ? '#10b981' : dailyChallenge.difficulty === 'Medium' ? '#f59e0b' : '#ef4444' 
+            <span style={{
+              fontSize: '0.65rem',
+              fontWeight: 800,
+              padding: '4px 10px',
+              borderRadius: '6px',
+              background: dailyChallenge.difficulty === 'Easy' ? 'rgba(16,185,129,0.1)' : dailyChallenge.difficulty === 'Medium' ? 'rgba(245,158,11,0.1)' : 'rgba(239,68,68,0.1)',
+              color: dailyChallenge.difficulty === 'Easy' ? '#10b981' : dailyChallenge.difficulty === 'Medium' ? '#f59e0b' : '#ef4444'
             }}>
               {dailyChallenge.difficulty}
             </span>
           </div>
 
-          <button 
+          <button
             onClick={() => handleProtectedStart(dailyChallenge.id)}
             className="hover-lift"
-            style={{ 
+            style={{
               marginTop: '8px',
-              padding: '12px', 
-              borderRadius: '12px', 
-              background: 'linear-gradient(135deg, #7C3AED, #DB2777)', 
-              color: '#fff', 
-              fontSize: '0.85rem', 
-              fontWeight: 800, 
-              border: 'none', 
+              padding: '12px',
+              borderRadius: '12px',
+              background: 'linear-gradient(135deg, #7C3AED, #DB2777)',
+              color: '#fff',
+              fontSize: '0.85rem',
+              fontWeight: 800,
+              border: 'none',
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
@@ -653,154 +666,154 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
           ))}
         </div>
 
-      {/* ✨ Interactive Code Sandbox */}
-      <section id="playground-section" style={{ maxWidth: '1100px', margin: '0 auto 100px auto', padding: '0 24px', position: 'relative' }}>
-        <div style={{ textAlign: 'center', marginBottom: '48px' }}>
-          <h2 style={{ fontSize: '2.4rem', fontWeight: 900, color: 'var(--landing-text-primary)', letterSpacing: '-0.04em', marginBottom: '12px' }}>Try It <span style={{ background: 'linear-gradient(135deg, #00E5FF, #7C3AED)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Right Now</span></h2>
-          <p style={{ color: 'var(--landing-text-muted)', fontSize: '1rem', maxWidth: '600px', margin: '0 auto' }}>Pick an algorithm, hit Run, and watch Friday analyze it in real-time. No signup required.</p>
-        </div>
+        {/* ✨ Interactive Code Sandbox */}
+        <section id="playground-section" style={{ maxWidth: '1100px', margin: '0 auto 100px auto', padding: '0 24px', position: 'relative' }}>
+          <div style={{ textAlign: 'center', marginBottom: '48px' }}>
+            <h2 style={{ fontSize: '2.4rem', fontWeight: 900, color: 'var(--landing-text-primary)', letterSpacing: '-0.04em', marginBottom: '12px' }}>Try It <span style={{ background: 'linear-gradient(135deg, #00E5FF, #7C3AED)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Right Now</span></h2>
+            <p style={{ color: 'var(--landing-text-muted)', fontSize: '1rem', maxWidth: '600px', margin: '0 auto' }}>Pick an algorithm, hit Run, and watch Friday analyze it in real-time. No signup required.</p>
+          </div>
 
-        {/* Algorithm Tabs */}
-        <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginBottom: '24px' }}>
-          {sandboxSnippets.map((s, i) => (
-            <button
-              key={s.label}
-              onClick={() => setActiveSandbox(i)}
-              className="sandbox-tab"
-              style={{
-                padding: '8px 20px', borderRadius: '12px', fontSize: '0.82rem', fontWeight: 700,
-                cursor: 'pointer', transition: 'all 0.3s',
-                background: activeSandbox === i ? 'linear-gradient(135deg, #7C3AED, #DB2777)' : 'var(--landing-card-bg)',
-                border: activeSandbox === i ? 'none' : '1px solid var(--landing-border)',
-                color: activeSandbox === i ? '#fff' : 'var(--landing-text-muted)',
-                boxShadow: activeSandbox === i ? '0 6px 20px rgba(124,58,237,0.35)' : 'none',
-                transform: activeSandbox === i ? 'scale(1.05)' : 'scale(1)',
-              }}
-            >
-              <Command size={12} style={{ marginRight: '6px', verticalAlign: 'middle' }} />
-              {s.label}
-            </button>
-          ))}
-        </div>
+          {/* Algorithm Tabs */}
+          <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginBottom: '24px' }}>
+            {sandboxSnippets.map((s, i) => (
+              <button
+                key={s.label}
+                onClick={() => setActiveSandbox(i)}
+                className="sandbox-tab"
+                style={{
+                  padding: '8px 20px', borderRadius: '12px', fontSize: '0.82rem', fontWeight: 700,
+                  cursor: 'pointer', transition: 'all 0.3s',
+                  background: activeSandbox === i ? 'linear-gradient(135deg, #7C3AED, #DB2777)' : 'var(--landing-card-bg)',
+                  border: activeSandbox === i ? 'none' : '1px solid var(--landing-border)',
+                  color: activeSandbox === i ? '#fff' : 'var(--landing-text-muted)',
+                  boxShadow: activeSandbox === i ? '0 6px 20px rgba(124,58,237,0.35)' : 'none',
+                  transform: activeSandbox === i ? 'scale(1.05)' : 'scale(1)',
+                }}
+              >
+                <Command size={12} style={{ marginRight: '6px', verticalAlign: 'middle' }} />
+                {s.label}
+              </button>
+            ))}
+          </div>
 
-        <div style={{ background: 'var(--landing-glass)', border: '1px solid var(--landing-border)', borderRadius: '24px', overflow: 'hidden', display: 'grid', gridTemplateColumns: '1.8fr 1fr', boxShadow: '0 20px 80px rgba(0,0,0,0.2)', backdropFilter: 'blur(20px)' }} className="hover-glow main-preview-ui sandbox-panel">
-          {/* Left: Interactive Code */}
-          <div style={{ position: 'relative', background: 'var(--landing-card-bg)', padding: '24px' }}>
-             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px', borderBottom: '1px solid var(--landing-border-light)', paddingBottom: '12px' }}>
+          <div style={{ background: 'var(--landing-glass)', border: '1px solid var(--landing-border)', borderRadius: '24px', overflow: 'hidden', display: 'grid', gridTemplateColumns: '1.8fr 1fr', boxShadow: '0 20px 80px rgba(0,0,0,0.2)', backdropFilter: 'blur(20px)' }} className="hover-glow main-preview-ui sandbox-panel">
+            {/* Left: Interactive Code */}
+            <div style={{ position: 'relative', background: 'var(--landing-card-bg)', padding: '24px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px', borderBottom: '1px solid var(--landing-border-light)', paddingBottom: '12px' }}>
                 <div style={{ display: 'flex', gap: '6px' }}>
-                   <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#ff5f56' }} />
-                   <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#ffbd2e' }} />
-                   <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#27c93f' }} />
+                  <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#ff5f56' }} />
+                  <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#ffbd2e' }} />
+                  <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#27c93f' }} />
                 </div>
                 <div style={{ fontSize: '0.7rem', color: 'var(--landing-text-dim)', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '6px' }}>
                   <span style={{ fontSize: '0.6rem', color: 'var(--landing-success)', fontWeight: 700, background: 'rgba(16,185,129,0.1)', padding: '2px 8px', borderRadius: '4px' }}>Python</span>
                   {sandboxSnippets[activeSandbox].label.toLowerCase().replace(/ /g, '_')}.py
                 </div>
-             </div>
-             <pre style={{ margin: 0, fontSize: '0.85rem', color: 'var(--landing-text-high)', lineHeight: 1.7, fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace', whiteSpace: 'pre-wrap', position: 'relative' }}>
-               <code>{sandboxCode.split('\n').map((line, i) => {
-                 const highlighted = line
-                   .replace(/(def |return |for |in |if |elif |else:|while |import )/g, '<kw>$1</kw>')
-                   .replace(/(#.*)/g, '<cm>$1</cm>')
-                   .replace(/("[^"]*"|'[^']*')/g, '<st>$1</st>')
-                   .replace(/\b(\d+)\b/g, '<nm>$1</nm>');
-                 return (
-                   <span key={i}>
-                     <span style={{ color: 'rgba(255,255,255,0.2)', marginRight: '16px', fontSize: '0.72rem', userSelect: 'none', display: 'inline-block', width: '20px', textAlign: 'right' }}>{i + 1}</span>
-                     <span dangerouslySetInnerHTML={{ __html: highlighted }} />
-                     {'\n'}
-                   </span>
-                 );
-               })}</code>
-               <span style={{ width: '2px', height: '1.2em', background: '#7C3AED', display: 'inline-block', verticalAlign: 'middle', animation: 'blink 1s infinite', marginLeft: '2px' }} />
-             </pre>
+              </div>
+              <pre style={{ margin: 0, fontSize: '0.85rem', color: 'var(--landing-text-high)', lineHeight: 1.7, fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace', whiteSpace: 'pre-wrap', position: 'relative' }}>
+                <code>{sandboxCode.split('\n').map((line, i) => {
+                  const highlighted = line
+                    .replace(/(def |return |for |in |if |elif |else:|while |import )/g, '<kw>$1</kw>')
+                    .replace(/(#.*)/g, '<cm>$1</cm>')
+                    .replace(/("[^"]*"|'[^']*')/g, '<st>$1</st>')
+                    .replace(/\b(\d+)\b/g, '<nm>$1</nm>');
+                  return (
+                    <span key={i}>
+                      <span style={{ color: 'rgba(255,255,255,0.2)', marginRight: '16px', fontSize: '0.72rem', userSelect: 'none', display: 'inline-block', width: '20px', textAlign: 'right' }}>{i + 1}</span>
+                      <span dangerouslySetInnerHTML={{ __html: highlighted }} />
+                      {'\n'}
+                    </span>
+                  );
+                })}</code>
+                <span style={{ width: '2px', height: '1.2em', background: '#7C3AED', display: 'inline-block', verticalAlign: 'middle', animation: 'blink 1s infinite', marginLeft: '2px' }} />
+              </pre>
 
-             {/* Run button */}
-             <button
-               onClick={runSandbox}
-               disabled={isSandboxRunning}
-               onMouseDown={ripple}
-               className="run-code-btn"
-               style={{
-                 position: 'absolute', bottom: '20px', right: '20px',
-                 padding: '10px 24px', borderRadius: '12px',
-                 background: isSandboxRunning ? 'rgba(168,85,247,0.2)' : 'linear-gradient(135deg, #10B981, #059669)',
-                 border: 'none', color: '#fff', fontWeight: 800, fontSize: '0.82rem',
-                 cursor: isSandboxRunning ? 'wait' : 'pointer',
-                 display: 'flex', alignItems: 'center', gap: '8px',
-                 boxShadow: isSandboxRunning ? 'none' : '0 6px 20px rgba(16,185,129,0.35)',
-                 transition: 'all 0.3s', overflow: 'hidden'
-               }}
-             >
-               {isSandboxRunning ? (
-                 <><div className="spinner" /> Running...</>
-               ) : (
-                 <><Play size={14} fill="#fff" /> Run Code</>
-               )}
-             </button>
+              {/* Run button */}
+              <button
+                onClick={runSandbox}
+                disabled={isSandboxRunning}
+                onMouseDown={ripple}
+                className="run-code-btn"
+                style={{
+                  position: 'absolute', bottom: '20px', right: '20px',
+                  padding: '10px 24px', borderRadius: '12px',
+                  background: isSandboxRunning ? 'rgba(168,85,247,0.2)' : 'linear-gradient(135deg, #10B981, #059669)',
+                  border: 'none', color: '#fff', fontWeight: 800, fontSize: '0.82rem',
+                  cursor: isSandboxRunning ? 'wait' : 'pointer',
+                  display: 'flex', alignItems: 'center', gap: '8px',
+                  boxShadow: isSandboxRunning ? 'none' : '0 6px 20px rgba(16,185,129,0.35)',
+                  transition: 'all 0.3s', overflow: 'hidden'
+                }}
+              >
+                {isSandboxRunning ? (
+                  <><div className="spinner" /> Running...</>
+                ) : (
+                  <><Play size={14} fill="#fff" /> Run Code</>
+                )}
+              </button>
 
-             {/* Friday Overlay Tooltip */}
-             <div style={{ position: 'absolute', top: '90px', right: '30px', maxWidth: '200px', background: 'rgba(124, 58, 237, 0.1)', border: '1px solid rgba(168, 85, 247, 0.4)', padding: '12px', borderRadius: '12px', backdropFilter: 'blur(10px)', animation: 'float 4s ease-in-out infinite' }}>
+              {/* Friday Overlay Tooltip */}
+              <div style={{ position: 'absolute', top: '90px', right: '30px', maxWidth: '200px', background: 'rgba(124, 58, 237, 0.1)', border: '1px solid rgba(168, 85, 247, 0.4)', padding: '12px', borderRadius: '12px', backdropFilter: 'blur(10px)', animation: 'float 4s ease-in-out infinite' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
-                   <Sparkles size={14} color="var(--landing-accent)" />
-                   <span style={{ fontSize: '0.7rem', fontWeight: 800, color: 'var(--landing-accent)' }}>FRIDAY</span>
+                  <Sparkles size={14} color="var(--landing-accent)" />
+                  <span style={{ fontSize: '0.7rem', fontWeight: 800, color: 'var(--landing-accent)' }}>FRIDAY</span>
                 </div>
                 <p style={{ margin: 0, fontSize: '0.75rem', color: 'var(--landing-text-primary)', lineHeight: 1.4 }}>{fridayText}</p>
-             </div>
-          </div>
-
-          {/* Right: Output Console */}
-          <div style={{ padding: '24px', borderLeft: '1px solid var(--landing-border)', background: 'var(--landing-bg-primary)', display: 'flex', flexDirection: 'column' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px', paddingBottom: '12px', borderBottom: '1px solid var(--landing-border-light)' }}>
-              <Terminal size={14} color="#A855F7" />
-              <span style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--landing-text-dim)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>Output</span>
-              <div style={{ marginLeft: 'auto', width: '6px', height: '6px', borderRadius: '50%', background: isSandboxRunning ? '#f59e0b' : sandboxOutput.length > 0 ? 'var(--landing-success)' : 'var(--landing-border-strong)', boxShadow: isSandboxRunning ? '0 0 8px #f59e0b' : sandboxOutput.length > 0 ? '0 0 8px var(--landing-success)' : 'none' }} />
+              </div>
             </div>
-            <div style={{ flex: 1, fontFamily: 'ui-monospace, monospace', fontSize: '0.8rem', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              {sandboxOutput.length === 0 ? (
-                <div style={{ color: 'var(--landing-text-dim)', fontStyle: 'italic', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <ChevronDown size={12} /> Click "Run Code" to execute...
-                </div>
-              ) : (
-                sandboxOutput.map((line, i) => (
-                  <div key={i} className="output-line" style={{
-                    color: line.startsWith('✅') ? 'var(--landing-success)' : line.startsWith('🏆') ? '#FBBF24' : line.startsWith('→') ? 'var(--landing-accent)' : 'var(--landing-text-high)',
-                    animation: 'slideInLine 0.3s ease-out both',
-                    animationDelay: `${i * 0.1}s`,
-                    padding: '6px 10px',
-                    background: line.startsWith('🏆') ? 'rgba(251,191,36,0.06)' : 'rgba(255,255,255,0.02)',
-                    borderRadius: '8px',
-                    border: `1px solid ${line.startsWith('🏆') ? 'rgba(251,191,36,0.15)' : 'transparent'}`,
-                    fontWeight: line.startsWith('🏆') ? 700 : 500,
-                  }}>
-                    {line}
+
+            {/* Right: Output Console */}
+            <div style={{ padding: '24px', borderLeft: '1px solid var(--landing-border)', background: 'var(--landing-bg-primary)', display: 'flex', flexDirection: 'column' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px', paddingBottom: '12px', borderBottom: '1px solid var(--landing-border-light)' }}>
+                <Terminal size={14} color="#A855F7" />
+                <span style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--landing-text-dim)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>Output</span>
+                <div style={{ marginLeft: 'auto', width: '6px', height: '6px', borderRadius: '50%', background: isSandboxRunning ? '#f59e0b' : sandboxOutput.length > 0 ? 'var(--landing-success)' : 'var(--landing-border-strong)', boxShadow: isSandboxRunning ? '0 0 8px #f59e0b' : sandboxOutput.length > 0 ? '0 0 8px var(--landing-success)' : 'none' }} />
+              </div>
+              <div style={{ flex: 1, fontFamily: 'ui-monospace, monospace', fontSize: '0.8rem', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                {sandboxOutput.length === 0 ? (
+                  <div style={{ color: 'var(--landing-text-dim)', fontStyle: 'italic', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <ChevronDown size={12} /> Click "Run Code" to execute...
                   </div>
-                ))
-              )}
+                ) : (
+                  sandboxOutput.map((line, i) => (
+                    <div key={i} className="output-line" style={{
+                      color: line.startsWith('✅') ? 'var(--landing-success)' : line.startsWith('🏆') ? '#FBBF24' : line.startsWith('→') ? 'var(--landing-accent)' : 'var(--landing-text-high)',
+                      animation: 'slideInLine 0.3s ease-out both',
+                      animationDelay: `${i * 0.1}s`,
+                      padding: '6px 10px',
+                      background: line.startsWith('🏆') ? 'rgba(251,191,36,0.06)' : 'rgba(255,255,255,0.02)',
+                      borderRadius: '8px',
+                      border: `1px solid ${line.startsWith('🏆') ? 'rgba(251,191,36,0.15)' : 'transparent'}`,
+                      fontWeight: line.startsWith('🏆') ? 700 : 500,
+                    }}>
+                      {line}
+                    </div>
+                  ))
+                )}
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* 🏢 Trusted By Bar */}
-      <div className="stagger-in" style={{ width: '100%', maxWidth: '800px', margin: '0 auto 64px auto', textAlign: 'center' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '16px', justifyContent: 'center', marginBottom: '18px' }}>
-          <div style={{ flex: 1, maxWidth: '120px', height: '1px', background: 'linear-gradient(to right, transparent, rgba(168,85,247,0.2))' }} />
-          <p style={{ fontSize: '0.65rem', color: 'var(--landing-text-dim)', textTransform: 'uppercase', letterSpacing: '0.14em', fontWeight: 700, margin: 0 }}>Trusted by engineers at</p>
-          <div style={{ flex: 1, maxWidth: '120px', height: '1px', background: 'linear-gradient(to left, transparent, rgba(168,85,247,0.2))' }} />
+        {/* 🏢 Trusted By Bar */}
+        <div className="stagger-in" style={{ width: '100%', maxWidth: '800px', margin: '0 auto 64px auto', textAlign: 'center' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '16px', justifyContent: 'center', marginBottom: '18px' }}>
+            <div style={{ flex: 1, maxWidth: '120px', height: '1px', background: 'linear-gradient(to right, transparent, rgba(168,85,247,0.2))' }} />
+            <p style={{ fontSize: '0.65rem', color: 'var(--landing-text-dim)', textTransform: 'uppercase', letterSpacing: '0.14em', fontWeight: 700, margin: 0 }}>Trusted by engineers at</p>
+            <div style={{ flex: 1, maxWidth: '120px', height: '1px', background: 'linear-gradient(to left, transparent, rgba(168,85,247,0.2))' }} />
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', flexWrap: 'wrap', alignItems: 'center' }}>
+            {['Google', 'Meta', 'Amazon', 'Apple', 'Microsoft', 'Netflix', 'Stripe'].map((co, i) => (
+              <React.Fragment key={co}>
+                <span className="company-name" style={{ fontSize: '1rem', fontWeight: 800, color: 'var(--landing-text-dim)', letterSpacing: '0.01em', transition: 'color 0.3s, text-shadow 0.3s', padding: '4px 8px' }}>{co}</span>
+                {i < 6 && <span style={{ color: 'rgba(168,85,247,0.2)', fontSize: '0.5rem' }}>●</span>}
+              </React.Fragment>
+            ))}
+          </div>
         </div>
-        <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', flexWrap: 'wrap', alignItems: 'center' }}>
-          {['Google', 'Meta', 'Amazon', 'Apple', 'Microsoft', 'Netflix', 'Stripe'].map((co, i) => (
-            <React.Fragment key={co}>
-              <span className="company-name" style={{ fontSize: '1rem', fontWeight: 800, color: 'var(--landing-text-dim)', letterSpacing: '0.01em', transition: 'color 0.3s, text-shadow 0.3s', padding: '4px 8px' }}>{co}</span>
-              {i < 6 && <span style={{ color: 'rgba(168,85,247,0.2)', fontSize: '0.5rem' }}>●</span>}
-            </React.Fragment>
-          ))}
-        </div>
-      </div>
 
-      {/* 🛠️ popular problems grid  */}
-      <div style={{ margin: '0 0 24px 0', textAlign: 'center' }} className="stagger-in">
+        {/* 🛠️ popular problems grid  */}
+        <div style={{ margin: '0 0 24px 0', textAlign: 'center' }} className="stagger-in">
           <h2 style={{ fontSize: '1.6rem', fontWeight: 900, color: 'var(--landing-text-primary)', letterSpacing: '-0.02em', marginBottom: '8px' }}>
             Pick a <span style={{ background: 'linear-gradient(135deg, #A855F7, #EC4899)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Challenge</span> to Start
           </h2>
@@ -938,8 +951,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
             ].map((f, i) => (
               <div key={i}
                 style={{ background: 'var(--landing-card-bg)', border: '1px solid var(--landing-border-light)', borderRadius: '14px', padding: '14px 16px', display: 'flex', alignItems: 'flex-start', gap: '12px', transition: 'border-color 0.3s, background 0.3s' }}
-                onMouseEnter={e => { e.currentTarget.style.borderColor='rgba(168,85,247,0.3)'; e.currentTarget.style.background='rgba(168,85,247,0.04)'; }}
-                onMouseLeave={e => { e.currentTarget.style.borderColor='var(--landing-border-light)'; e.currentTarget.style.background='var(--landing-card-bg)'; }}
+                onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(168,85,247,0.3)'; e.currentTarget.style.background = 'rgba(168,85,247,0.04)'; }}
+                onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--landing-border-light)'; e.currentTarget.style.background = 'var(--landing-card-bg)'; }}
               >
                 <span style={{ fontSize: '1.3rem', lineHeight: 1, flexShrink: 0 }}>{f.icon}</span>
                 <div>
@@ -951,8 +964,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
             <button
               onClick={() => { handleProtectedStart(); }}
               style={{ marginTop: '4px', padding: '14px', background: 'linear-gradient(135deg, #7C3AED, #DB2777)', border: 'none', borderRadius: '14px', color: 'var(--landing-text-primary)', fontWeight: 800, fontSize: '0.9rem', cursor: 'pointer', boxShadow: '0 8px 24px rgba(124,58,237,0.35)', transition: 'transform 0.2s', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
-              onMouseEnter={e => e.currentTarget.style.transform='translateY(-2px)'}
-              onMouseLeave={e => e.currentTarget.style.transform='translateY(0)'}
+              onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-2px)'}
+              onMouseLeave={e => e.currentTarget.style.transform = 'translateY(0)'}
             >
               🎥 Launch AI Mock Interview
             </button>
@@ -1033,12 +1046,12 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
             <h3>Peer-to-Peer Mock Interviews</h3>
             <p>Sync code in real-time with a friend over WebRTC. One codes, one interviews — just like a real FAANG round.</p>
             <div style={{ display: 'flex', gap: '8px', marginTop: '16px', alignItems: 'center' }}>
-               <div style={{ padding: '6px 12px', background: 'rgba(59, 130, 246, 0.08)', border: '1px solid rgba(59, 130, 246, 0.2)', borderRadius: '8px', fontSize: '0.7rem', color: '#60A5FA', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  🎥 Live Video
-               </div>
-               <div style={{ padding: '6px 12px', background: 'rgba(16, 185, 129, 0.08)', border: '1px solid rgba(16, 185, 129, 0.2)', borderRadius: '8px', fontSize: '0.7rem', color: 'var(--landing-success)' }}>
-                  🤝 Real-time Code Sync
-               </div>
+              <div style={{ padding: '6px 12px', background: 'rgba(59, 130, 246, 0.08)', border: '1px solid rgba(59, 130, 246, 0.2)', borderRadius: '8px', fontSize: '0.7rem', color: '#60A5FA', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                🎥 Live Video
+              </div>
+              <div style={{ padding: '6px 12px', background: 'rgba(16, 185, 129, 0.08)', border: '1px solid rgba(16, 185, 129, 0.2)', borderRadius: '8px', fontSize: '0.7rem', color: 'var(--landing-success)' }}>
+                🤝 Real-time Code Sync
+              </div>
             </div>
           </div>
         </div>
@@ -1071,7 +1084,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
           <h2 style={{ fontSize: '2rem', fontWeight: 900, color: 'var(--landing-text-primary)', letterSpacing: '-0.03em', marginBottom: '10px' }}>Why <span style={{ background: 'linear-gradient(135deg, #00E5FF, #7C3AED)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>NexCode AI?</span></h2>
           <p style={{ color: 'var(--landing-text-muted)', fontSize: '0.9rem', margin: 0 }}>See how we fundamentally change interview preparation.</p>
         </div>
-        
+
         <div style={{ background: 'rgba(14, 10, 24, 0.7)', borderRadius: '24px', position: 'relative', border: '1px solid var(--landing-border-light)', backdropFilter: 'blur(20px)', boxShadow: '0 20px 40px rgba(0,0,0,0.6)' }} className="hover-glow">
           {/* Subtle glow behind the entire table */}
           <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '100%', height: '100%', background: 'radial-gradient(circle, rgba(168,85,247,0.05) 0%, transparent 70%)', pointerEvents: 'none', zIndex: 0 }} />
@@ -1085,8 +1098,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
             <thead>
               <tr>
                 <th style={{ padding: '24px 28px', textAlign: 'left', color: 'var(--landing-text-muted)', fontWeight: 600, borderBottom: '1px solid var(--landing-border)' }}>Feature</th>
-                <th style={{ 
-                  padding: '24px 20px', textAlign: 'center', borderBottom: '1px solid rgba(168,85,247,0.3)', 
+                <th style={{
+                  padding: '24px 20px', textAlign: 'center', borderBottom: '1px solid rgba(168,85,247,0.3)',
                   background: 'linear-gradient(to bottom, rgba(168,85,247,0.02), rgba(168,85,247,0.15))',
                   borderLeft: '1px solid rgba(168,85,247,0.3)', borderRight: '1px solid rgba(168,85,247,0.3)',
                   borderTopLeftRadius: '16px', borderTopRightRadius: '16px'
@@ -1111,12 +1124,12 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
                 return (
                   <tr key={i} style={{ transition: 'background 0.2s', background: 'transparent' }} className="table-row-hover">
                     <td style={{ padding: '18px 28px', color: 'var(--landing-text-high)', borderBottom: isLast ? 'none' : '1px solid var(--landing-border-light)', fontWeight: 500 }}>{feature as string}</td>
-                    
+
                     {/* The NexCode highlighted column */}
-                    <td style={{ 
-                      padding: '18px 20px', textAlign: 'center', 
-                      background: 'rgba(168,85,247,0.1)', 
-                      borderLeft: '1px solid rgba(168,85,247,0.3)', 
+                    <td style={{
+                      padding: '18px 20px', textAlign: 'center',
+                      background: 'rgba(168,85,247,0.1)',
+                      borderLeft: '1px solid rgba(168,85,247,0.3)',
                       borderRight: '1px solid rgba(168,85,247,0.3)',
                       borderBottom: isLast ? '1px solid rgba(168,85,247,0.3)' : '1px solid rgba(168,85,247,0.15)',
                       borderBottomLeftRadius: isLast ? '16px' : '0',
@@ -1124,7 +1137,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
                     }}>
                       {us ? <CheckCircle size={22} color="#10b981" style={{ filter: 'drop-shadow(0 0 8px rgba(16,185,129,0.4))' }} /> : <X size={22} color="rgba(255,255,255,0.2)" />}
                     </td>
-                    
+
                     <td style={{ padding: '18px 20px', textAlign: 'center', borderBottom: isLast ? 'none' : '1px solid var(--landing-border-light)' }}>
                       {them ? <CheckCircle size={22} color="rgba(255,255,255,0.3)" /> : <X size={22} color="rgba(255,255,255,0.15)" />}
                     </td>
@@ -1193,10 +1206,70 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
         </div>
       </section>
 
-      <footer style={{ marginTop: 'auto', borderTop: '1px solid rgba(255, 255, 255, 0.04)', padding: '20px', textAlign: 'center', width: '100%', zIndex: 10, background: 'rgba(3, 1, 8, 0.4)', backdropFilter: 'blur(10px)' }}>
-        <span style={{ color: 'var(--landing-text-dim)', fontSize: '0.75rem', fontWeight: 500 }}>
-          © {new Date().getFullYear()} Shivam Singhal | NexCode AI. All rights reserved.
-        </span>
+      <footer className="footer-v3">
+        <div className="footer-wave" />
+
+        <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', gap: '80px' }} className="footer-main-layout">
+          {/* Left: Brand Identity */}
+          <div style={{ flex: 1 }}>
+            <div className="footer-logo-container">
+              <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '24px' }}>
+                <img src={`${(import.meta as any).env.BASE_URL}logo.png`} alt="Logo" style={{ width: '42px', height: '42px' }} />
+                <span style={{ fontSize: '1.8rem', fontWeight: 900, letterSpacing: '-0.04em' }} className="text-gradient">NexCode AI</span>
+              </div>
+              <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: '1rem', lineHeight: 1.7, marginBottom: '32px' }}>
+                Pioneering the next generation of technical talent through intelligent behavioral simulation and real-time complexity analysis.
+              </p>
+              <div style={{ display: 'flex', gap: '16px' }}>
+                <a href="https://www.linkedin.com/in/shivam-singhal-538369191/" target="_blank" rel="noopener noreferrer" className="social-circle"><Linkedin size={20} /></a>
+                <a href="mailto:shivamsinghal24@gmail.com" className="social-circle"><Mail size={20} /></a>
+              </div>
+            </div>
+          </div>
+
+          {/* Right: Structured Links */}
+          <div style={{ flex: 1.5, display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '40px' }} className="footer-links-grid">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+              <h4 style={{ color: '#fff', fontSize: '0.85rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.2em' }}>Platform</h4>
+              <a href="#playground-section" className="footer-link-v3">Playground</a>
+              <a href="#interview-section" className="footer-link-v3">AI Mock Exams</a>
+              <a href="#" className="footer-link-v3">Problem Bank</a>
+              <a href="#" className="footer-link-v3">Leaderboards</a>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+              <h4 style={{ color: '#fff', fontSize: '0.85rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.2em' }}>Resources</h4>
+              <a href="#" className="footer-link-v3">Documentation</a>
+              <a href="#" className="footer-link-v3">Friday AI Wiki</a>
+              <a href="#" className="footer-link-v3">Changelog</a>
+              <a href="#" className="footer-link-v3">Community</a>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+              <h4 style={{ color: '#fff', fontSize: '0.85rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.2em' }}>Legal</h4>
+              <button onClick={() => setShowPrivacyModal(true)} className="footer-link-v3" style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', textAlign: 'left' }}>Privacy Policy</button>
+              <button onClick={() => setShowTermsModal(true)} className="footer-link-v3" style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', textAlign: 'left' }}>Terms of Use</button>
+              <button onClick={() => setShowSecurityModal(true)} className="footer-link-v3" style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', textAlign: 'left' }}>Security</button>
+              <button onClick={() => setShowComplianceModal(true)} className="footer-link-v3" style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', textAlign: 'left' }}>Compliance</button>
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom Bar */}
+        <div style={{ maxWidth: '1200px', margin: '80px auto 0', paddingTop: '40px', borderTop: '1px solid rgba(255,255,255,0.05)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '20px' }}>
+          <div className="footer-meta-text" style={{ fontSize: '0.9rem', display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <span>© {new Date().getFullYear()} NexCode AI.</span>
+            <span style={{ width: '4px', height: '4px', borderRadius: '50%', background: 'rgba(255,255,255,0.1)' }} />
+            <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>Developed by <span style={{ color: 'var(--landing-text-primary)', fontWeight: 800 }}>Shivam Singhal</span></span>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
+            <div className="footer-meta-text" style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.85rem' }}>
+              <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#10b981', boxShadow: '0 0 10px rgba(16, 185, 129, 0.4)' }} />
+              API v2.4 Status: Operational
+            </div>
+            <div style={{ padding: '8px 16px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '12px', color: '#fff', fontSize: '0.75rem', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <Globe size={14} color="#A855F7" /> USD / English
+            </div>
+          </div>
+        </div>
       </footer>
 
       {/* 📡 Live Activity Feed Toast */}
@@ -1222,8 +1295,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
         <div style={styles.modalBackdrop}>
           <div style={{ ...styles.tagModal, animation: 'viewScaleUp 0.35s cubic-bezier(0.16,1,0.3,1) both', padding: '36px', maxWidth: '480px', position: 'relative', overflow: 'hidden' }} className="glass-panel">
             {/* ❌ Close Button */}
-            <button 
-              onClick={() => { setTagModalOpen(false); setSelectedTags([]); }} 
+            <button
+              onClick={() => { setTagModalOpen(false); setSelectedTags([]); }}
               style={{ position: 'absolute', top: '20px', right: '20px', background: 'var(--landing-card-bg)', border: '1px solid var(--landing-border)', color: 'var(--landing-text-dim)', cursor: 'pointer', padding: '6px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.2s', backdropFilter: 'blur(4px)', zIndex: 10 }}
               onMouseEnter={e => { e.currentTarget.style.color = 'var(--landing-text-primary)'; e.currentTarget.style.background = 'var(--landing-border)'; }}
               onMouseLeave={e => { e.currentTarget.style.color = 'var(--landing-text-dim)'; e.currentTarget.style.background = 'var(--landing-card-bg)'; }}
@@ -1278,8 +1351,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
                       }}
                       onMouseMove={e => {
                         const r = e.currentTarget.getBoundingClientRect();
-                        const x = e.clientX - r.left - r.width/2;
-                        const y = e.clientY - r.top - r.height/2;
+                        const x = e.clientX - r.left - r.width / 2;
+                        const y = e.clientY - r.top - r.height / 2;
                         e.currentTarget.style.transform = `scale(1.04) rotateY(${x * 0.12}deg) rotateX(${-y * 0.12}deg)`;
                       }}
                       onMouseLeave={e => {
@@ -1296,24 +1369,24 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
             </div>
 
             <div style={{ display: 'flex', gap: '12px', marginTop: '28px' }}>
-              <button 
-                onClick={() => { setTagModalOpen(false); setSelectedTags([]); }} 
+              <button
+                onClick={() => { setTagModalOpen(false); setSelectedTags([]); }}
                 style={{ flex: 1, padding: '13px', background: 'transparent', border: '1px solid var(--landing-border)', borderRadius: '14px', color: 'var(--landing-text-muted)', cursor: 'pointer', fontSize: '0.85rem', fontWeight: 600, transition: 'all 0.2s' }}
                 onMouseEnter={e => e.currentTarget.style.borderColor = 'var(--landing-border-strong)'}
                 onMouseLeave={e => e.currentTarget.style.borderColor = 'var(--landing-border)'}
               >
                 Cancel
               </button>
-              <button 
-                disabled={selectedTags.length === 0} 
-                onClick={handleStartWithTags} 
-                style={{ 
-                  flex: 2, padding: '13px', 
-                  background: selectedTags.length > 0 ? 'linear-gradient(135deg, #7C3AED, #DB2777)' : 'var(--landing-border-light)', 
-                  border: 'none', borderRadius: '14px', 
-                  color: selectedTags.length > 0 ? 'var(--landing-text-primary)' : 'var(--landing-text-dim)', 
-                  fontWeight: 800, cursor: selectedTags.length > 0 ? 'pointer' : 'not-allowed', 
-                  fontSize: '0.85rem', 
+              <button
+                disabled={selectedTags.length === 0}
+                onClick={handleStartWithTags}
+                style={{
+                  flex: 2, padding: '13px',
+                  background: selectedTags.length > 0 ? 'linear-gradient(135deg, #7C3AED, #DB2777)' : 'var(--landing-border-light)',
+                  border: 'none', borderRadius: '14px',
+                  color: selectedTags.length > 0 ? 'var(--landing-text-primary)' : 'var(--landing-text-dim)',
+                  fontWeight: 800, cursor: selectedTags.length > 0 ? 'pointer' : 'not-allowed',
+                  fontSize: '0.85rem',
                   boxShadow: selectedTags.length > 0 ? '0 10px 30px rgba(124, 58, 237, 0.3)' : 'none',
                   transition: 'background 0.2s'
                 }}
@@ -1338,6 +1411,11 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
           </div>
         </div>
       )}
+
+      {showPrivacyModal && <PrivacyPolicyModal onClose={() => setShowPrivacyModal(false)} />}
+      {showTermsModal && <TermsOfUseModal onClose={() => setShowTermsModal(false)} />}
+      {showSecurityModal && <SecurityModal onClose={() => setShowSecurityModal(false)} />}
+      {showComplianceModal && <ComplianceModal onClose={() => setShowComplianceModal(false)} />}
 
       {/* 🎨 Embed scoped styles to run keyframes */}
       <style>{`
@@ -1732,11 +1810,16 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
           transform: translateY(0);
         }
 
-        /* Staggered entrance */
+        /* Staggered entrance with fallback */
         .stagger-in {
-          animation: staggerFadeIn 0.8s ease-out both;
-          animation-timeline: view();
-          animation-range: entry 5% cover 25%;
+          opacity: 1; /* Fallback for browsers without animation-timeline */
+        }
+        @supports (animation-timeline: view()) {
+          .stagger-in {
+            animation: staggerFadeIn 0.8s ease-out both;
+            animation-timeline: view();
+            animation-range: entry 5% cover 25%;
+          }
         }
         @keyframes staggerFadeIn {
           from { opacity: 0; transform: translateY(32px) scale(0.97); }
@@ -2254,6 +2337,159 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
         .landing-light-mode .interview-showcase-grid > div:first-child p {
            color: #ffffff !important;
            text-shadow: 0 2px 6px rgba(0,0,0,0.8);
+        }
+
+        /* 🚀 Cyber-Organic Integrated Footer */
+        .footer-v3 {
+          background: #030009;
+          position: relative;
+          padding: 120px 24px 60px;
+          border-top: 1px solid rgba(168, 85, 247, 0.1);
+          z-index: 10;
+          transition: background 0.5s ease, border-color 0.5s ease;
+        }
+        
+        .footer-wave {
+          position: absolute;
+          top: -100px;
+          left: 0;
+          width: 100%;
+          height: 100px;
+          background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1440 320" xmlns="http://www.w3.org/2000/svg"><path fill="%23030009" fill-opacity="1" d="M0,160L48,176C96,192,192,224,288,213.3C384,203,480,149,576,149.3C672,149,768,203,864,218.7C960,235,1056,213,1152,186.7C1248,160,1344,128,1392,112L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>');
+          background-size: cover;
+          background-repeat: no-repeat;
+          transition: filter 0.5s ease;
+        }
+
+        .footer-logo-container {
+          background: linear-gradient(135deg, rgba(124, 58, 237, 0.05), rgba(219, 39, 119, 0.05));
+          border: 1px solid rgba(255,255,255,0.05);
+          border-radius: 20px;
+          padding: 30px;
+          transition: all 0.4s ease;
+        }
+        .footer-logo-container:hover {
+          border-color: var(--landing-accent);
+          transform: translateY(-5px);
+          box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+
+        .footer-link-v3 {
+          color: rgba(255,255,255,0.4);
+          text-decoration: none;
+          font-size: 0.95rem;
+          font-weight: 500;
+          transition: all 0.2s;
+          display: flex;
+          align-items: center;
+          gap: 10px;
+        }
+        .footer-link-v3:hover {
+          color: #fff;
+          transform: translateX(5px);
+        }
+        .footer-link-v3::before {
+          content: '';
+          width: 0;
+          height: 1px;
+          background: var(--landing-accent);
+          transition: width 0.2s;
+        }
+        .footer-link-v3:hover::before {
+          width: 15px;
+        }
+
+        .social-circle {
+          width: 44px;
+          height: 44px;
+          border-radius: 50%;
+          border: 1px solid rgba(255,255,255,0.1);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: rgba(255,255,255,0.6);
+          transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .social-circle:hover {
+          background: var(--landing-accent);
+          color: #fff !important;
+          transform: scale(1.1) rotate(8deg);
+          box-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
+          border-color: transparent;
+        }
+
+        .footer-meta-text {
+           color: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Light Mode Overrides */
+        .landing-light-mode .footer-v3 {
+           background: #f8fafc;
+           border-top-color: #e2e8f0;
+        }
+        .landing-light-mode .footer-meta-text {
+           color: #64748b !important;
+        }
+        .landing-light-mode .footer-wave {
+           filter: invert(0.97) sepia(0.05) saturate(0.5); /* Soft gray wave */
+        }
+        .landing-light-mode .footer-logo-container {
+           background: #ffffff;
+           border-color: #e2e8f0;
+           box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+        }
+        .landing-light-mode .footer-link-v3 {
+           color: #475569;
+        }
+        .landing-light-mode .footer-link-v3:hover {
+           color: #0f172a;
+        }
+        .landing-light-mode .social-circle {
+           background: #ffffff;
+           border-color: #e2e8f0;
+           color: #475569;
+           box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+        }
+        .landing-light-mode .social-circle:hover {
+           background: #0f172a !important;
+           color: #ffffff !important;
+           border-color: transparent;
+           box-shadow: 0 10px 25px rgba(15, 23, 42, 0.2);
+           transform: scale(1.1) translateY(-3px) rotate(5deg);
+        }
+        .landing-light-mode .footer-main-layout p {
+           color: #475569 !important;
+        }
+        .landing-light-mode .footer-v3 h4 {
+           color: #0f172a !important;
+           opacity: 1 !important;
+        }
+        .landing-light-mode .footer-v3 span[style*="color: var(--landing-text-primary)"] {
+           color: #0f172a !important;
+        }
+        .landing-light-mode .footer-v3 div[style*="color: #fff"] {
+           color: #0f172a !important;
+        }
+        .landing-light-mode .footer-v3 div[style*="background: rgba(255,255,255,0.03)"] {
+           background: #ffffff !important;
+           border-color: #e2e8f0 !important;
+           color: #0f172a !important;
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+           .footer-main-layout { flex-direction: column !important; gap: 60px !important; }
+           .footer-links-grid { grid-template-columns: repeat(2, 1fr) !important; }
+        }
+        @media (max-width: 640px) {
+           .footer-links-grid { grid-template-columns: 1fr !important; }
+        }
+
+        /* Global Body Fix */
+        html, body {
+          margin: 0;
+          padding: 0;
+          overscroll-behavior-y: auto !important; /* Restore normal scrolling */
         }
 
         /* Footer */

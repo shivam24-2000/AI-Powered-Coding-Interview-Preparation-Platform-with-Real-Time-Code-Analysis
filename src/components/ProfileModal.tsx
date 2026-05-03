@@ -75,7 +75,7 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ onClose, session, on
   return (
     <div style={{
       position: 'fixed', top: 0, left: 0, width: '100%', height: '100%',
-      background: 'rgba(3, 0, 9, 0.75)', backdropFilter: 'blur(16px)',
+      background: 'rgba(0, 0, 0, 0.4)', backdropFilter: 'blur(16px)',
       display: 'flex', alignItems: 'center', justifyContent: 'center',
       zIndex: 2000, animation: 'fadeIn 0.2s ease-out'
     }}>
@@ -88,32 +88,32 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ onClose, session, on
 
        <div className="glass-panel" style={{
           width: '100%', maxWidth: '400px', padding: '28px',
-          background: 'rgba(20, 16, 28, 0.85)', borderRadius: '24px',
-          border: '1px solid rgba(168, 85, 247, 0.2)',
-          boxShadow: '0 25px 50px -12px rgba(168, 85, 247, 0.25)',
+          background: 'var(--bg-panel-solid)', borderRadius: '24px',
+          border: '1px solid var(--border-color)',
+          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.2)',
           animation: 'bounceIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
           position: 'relative'
        }}>
-          <button onClick={onClose} style={{ position: 'absolute', top: '16px', right: '16px', background: 'transparent', border: 'none', color: 'rgba(255,255,255,0.4)', cursor: 'pointer' }}>
+          <button onClick={onClose} style={{ position: 'absolute', top: '16px', right: '16px', background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }}>
              <X size={18} />
           </button>
 
-          <h3 style={{ margin: '0 0 16px 0', color: '#fff', fontSize: '1.25rem', fontWeight: 800 }}>Edit Profile</h3>
+          <h3 style={{ margin: '0 0 16px 0', color: 'var(--text-primary)', fontSize: '1.25rem', fontWeight: 800 }}>Edit Profile</h3>
 
           {/* Profile Picture Preview */}
           <div style={{ position: 'relative', width: '100px', height: '100px', margin: '0 auto 24px auto' }}>
              <div style={{
                 width: '100%', height: '100%', borderRadius: '50%', overflow: 'hidden',
-                background: 'rgba(255,255,255,0.03)', border: '2px solid #A855F7',
+                background: 'rgba(255,255,255,0.03)', border: '2px solid var(--accent-primary)',
                 boxShadow: '0 0 20px rgba(168, 85, 247, 0.3)', position: 'relative'
              }}>
                 <img src={avatarUrl} alt="Avatar Preview" style={{ width: '100%', height: '100%' }} />
              </div>
              <div onClick={() => setSeed(Math.random().toString(36).substring(7))} style={{
                 position: 'absolute', bottom: '0', right: '0',
-                background: '#A855F7', width: '32px', height: '32px', borderRadius: '50%',
+                background: 'var(--accent-primary)', width: '32px', height: '32px', borderRadius: '50%',
                 display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer',
-                color: '#fff', boxShadow: '0 4px 10px rgba(0,0,0,0.3)', border: '2px solid rgba(20, 16, 28, 0.85)'
+                color: '#fff', boxShadow: '0 4px 10px rgba(0,0,0,0.3)', border: '2px solid var(--bg-panel-solid)'
              }} title="Randomize Seed">
                 <Sparkles size={14} />
              </div>
@@ -121,21 +121,21 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ onClose, session, on
 
           {/* Avatar Styles Selection */}
           <div style={{ marginBottom: '20px' }}>
-             <label style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.75rem', fontWeight: 600, display: 'block', marginBottom: '8px' }}>Avatar Style</label>
+             <label style={{ color: 'var(--text-muted)', fontSize: '0.75rem', fontWeight: 600, display: 'block', marginBottom: '8px' }}>Avatar Style</label>
              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '8px' }}>
                 {AVATAR_STYLES.map(style => (
                    <button 
                       key={style.id}
                       onClick={() => setAvatarStyle(style.id)}
                       style={{
-                         padding: '10px', background: avatarStyle === style.id ? 'rgba(168,85,247,0.15)' : 'rgba(255,255,255,0.02)',
-                         border: `1px solid ${avatarStyle === style.id ? 'rgba(168,85,247,0.4)' : 'rgba(255,255,255,0.05)'}`,
+                         padding: '10px', background: avatarStyle === style.id ? 'var(--bg-panel-light)' : 'transparent',
+                         border: `1px solid ${avatarStyle === style.id ? 'var(--accent-primary)' : 'var(--border-color)'}`,
                          borderRadius: '12px', cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px',
                          transition: 'all 0.2s'
                       }}
                    >
                       <span style={{ fontSize: '1.2rem' }}>{style.icon}</span>
-                      <span style={{ fontSize: '0.65rem', color: '#fff', fontWeight: 500 }}>{style.label}</span>
+                      <span style={{ fontSize: '0.65rem', color: 'var(--text-primary)', fontWeight: 500 }}>{style.label}</span>
                    </button>
                 ))}
              </div>
@@ -143,39 +143,39 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ onClose, session, on
 
           {/* Username Input */}
           <div style={{ marginBottom: '16px' }}>
-             <label style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.75rem', fontWeight: 600, display: 'block', marginBottom: '8px' }}>Username</label>
+             <label style={{ color: 'var(--text-muted)', fontSize: '0.75rem', fontWeight: 600, display: 'block', marginBottom: '8px' }}>Username</label>
              <div style={{ position: 'relative' }}>
                 <input 
                    type="text"
                    value={username}
                    onChange={e => setUsername(e.target.value)}
                    style={{
-                      width: '100%', padding: '12px 12px 12px 36px', background: 'rgba(255,255,255,0.03)',
-                      border: '1px solid rgba(255,255,255,0.08)', borderRadius: '12px', color: '#fff',
+                      width: '100%', padding: '12px 12px 12px 36px', background: 'var(--bg-panel-light)',
+                      border: '1px solid var(--border-color)', borderRadius: '12px', color: 'var(--text-primary)',
                       fontSize: '0.9rem', outline: 'none', transition: 'all 0.2s'
                    }}
                    placeholder="Enter username..."
                 />
-                <User size={16} color="rgba(255,255,255,0.4)" style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)' }} />
+                <User size={16} color="var(--text-muted)" style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)' }} />
              </div>
           </div>
 
           {/* Password Update (New) */}
           <div style={{ marginBottom: '24px' }}>
-             <label style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.75rem', fontWeight: 600, display: 'block', marginBottom: '8px' }}>Update Password (Optional)</label>
+             <label style={{ color: 'var(--text-muted)', fontSize: '0.75rem', fontWeight: 600, display: 'block', marginBottom: '8px' }}>Update Password (Optional)</label>
              <div style={{ position: 'relative' }}>
                 <input 
                    type="password"
                    value={newPassword}
                    onChange={e => setNewPassword(e.target.value)}
                    style={{
-                      width: '100%', padding: '12px 12px 12px 36px', background: 'rgba(255,255,255,0.03)',
-                      border: '1px solid rgba(255,255,255,0.08)', borderRadius: '12px', color: '#fff',
+                      width: '100%', padding: '12px 12px 12px 36px', background: 'var(--bg-panel-light)',
+                      border: '1px solid var(--border-color)', borderRadius: '12px', color: 'var(--text-primary)',
                       fontSize: '0.9rem', outline: 'none', transition: 'all 0.2s'
                    }}
                    placeholder="Enter new password..."
                 />
-                <Lock size={16} color="rgba(255,255,255,0.4)" style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)' }} />
+                <Lock size={16} color="var(--text-muted)" style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)' }} />
              </div>
           </div>
 

@@ -15,7 +15,7 @@ export async function analyzeCode(
   edgeCases?: Array<{ id: string; title: string; description: string }>;
 }> {
   const trimmedCode = (code || '').trim();
-  
+
   // Rate limiting cooldown logic
   if (quotaManager.isBlocked()) {
     console.warn("AI Analysis is in cooldown, falling back to heuristics.");
@@ -67,11 +67,11 @@ export async function analyzeCode(
     `;
 
     const apiKey = import.meta.env.GEMINI_API_KEY || '';
-    const url = apiKey 
+    const url = apiKey
       ? `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`
       : `/api/analyze`;
 
-    const body = apiKey 
+    const body = apiKey
       ? JSON.stringify({ contents: [{ parts: [{ text: prompt }] }], generationConfig: { responseMimeType: "application/json" } })
       : JSON.stringify({ prompt });
 
@@ -92,7 +92,7 @@ export async function analyzeCode(
       resultText = resultText.replace(/```json\n?/, '').replace(/```\n?$/, '').trim();
       return JSON.parse(resultText);
     }
-    
+
     throw new Error('Invalid response format from Gemini API');
 
   } catch (error) {
@@ -118,12 +118,12 @@ export async function getChatResponse(
 
   try {
     let context = "";
-    
+
     if (isInterviewMode) {
       // Strip all HTML and keep only a crisp one-line summary for the AI's reference.
       // We do NOT pass the full description to prevent the AI from reading it out.
       const problemTitleOnly = problem.title.replace(/^\d+\.\s*/, '');
-      
+
       context = `
         You are Alex, a Senior Technical Interviewer at NexCode AI.
         The candidate is being interviewed on the problem: "${problemTitleOnly}".
@@ -174,13 +174,13 @@ export async function getChatResponse(
     if (chatHistory.length > 0 && chatHistory[0].role === 'user') {
       chatHistory[0].parts[0].text = `System Context: ${context}\n\nCandidate's Question: ${chatHistory[0].parts[0].text}`;
     } else if (chatHistory.length === 0) {
-       // Handle empty history (e.g., starting interview)
-       const startMsg = isInterviewMode && interviewPhase === 'intro' ? "Let's begin the interview." : "Hello.";
-       chatHistory.push({ role: 'user', parts: [{ text: `System Context: ${context}\n\nCandidate's Question: ${startMsg}` }] });
+      // Handle empty history (e.g., starting interview)
+      const startMsg = isInterviewMode && interviewPhase === 'intro' ? "Let's begin the interview." : "Hello.";
+      chatHistory.push({ role: 'user', parts: [{ text: `System Context: ${context}\n\nCandidate's Question: ${startMsg}` }] });
     }
 
     const apiKey = import.meta.env.VITE_GEMINI_API_KEY || '';
-    const url = apiKey 
+    const url = apiKey
       ? `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`
       : `/api/chat`;
 
@@ -243,7 +243,7 @@ export async function generateInterviewEvaluation(
     const response = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ 
+      body: JSON.stringify({
         contents: [{ parts: [{ text: prompt }] }],
         generationConfig: { responseMimeType: "application/json" }
       }),
@@ -276,10 +276,10 @@ async function fallbackAnalysis(code: string, problem: Problem, language: Langua
   let spaceComplexity = 'O(1)';
   const suggestions: AnalysisState['suggestions'] = [];
 
-  const hasReturn = language.id === 'rust' 
+  const hasReturn = language.id === 'rust'
     ? (code.includes('return') || code.includes('vec!') || code.includes(']'))
     : code.includes('return');
-    
+
   if (!hasReturn && !['cpp', 'go', 'java'].includes(language.id)) {
     suggestions.push({ id: 'missing-return', type: 'error', message: 'Your function logic seems incomplete. Don\'t forget to return the result!' });
   }
@@ -326,7 +326,7 @@ function hasNestedLoops(code: string): boolean {
     if (line.includes('{')) nesting++;
     if (line.includes('}')) nesting--;
     if (line.includes('for') || line.includes('while')) {
-       if (nesting > 1) maxNesting = Math.max(maxNesting, nesting);
+      if (nesting > 1) maxNesting = Math.max(maxNesting, nesting);
     }
   }
   return maxNesting > 1;

@@ -38,7 +38,7 @@ function formatTime(seconds: number): string {
 }
 
 const AuthToast = ({ type }: { type: 'login' | 'logout' }) => (
-  <div style={{ position: 'fixed', bottom: '24px', right: '24px', background: 'rgba(20,16,28,0.95)', border: `1px solid ${type === 'login' ? 'rgba(168, 85, 247, 0.2)' : 'rgba(220, 38, 38, 0.25)'}`, padding: '16px 20px', borderRadius: '14px', backdropFilter: 'blur(12px)', boxShadow: `0 10px 40px ${type === 'login' ? 'rgba(124, 58, 237, 0.2)' : 'rgba(220, 38, 38, 0.15)'}`, display: 'flex', alignItems: 'center', gap: '12px', zIndex: 1000 }}>
+  <div style={{ position: 'fixed', bottom: '24px', right: '24px', background: 'var(--bg-panel-solid)', border: `1px solid ${type === 'login' ? 'rgba(168, 85, 247, 0.2)' : 'rgba(220, 38, 38, 0.25)'}`, padding: '16px 20px', borderRadius: '14px', backdropFilter: 'blur(12px)', boxShadow: `0 10px 40px ${type === 'login' ? 'rgba(124, 58, 237, 0.2)' : 'rgba(220, 38, 38, 0.15)'}`, display: 'flex', alignItems: 'center', gap: '12px', zIndex: 1000 }}>
     <style>{`
       @keyframes slideInRight {
         from { opacity: 0; transform: translateX(100px); }
@@ -47,8 +47,8 @@ const AuthToast = ({ type }: { type: 'login' | 'logout' }) => (
     `}</style>
     <div style={{ padding: '8px', background: type === 'login' ? 'rgba(168, 85, 247, 0.12)' : 'rgba(220, 38, 38, 0.12)', borderRadius: '10px', animation: 'slideInRight 0.4s ease-out' }}><Terminal size={20} color={type === 'login' ? '#D8B4FE' : '#fca5a5'} /></div>
     <div style={{ animation: 'slideInRight 0.4s ease-out' }}>
-      <h4 style={{ margin: 0, color: '#fff', fontSize: '0.88rem', fontWeight: 700 }}>{type === 'login' ? 'Successfully Logged In' : 'Successfully Logged Out'}</h4>
-      <p style={{ margin: '2px 0 0 0', color: 'rgba(255,255,255,0.5)', fontSize: '0.75rem' }}>{type === 'login' ? 'Welcome back to NexCode AI' : 'Your session has ended securely'}</p>
+      <h4 style={{ margin: 0, color: 'var(--text-primary)', fontSize: '0.88rem', fontWeight: 700 }}>{type === 'login' ? 'Successfully Logged In' : 'Successfully Logged Out'}</h4>
+      <p style={{ margin: '2px 0 0 0', color: 'var(--text-muted)', fontSize: '0.75rem' }}>{type === 'login' ? 'Welcome back to NexCode AI' : 'Your session has ended securely'}</p>
     </div>
   </div>
 );
@@ -63,12 +63,12 @@ function App() {
     if (typeof window !== 'undefined') {
       const saved = localStorage.getItem('nexcode_settings');
       if (saved) {
-        try { return JSON.parse(saved); } catch (e) {}
+        try { return JSON.parse(saved); } catch (e) { }
       }
     }
     return DEFAULT_SETTINGS;
   });
-  
+
   useEffect(() => {
     if (typeof window !== 'undefined') {
       localStorage.setItem('nexcode_settings', JSON.stringify(settings));
@@ -83,7 +83,7 @@ function App() {
   const [isResultsFolded, setIsResultsFolded] = useState(true);
   const [view, setView] = useState<'landing' | 'workspace' | 'history'>(() => {
     if (typeof window !== 'undefined') {
-       return (sessionStorage.getItem('activeView') as any) || 'landing';
+      return (sessionStorage.getItem('activeView') as any) || 'landing';
     }
     return 'landing';
   });
@@ -111,10 +111,10 @@ function App() {
 
       channel
         .on('broadcast', { event: 'code_change' }, ({ payload }) => {
-           setCode(payload.code);
+          setCode(payload.code);
         })
         .subscribe((status) => {
-           if (status === 'SUBSCRIBED') console.log("Connected to room", room);
+          if (status === 'SUBSCRIBED') console.log("Connected to room", room);
         });
 
       channelRef.current = channel;
@@ -125,7 +125,7 @@ function App() {
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-       sessionStorage.setItem('activeView', view);
+      sessionStorage.setItem('activeView', view);
     }
   }, [view]);
 
@@ -156,18 +156,18 @@ function App() {
       const { data } = await supabase.from('problems').select('*');
       if (data && data.length > 0) {
         setProblems(data);
-        
+
         const savedId = sessionStorage.getItem('selectedProblemId');
         const savedObj = data.find(p => p.id === savedId);
         const activeProb = savedObj || data[0];
-        
+
         setSelectedProblem(activeProb);
 
         const savedCode = sessionStorage.getItem('lastSavedCode');
         if (savedCode) {
-           setCode(savedCode);
+          setCode(savedCode);
         } else if (activeProb.templates) {
-            setCode(activeProb.templates[selectedLanguage?.id || 'python'] || '');
+          setCode(activeProb.templates[selectedLanguage?.id || 'python'] || '');
         }
       }
     };
@@ -204,8 +204,8 @@ function App() {
     }, 3000); // 3 seconds grace period to suppress startup toasts !!
 
     return () => {
-       subscription.unsubscribe();
-       clearTimeout(timer);
+      subscription.unsubscribe();
+      clearTimeout(timer);
     };
   }, []);
 
@@ -282,11 +282,11 @@ function App() {
   const handleProblemChange = (problemId: string) => {
     const problem = (problems || []).find(p => p.id === problemId);
     if (!problem) return;
-    
+
     setSelectedProblem(problem);
     if (typeof window !== 'undefined') {
-       sessionStorage.setItem('selectedProblemId', problemId);
-       sessionStorage.removeItem('lastSavedCode'); // Starts fresh on problem switch !!
+      sessionStorage.setItem('selectedProblemId', problemId);
+      sessionStorage.removeItem('lastSavedCode'); // Starts fresh on problem switch !!
     }
 
     setCode(problem.templates[selectedLanguage.id] || '');
@@ -303,7 +303,7 @@ function App() {
     const val = newCode || '';
     setCode(val);
     if (typeof window !== 'undefined') {
-       sessionStorage.setItem('lastSavedCode', val);
+      sessionStorage.setItem('lastSavedCode', val);
     }
     if (roomCode && peerRole === 'coder' && channelRef.current) {
       channelRef.current.send({
@@ -315,30 +315,30 @@ function App() {
   };
 
   const handleShareRoom = () => {
-     if (roomCode) {
-        setIsShareModalOpen(true);
-     } else {
-        const code = Math.random().toString(36).substring(2, 8).toUpperCase();
-        setRoomCode(code);
-        setPeerRole('coder'); // You are the coder creating it
+    if (roomCode) {
+      setIsShareModalOpen(true);
+    } else {
+      const code = Math.random().toString(36).substring(2, 8).toUpperCase();
+      setRoomCode(code);
+      setPeerRole('coder'); // You are the coder creating it
 
-        // Subscribe myself
-        const channel = supabase.channel(`room-${code}`);
-        channel.subscribe();
-        channelRef.current = channel;
+      // Subscribe myself
+      const channel = supabase.channel(`room-${code}`);
+      channel.subscribe();
+      channelRef.current = channel;
 
-        setIsShareModalOpen(true);
-     }
+      setIsShareModalOpen(true);
+    }
   };
 
   const handleLogout = async () => {
-     await supabase.auth.signOut();
+    await supabase.auth.signOut();
   };
 
   const handleLeaveRoom = () => {
     if (channelRef.current) {
-        channelRef.current.unsubscribe();
-        channelRef.current = null;
+      channelRef.current.unsubscribe();
+      channelRef.current = null;
     }
     setRoomCode(null);
     setPeerRole(null);
@@ -355,22 +355,22 @@ function App() {
 
   useEffect(() => {
     if (!isAiAutoEnabled) return;
-    
+
     // Only analyze if code is meaningfully different
     if (code.trim() === lastAnalyzedCodeRef.current.trim()) return;
 
     const id = setTimeout(() => {
       triggerAnalysis(code, selectedProblem, selectedLanguage);
       lastAnalyzedCodeRef.current = code;
-    }, 3500); 
+    }, 3500);
     return () => clearTimeout(id);
   }, [code, selectedProblem, selectedLanguage, isAiAutoEnabled]);
 
   const triggerAnalysis = async (currentCode: string, problem: typeof selectedProblem, lang: Language) => {
     if (runState.status === 'running') return; // Prioritize execution over analysis
-    
+
     setAnalysisState(prev => ({ ...prev, isAnalyzing: true }));
-    
+
     try {
       const result = await getAIAnalysis(currentCode, problem, lang);
       setAnalysisState({
@@ -385,7 +385,7 @@ function App() {
 
   const handleRunCode = async () => {
     if (quotaManager.isBlocked()) return; // Extra safety
-    
+
     setSubmitState({ status: 'idle' });
     // Use hardcoded test runner if available, otherwise fall back to raw user code
     // The AI execution engine can evaluate any code against problem.examples
@@ -400,7 +400,7 @@ function App() {
 
   const handleSubmit = async () => {
     if (quotaManager.isBlocked()) return;
-    
+
     setRunState({ status: 'idle' });
     // Use hardcoded test runner if available, otherwise fall back to raw user code
     const runnerCode = buildRunnerCode(selectedProblem.id, selectedLanguage.id, code);
@@ -413,16 +413,16 @@ function App() {
 
     // 📊 Log submission history to Supabase
     const isSuccess = result.exitCode === 0 && !result.stderr.trim() && result.stdout.includes('passed');
-    
+
     if (session?.user?.id) {
-       await supabase.from('submissions').insert({
-          user_id: session.user.id,
-          problem_id: selectedProblem.id,
-          problem_title: selectedProblem.title.replace(/^\d+\.\s*/, ''),
-          status: isSuccess ? 'passed' : 'failed',
-          language: selectedLanguage.id,
-          code: code
-       });
+      await supabase.from('submissions').insert({
+        user_id: session.user.id,
+        problem_id: selectedProblem.id,
+        problem_title: selectedProblem.title.replace(/^\d+\.\s*/, ''),
+        status: isSuccess ? 'passed' : 'failed',
+        language: selectedLanguage.id,
+        code: code
+      });
     }
 
     if (isSuccess) {
@@ -431,7 +431,7 @@ function App() {
         setIsMentorFolded(false);
         setIsAiAutoEnabled(true);
         setAiTab('chat');
-        
+
         const suggestionPrompt = `I just solved the problem "${selectedProblem.title}". Can you suggest 3 similar problems from our available problem list that I should try next, and briefly explain why they are good follow-ups?`;
         handleSendMessage(suggestionPrompt);
       }, 800);
@@ -476,7 +476,7 @@ function App() {
       };
 
       setChatMessages(prev => [...prev, assistantMsg]);
-      
+
       // If we are in intro phase, move to coding phase after the first message
       if (isInterviewMode && interviewPhase === 'intro') {
         setInterviewPhase('coding');
@@ -490,14 +490,14 @@ function App() {
   };
 
   const handleStartInterview = async () => {
-     setIsInterviewMode(true);
-     setInterviewPhase('intro');
-     setChatMessages([]); // Reset chat for interview
-     // Do NOT open the mentor/chat panel — video overlay handles interaction
-     
-     // Trigger initial AI greeting silently in the background
-     const response = await getAIChatResponse([], code, selectedProblem, selectedLanguage, true, 'intro');
-     const assistantMsg: ChatMessage = {
+    setIsInterviewMode(true);
+    setInterviewPhase('intro');
+    setChatMessages([]); // Reset chat for interview
+    // Do NOT open the mentor/chat panel — video overlay handles interaction
+
+    // Trigger initial AI greeting silently in the background
+    const response = await getAIChatResponse([], code, selectedProblem, selectedLanguage, true, 'intro');
+    const assistantMsg: ChatMessage = {
       id: Date.now().toString(),
       role: 'assistant',
       content: response,
@@ -509,16 +509,16 @@ function App() {
   const handleEndInterview = async () => {
     setIsEvaluating(true);
     setAiTab('analysis'); // Switch to analysis for result processing
-    
+
     try {
       const evaluation = await generateInterviewEvaluation(chatMessages, code, selectedProblem, selectedLanguage);
       setInterviewEvaluation(evaluation);
     } catch (error) {
-       console.error("Evaluation failed", error);
+      console.error("Evaluation failed", error);
     } finally {
-       setIsEvaluating(false);
-       setIsInterviewMode(false);
-       setInterviewPhase('intro');
+      setIsEvaluating(false);
+      setIsInterviewMode(false);
+      setInterviewPhase('intro');
     }
   };
 
@@ -527,7 +527,7 @@ function App() {
     setIsMentorFolded(false);
     setIsAiAutoEnabled(true);
     setAiTab('chat');
-    
+
     // Slight timeout ensures panel opens and tab switches before message starts
     setTimeout(() => {
       const prompt = `My code is failing. Can you help me debug? Here is the execution output:\n\n${output}`;
@@ -537,10 +537,10 @@ function App() {
 
 
   return (
-    <div key={view} style={{ 
-      animation: 'viewFadeIn 0.4s cubic-bezier(0.1, 0.9, 0.2, 1)', 
-      height: '100dvh', 
-      overflowY: view === 'history' ? 'auto' : 'hidden', 
+    <div key={view} style={{
+      animation: 'viewFadeIn 0.4s cubic-bezier(0.1, 0.9, 0.2, 1)',
+      height: '100dvh',
+      overflowY: view === 'history' ? 'auto' : 'hidden',
       overflowX: 'hidden',
       background: '#030009'
     }}>
@@ -550,10 +550,10 @@ function App() {
           to { opacity: 1; transform: scale(1) translateY(0); }
         }
       `}</style>
-      
+
       {view === 'landing' ? (
         <>
-          <LandingPage 
+          <LandingPage
             onStart={(problemId) => {
               const daily = getDailyChallenge();
               if (problemId === daily.id) {
@@ -564,7 +564,7 @@ function App() {
               }
               if (problemId) handleProblemChange(problemId);
               setView('workspace');
-            }} 
+            }}
             session={session}
             problems={problems}
             onHistory={() => setView('history')}
@@ -573,7 +573,7 @@ function App() {
             onToggleLightMode={() => {
               const isLight = settings.appTheme === 'light-mode';
               setSettings(s => ({
-                ...s, 
+                ...s,
                 appTheme: isLight ? 'midnight-purple' : 'light-mode',
                 theme: isLight ? 'nexcode-dark' : 'vs-light'
               }));
@@ -592,168 +592,168 @@ function App() {
         </div>
       ) : (
         <div className="app-container">
-      <Navigation
-        onRunCode={handleRunCode}
-        onSubmit={handleSubmit}
-        onSettings={() => setSettingsOpen(true)}
-        onShortcuts={() => setShortcutsOpen(true)}
-        onBackToLanding={() => setView('landing')}
-        session={session}
-        onEditProfile={() => setProfileOpen(true)}
-        onHistory={() => setView('history')}
-        isAnalyzing={analysisState.isAnalyzing}
-        isRunning={runState.status === 'running'}
-        isSubmitting={submitState.status === 'running'}
-        cooldownRemaining={cooldown}
-        timer={settings.showTimer ? formatTime(elapsed) : null}
-        onMentor={() => {
-          if (!mentorOpen) {
-            setMentorOpen(true);
-            setIsMentorFolded(false);
-            setIsAiAutoEnabled(true);
-          } else {
-            setMentorOpen(false);
-          }
-        }}
-        isInterviewMode={isInterviewMode}
-        onStartInterview={handleStartInterview}
-        onEndInterview={handleEndInterview}
-        isSpeedChallenge={isSpeedChallenge}
-        roomCode={roomCode}
-        onShareRoom={handleShareRoom}
-        onLeaveRoom={handleLeaveRoom}
-      />
-
-      <main className="main-workspace">
-        <div className="description-container">
-          <ProblemDescription
-            problem={selectedProblem}
-            problems={problems}
-            onProblemChange={handleProblemChange}
+          <Navigation
+            onRunCode={handleRunCode}
+            onSubmit={handleSubmit}
+            onSettings={() => setSettingsOpen(true)}
+            onShortcuts={() => setShortcutsOpen(true)}
+            onBackToLanding={() => setView('landing')}
+            session={session}
+            onEditProfile={() => setProfileOpen(true)}
+            onHistory={() => setView('history')}
+            isAnalyzing={analysisState.isAnalyzing}
+            isRunning={runState.status === 'running'}
+            isSubmitting={submitState.status === 'running'}
+            cooldownRemaining={cooldown}
+            timer={settings.showTimer ? formatTime(elapsed) : null}
+            onMentor={() => {
+              if (!mentorOpen) {
+                setMentorOpen(true);
+                setIsMentorFolded(false);
+                setIsAiAutoEnabled(true);
+              } else {
+                setMentorOpen(false);
+              }
+            }}
+            isInterviewMode={isInterviewMode}
+            onStartInterview={handleStartInterview}
+            onEndInterview={handleEndInterview}
+            isSpeedChallenge={isSpeedChallenge}
+            roomCode={roomCode}
+            onShareRoom={handleShareRoom}
+            onLeaveRoom={handleLeaveRoom}
           />
-        </div>
 
-        <div className="editor-container" style={{ display: 'flex', flexDirection: 'column', flex: 1, gap: '8px', overflow: 'hidden' }}>
-          <CodeEditor
-            code={code}
-            onChange={handleCodeChange}
-            language={selectedLanguage}
-            languages={LANGUAGES}
-            onLanguageChange={handleLanguageChange}
-            onReset={handleResetCode}
-            readOnly={peerRole === 'interviewer'}
-            settings={settings}
-          />
-          <>
-            {isResultsFolded ? (
-              <div 
-                className="glass-panel dock-bar-results"
-                onClick={() => setIsResultsFolded(false)}
-                style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 16px', borderTop: '1px solid rgba(255,255,255,0.08)' }}
-              >
-                <Terminal size={14} className="text-gradient" />
-                <span style={{ fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.05em', color: 'var(--text-muted)' }}>TEST RESULTS</span>
-                <ChevronUp size={14} style={{ marginLeft: 'auto', opacity: 0.6 }} />
-              </div>
-            ) : (
+          <main className="main-workspace">
+            <div className="description-container">
+              <ProblemDescription
+                problem={selectedProblem}
+                problems={problems}
+                onProblemChange={handleProblemChange}
+              />
+            </div>
+
+            <div className="editor-container" style={{ display: 'flex', flexDirection: 'column', flex: 1, gap: '8px', overflow: 'hidden' }}>
+              <CodeEditor
+                code={code}
+                onChange={handleCodeChange}
+                language={selectedLanguage}
+                languages={LANGUAGES}
+                onLanguageChange={handleLanguageChange}
+                onReset={handleResetCode}
+                readOnly={peerRole === 'interviewer'}
+                settings={settings}
+              />
               <>
-                <PanelResizer 
-                  direction="vertical" 
-                  onResize={(d) => setBottomHeight(h => Math.max(150, Math.min(800, h - d)))} 
-                />
-                <div style={{ height: bottomHeight, flex: `0 0 ${bottomHeight}px`, display: 'flex', flexDirection: 'column' }}>
-                  <OutputPanel runState={submitState.status !== 'idle' ? submitState : runState} problem={selectedProblem} onClose={() => setIsResultsFolded(true)} onDebugWithFriday={handleDebugWithFriday} />
-                </div>
+                {isResultsFolded ? (
+                  <div
+                    className="glass-panel dock-bar-results"
+                    onClick={() => setIsResultsFolded(false)}
+                    style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 16px', borderTop: '1px solid rgba(255,255,255,0.08)' }}
+                  >
+                    <Terminal size={14} className="text-gradient" />
+                    <span style={{ fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.05em', color: 'var(--text-muted)' }}>TEST RESULTS</span>
+                    <ChevronUp size={14} style={{ marginLeft: 'auto', opacity: 0.6 }} />
+                  </div>
+                ) : (
+                  <>
+                    <PanelResizer
+                      direction="vertical"
+                      onResize={(d) => setBottomHeight(h => Math.max(150, Math.min(800, h - d)))}
+                    />
+                    <div style={{ height: bottomHeight, flex: `0 0 ${bottomHeight}px`, display: 'flex', flexDirection: 'column' }}>
+                      <OutputPanel runState={submitState.status !== 'idle' ? submitState : runState} problem={selectedProblem} onClose={() => setIsResultsFolded(true)} onDebugWithFriday={handleDebugWithFriday} />
+                    </div>
+                  </>
+                )}
               </>
-            )}
-          </>
-        </div>
+            </div>
 
-        {mentorOpen && (
-          <>
-            {isMentorFolded ? (
-              <div 
-                className="glass-panel dock-bar-mentor"
-                onClick={() => setIsMentorFolded(false)}
-              >
-                <ChevronLeft size={14} className="text-gradient" />
-                <span>SUMMON FRIDAY</span>
-              </div>
-            ) : (
+            {mentorOpen && (
               <>
-                <PanelResizer 
-                  direction="horizontal" 
-                  onResize={(d) => setRightWidth(w => Math.max(250, Math.min(600, w - d)))} 
-                />
-                <div style={{ 
-                  flex: `0 0 ${rightWidth}px`, 
-                  width: rightWidth, 
-                  display: 'flex', 
-                  flexDirection: 'column', 
-                  minWidth: 250, 
-                  maxWidth: 600,
-                  position: 'relative',
-                  animation: 'fadeIn 0.3s ease-out'
-                }}>
-                  <AIAnalysis 
-                    state={analysisState} 
-                    onRefresh={() => triggerAnalysis(code, selectedProblem, selectedLanguage)}
-                    isAutoEnabled={isAiAutoEnabled && runState.status !== 'running'}
-                    onToggleAuto={setIsAiAutoEnabled}
-                    onClose={() => setIsMentorFolded(true)}
-                    chatMessages={chatMessages}
-                    onSendMessage={handleSendMessage}
-                    isChatTyping={isChatTyping}
-                    activeTab={aiTab}
-                    onTabChange={setAiTab}
-                  />
-                  
-                  {runState.status === 'running' && (
+                {isMentorFolded ? (
+                  <div
+                    className="glass-panel dock-bar-mentor"
+                    onClick={() => setIsMentorFolded(false)}
+                  >
+                    <ChevronLeft size={14} className="text-gradient" />
+                    <span>SUMMON FRIDAY</span>
+                  </div>
+                ) : (
+                  <>
+                    <PanelResizer
+                      direction="horizontal"
+                      onResize={(d) => setRightWidth(w => Math.max(250, Math.min(600, w - d)))}
+                    />
                     <div style={{
-                      position: 'absolute',
-                      inset: 0,
-                      background: 'rgba(3, 0, 20, 0.7)',
-                      backdropFilter: 'blur(4px)',
-                      zIndex: 30,
+                      flex: `0 0 ${rightWidth}px`,
+                      width: rightWidth,
                       display: 'flex',
                       flexDirection: 'column',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      textAlign: 'center',
-                      padding: '24px',
-                      borderRadius: '12px',
-                      margin: '0',
+                      minWidth: 250,
+                      maxWidth: 600,
+                      position: 'relative',
+                      animation: 'fadeIn 0.3s ease-out'
                     }}>
-                      <div style={{
-                        width: '44px',
-                        height: '44px',
-                        borderRadius: '50%',
-                        background: 'rgba(168, 85, 247, 0.1)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        color: 'var(--accent-primary)',
-                        marginBottom: '16px',
-                        border: '1px solid rgba(168, 85, 247, 0.2)'
-                      }}>
-                        <Lock size={20} />
-                      </div>
-                      <h3 style={{ fontSize: '0.95rem', fontWeight: 600, marginBottom: '6px' }}>Friday Paused</h3>
-                      <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', lineHeight: 1.4 }}>
-                        Execution prioritizes performance. Analysis resumed shortly.
-                      </p>
+                      <AIAnalysis
+                        state={analysisState}
+                        onRefresh={() => triggerAnalysis(code, selectedProblem, selectedLanguage)}
+                        isAutoEnabled={isAiAutoEnabled && runState.status !== 'running'}
+                        onToggleAuto={setIsAiAutoEnabled}
+                        onClose={() => setIsMentorFolded(true)}
+                        chatMessages={chatMessages}
+                        onSendMessage={handleSendMessage}
+                        isChatTyping={isChatTyping}
+                        activeTab={aiTab}
+                        onTabChange={setAiTab}
+                      />
+
+                      {runState.status === 'running' && (
+                        <div style={{
+                          position: 'absolute',
+                          inset: 0,
+                          background: 'rgba(3, 0, 20, 0.7)',
+                          backdropFilter: 'blur(4px)',
+                          zIndex: 30,
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          textAlign: 'center',
+                          padding: '24px',
+                          borderRadius: '12px',
+                          margin: '0',
+                        }}>
+                          <div style={{
+                            width: '44px',
+                            height: '44px',
+                            borderRadius: '50%',
+                            background: 'rgba(168, 85, 247, 0.1)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            color: 'var(--accent-primary)',
+                            marginBottom: '16px',
+                            border: '1px solid rgba(168, 85, 247, 0.2)'
+                          }}>
+                            <Lock size={20} />
+                          </div>
+                          <h3 style={{ fontSize: '0.95rem', fontWeight: 600, marginBottom: '6px' }}>Friday Paused</h3>
+                          <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', lineHeight: 1.4 }}>
+                            Execution prioritizes performance. Analysis resumed shortly.
+                          </p>
+                        </div>
+                      )}
                     </div>
-                  )}
-                </div>
+                  </>
+                )}
               </>
             )}
-          </>
-        )}
-      </main>
+          </main>
 
-      {authToast && <AuthToast type={authToast} />}
-         </div>
-       )}
+          {authToast && <AuthToast type={authToast} />}
+        </div>
+      )}
 
       {settingsOpen && (
         <SettingsModal
@@ -764,25 +764,25 @@ function App() {
       )}
 
       {isShareModalOpen && roomCode && (
-         <ShareRoomModal roomCode={roomCode} onClose={() => setIsShareModalOpen(false)} />
+        <ShareRoomModal roomCode={roomCode} onClose={() => setIsShareModalOpen(false)} />
       )}
 
       {roomCode && peerRole && channelRef.current && (
-         <VideoCall channel={channelRef.current} peerRole={peerRole} />
+        <VideoCall channel={channelRef.current} peerRole={peerRole} />
       )}
 
       {session && (
-         <IdleTimeout onLogout={handleLogout} />
+        <IdleTimeout onLogout={handleLogout} />
       )}
 
       {profileOpen && (
-         <ProfileModal 
-           onClose={() => setProfileOpen(false)} 
-           session={session} 
-           onUpdate={() => {
-              supabase.auth.getSession().then(({ data }) => setSession(data.session));
-           }} 
-         />
+        <ProfileModal
+          onClose={() => setProfileOpen(false)}
+          session={session}
+          onUpdate={() => {
+            supabase.auth.getSession().then(({ data }) => setSession(data.session));
+          }}
+        />
       )}
 
       {resetModalOpen && (
@@ -797,7 +797,7 @@ function App() {
         onClose={() => setShortcutsOpen(false)}
       />
 
-      <AIVideoInterviewer 
+      <AIVideoInterviewer
         isInterviewMode={isInterviewMode}
         phase={interviewPhase}
         messages={chatMessages}
@@ -807,17 +807,17 @@ function App() {
       />
 
       {interviewEvaluation && (
-        <InterviewScorecardModal 
-          evaluation={interviewEvaluation} 
-          onClose={() => setInterviewEvaluation(null)} 
+        <InterviewScorecardModal
+          evaluation={interviewEvaluation}
+          onClose={() => setInterviewEvaluation(null)}
         />
       )}
 
       {isEvaluating && (
-        <div style={{ position: 'fixed', inset: 0, zIndex: 3000, background: 'rgba(3,0,10,0.8)', backdropFilter: 'blur(10px)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ position: 'fixed', inset: 0, zIndex: 3000, background: 'var(--bg-panel)', backdropFilter: 'blur(10px)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
           <Loader size={48} className="animate-spin" color="var(--accent-primary)" />
-          <h2 style={{ color: '#fff', marginTop: '24px', fontSize: '1.2rem', fontWeight: 800 }}>Generating Scorecard...</h2>
-          <p style={{ color: 'rgba(255,255,255,0.4)', marginTop: '8px' }}>Friday is analyzing your session results</p>
+          <h2 style={{ color: 'var(--text-primary)', marginTop: '24px', fontSize: '1.2rem', fontWeight: 800 }}>Generating Scorecard...</h2>
+          <p style={{ color: 'var(--text-muted)', marginTop: '8px' }}>Friday is analyzing your session results</p>
         </div>
       )}
 

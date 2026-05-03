@@ -39,11 +39,11 @@ export const ResetModal: React.FC<ResetModalProps> = ({ onConfirm, onClose }) =>
       <div
         className="glass-panel"
         style={{
-          width: '380px', // More compact
-          background: 'rgba(15, 15, 25, 0.7)',
-          border: '1px solid rgba(255, 255, 255, 0.08)', // More subtle border
+          width: '380px',
+          background: 'var(--bg-panel-solid)',
+          border: '1px solid var(--border-color)',
           borderRadius: '16px',
-          boxShadow: '0 20px 40px -10px rgba(0, 0, 0, 0.3)',
+          boxShadow: '0 20px 40px -10px rgba(0, 0, 0, 0.2)',
           overflow: 'hidden',
           animation: 'slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
           padding: 0,
@@ -76,7 +76,7 @@ export const ResetModal: React.FC<ResetModalProps> = ({ onConfirm, onClose }) =>
               <h2 style={{ 
                 fontSize: '1.1rem', 
                 fontWeight: 600, 
-                color: '#fff',
+                color: 'var(--text-primary)',
                 margin: '0 0 4px 0',
                 letterSpacing: '-0.01em'
               }}>Reset Code?</h2>

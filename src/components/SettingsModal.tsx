@@ -38,7 +38,7 @@ const Row: React.FC<{ icon: React.ReactNode; label: string; children: React.Reac
     alignItems: 'center',
     justifyContent: 'space-between',
     padding: '14px 0',
-    borderBottom: '1px solid rgba(255,255,255,0.06)',
+    borderBottom: '1px solid var(--border-color)',
   }}>
     <div style={{ display: 'flex', alignItems: 'center', gap: '10px', color: 'var(--text-muted)', fontSize: '0.9rem' }}>
       {icon}
@@ -59,7 +59,7 @@ const Toggle: React.FC<{ checked: boolean; onChange: (v: boolean) => void; id: s
         width: '40px',
         height: '22px',
         borderRadius: '99px',
-        background: checked ? 'var(--accent-primary)' : 'rgba(255,255,255,0.12)',
+        background: checked ? 'var(--accent-primary)' : 'var(--bg-panel-light)',
         position: 'relative',
         transition: 'background 0.2s',
         flexShrink: 0,
@@ -93,7 +93,7 @@ const StepButton: React.FC<{
       onClick={() => onChange(Math.max(min, value - step))}
       style={{
         width: '26px', height: '26px', borderRadius: '6px',
-        background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)',
+        background: 'var(--bg-panel-light)', border: '1px solid var(--border-color)',
         color: 'var(--text-primary)', cursor: 'pointer', fontSize: '1rem', lineHeight: 1,
         display: 'flex', alignItems: 'center', justifyContent: 'center',
       }}
@@ -105,7 +105,7 @@ const StepButton: React.FC<{
       onClick={() => onChange(Math.min(max, value + step))}
       style={{
         width: '26px', height: '26px', borderRadius: '6px',
-        background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)',
+        background: 'var(--bg-panel-light)', border: '1px solid var(--border-color)',
         color: 'var(--text-primary)', cursor: 'pointer', fontSize: '1rem', lineHeight: 1,
         display: 'flex', alignItems: 'center', justifyContent: 'center',
       }}
@@ -142,10 +142,10 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ settings, onChange
     >
       <div style={{
         width: '420px',
-        background: '#1a1a1f',
-        border: '1px solid rgba(139, 92, 246, 0.25)',
+        background: 'var(--bg-panel-solid)',
+        border: '1px solid var(--border-color)',
         borderRadius: '16px',
-        boxShadow: '0 32px 64px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.04)',
+        boxShadow: '0 32px 64px rgba(0,0,0,0.4), 0 0 0 1px var(--border-color)',
         overflow: 'hidden',
         animation: 'slideUp 0.2s ease',
       }}>
@@ -153,15 +153,15 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ settings, onChange
         <div style={{
           display: 'flex', alignItems: 'center', justifyContent: 'space-between',
           padding: '18px 22px',
-          borderBottom: '1px solid rgba(255,255,255,0.07)',
-          background: 'rgba(139, 92, 246, 0.06)',
+          borderBottom: '1px solid var(--border-color)',
+          background: 'var(--bg-panel-light)',
         }}>
           {showThemeSelector ? (
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
               <button
                 onClick={() => setShowThemeSelector(false)}
                 style={{
-                  background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)',
+                  background: 'var(--bg-panel-light)', border: '1px solid var(--border-color)',
                   color: 'var(--text-muted)', cursor: 'pointer', borderRadius: '8px',
                   display: 'flex', alignItems: 'center', justifyContent: 'center', width: '30px', height: '30px',
                   transition: 'all 0.15s',
@@ -187,7 +187,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ settings, onChange
             onClick={onClose}
             style={{
               width: '30px', height: '30px', borderRadius: '8px',
-              background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)',
+              background: 'var(--bg-panel-light)', border: '1px solid var(--border-color)',
               color: 'var(--text-muted)', cursor: 'pointer',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               transition: 'all 0.15s',
@@ -213,7 +213,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ settings, onChange
                     alignItems: 'center',
                     padding: '8px',
                     borderRadius: '8px',
-                    background: settings.appTheme === t.id ? 'rgba(255, 255, 255, 0.06)' : 'transparent',
+                    background: settings.appTheme === t.id ? 'var(--bg-panel-light)' : 'transparent',
                     border: '1px solid transparent',
                     cursor: 'pointer',
                     transition: 'all 0.2s',
@@ -284,8 +284,8 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ settings, onChange
                     display: 'flex',
                     alignItems: 'center',
                     gap: '6px',
-                    background: 'rgba(255,255,255,0.06)',
-                    border: '1px solid rgba(255,255,255,0.1)',
+                    background: 'var(--bg-panel-light)',
+                    border: '1px solid var(--border-color)',
                     color: 'var(--text-primary)',
                     fontSize: '0.8rem',
                     padding: '6px 14px',
@@ -303,7 +303,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ settings, onChange
 
           {/* Editor Theme */}
           <Row icon={settings.theme === 'nexcode-dark' ? <Moon size={15} /> : <Sun size={15} />} label="Editor Theme">
-            <div style={{ display: 'flex', background: 'rgba(255,255,255,0.06)', borderRadius: '8px', padding: '3px', gap: '2px' }}>
+            <div style={{ display: 'flex', background: 'var(--bg-panel-light)', borderRadius: '8px', padding: '3px', gap: '2px' }}>
               {(['nexcode-dark', 'vs-light'] as const).map(t => (
                 <button
                   key={t}

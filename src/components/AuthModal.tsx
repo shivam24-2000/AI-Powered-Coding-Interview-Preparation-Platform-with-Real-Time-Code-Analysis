@@ -59,24 +59,24 @@ export const AuthModal: React.FC<AuthModalProps> = ({ type: initialType, onClose
 
   return (
     <div style={{
-      position: 'fixed', inset: 0, background: 'rgba(3, 1, 8, 0.75)',
+      position: 'fixed', inset: 0, background: 'rgba(0, 0, 0, 0.4)',
       backdropFilter: 'blur(12px)', display: 'flex', alignItems: 'center',
       justifyContent: 'center', zIndex: 100, animation: 'fadeIn 0.2s ease-out'
     }} onClick={onClose}>
       <div style={{
-        width: '100%', maxWidth: '380px', background: 'rgba(20, 16, 28, 0.95)',
-        border: '1px solid rgba(168, 85, 247, 0.15)', borderRadius: '16px',
-        padding: '28px', position: 'relative', boxShadow: '0 20px 50px rgba(124, 58, 237, 0.15)'
+        width: '100%', maxWidth: '380px', background: 'var(--bg-panel-solid)',
+        border: '1px solid var(--border-color)', borderRadius: '16px',
+        padding: '28px', position: 'relative', boxShadow: '0 20px 50px rgba(0, 0, 0, 0.2)'
       }} onClick={e => e.stopPropagation()}>
         
-        <button style={{ position: 'absolute', top: '16px', right: '16px', background: 'transparent', border: 'none', color: 'rgba(255,255,255,0.4)', cursor: 'pointer' }} onClick={onClose}>
+        <button style={{ position: 'absolute', top: '16px', right: '16px', background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }} onClick={onClose}>
           <X size={18} />
         </button>
 
-        <h2 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#fff', marginBottom: '8px', textAlign: 'center' }}>
+        <h2 style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: '8px', textAlign: 'center' }}>
           {mode === 'signup' ? 'Create Account' : mode === 'login' ? 'Welcome Back' : 'Reset Password'}
         </h2>
-        <p style={{ fontSize: '0.78rem', color: 'rgba(255,255,255,0.5)', marginBottom: '24px', textAlign: 'center' }}>
+        <p style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginBottom: '24px', textAlign: 'center' }}>
           {mode === 'signup' ? 'Start your AI technical prep journey' : mode === 'login' ? 'Login to resume your analysis sessions' : 'Enter your email to receive a reset link'}
         </p>
 
@@ -88,33 +88,33 @@ export const AuthModal: React.FC<AuthModalProps> = ({ type: initialType, onClose
 
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
           <div>
-            <label style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.7)', marginBottom: '4px', display: 'block' }}>Email Address</label>
+            <label style={{ fontSize: '0.75rem', color: 'var(--text-primary)', opacity: 0.7, marginBottom: '4px', display: 'block' }}>Email Address</label>
             <div style={{ position: 'relative' }}>
-              <Mail size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'rgba(255,255,255,0.3)' }} />
+              <Mail size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
               <input 
                 type="email" required value={email} onChange={e => setEmail(e.target.value)}
                 placeholder="you@example.com"
-                style={{ width: '100%', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '10px', padding: '10px 12px 10px 36px', color: '#fff', fontSize: '0.85rem' }} 
+                style={{ width: '100%', background: 'var(--bg-panel-light)', border: '1px solid var(--border-color)', borderRadius: '10px', padding: '10px 12px 10px 36px', color: 'var(--text-primary)', fontSize: '0.85rem' }} 
               />
             </div>
           </div>
 
           {mode !== 'reset' && (
             <div>
-              <label style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.7)', marginBottom: '4px', display: 'block' }}>Password</label>
+              <label style={{ fontSize: '0.75rem', color: 'var(--text-primary)', opacity: 0.7, marginBottom: '4px', display: 'block' }}>Password</label>
               <div style={{ position: 'relative' }}>
-                <Lock size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'rgba(255,255,255,0.3)' }} />
+                <Lock size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
                 <input 
                   type="password" required value={password} onChange={e => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  style={{ width: '100%', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '10px', padding: '10px 12px 10px 36px', color: '#fff', fontSize: '0.85rem' }} 
+                  style={{ width: '100%', background: 'var(--bg-panel-light)', border: '1px solid var(--border-color)', borderRadius: '10px', padding: '10px 12px 10px 36px', color: 'var(--text-primary)', fontSize: '0.85rem' }} 
                 />
               </div>
               {mode === 'login' && (
                 <button 
                   type="button" 
                   onClick={() => setMode('reset')}
-                  style={{ background: 'transparent', border: 'none', color: '#D8B4FE', fontSize: '0.7rem', padding: '4px 0', cursor: 'pointer', float: 'right' }}
+                  style={{ background: 'transparent', border: 'none', color: 'var(--accent-primary)', fontSize: '0.7rem', padding: '4px 0', cursor: 'pointer', float: 'right' }}
                 >
                   Forgot Password?
                 </button>
@@ -131,21 +131,21 @@ export const AuthModal: React.FC<AuthModalProps> = ({ type: initialType, onClose
         </form>
 
         <div style={{ display: 'flex', alignItems: 'center', margin: '20px 0', gap: '10px' }}>
-          <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.06)' }}></div>
-          <span style={{ fontSize: '0.72rem', color: 'rgba(255,255,255,0.35)' }}>OR</span>
-          <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.06)' }}></div>
+          <div style={{ flex: 1, height: '1px', background: 'var(--border-color)' }}></div>
+          <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>OR</span>
+          <div style={{ flex: 1, height: '1px', background: 'var(--border-color)' }}></div>
         </div>
 
         <div style={{ display: 'flex', gap: '12px' }}>
-          <button onClick={() => handleSocialLogin('google')} style={{ flex: 1, background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '10px', padding: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', cursor: 'pointer', color: '#fff', fontSize: '0.8rem' }}>
+          <button onClick={() => handleSocialLogin('google')} style={{ flex: 1, background: 'var(--bg-panel-light)', border: '1px solid var(--border-color)', borderRadius: '10px', padding: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', cursor: 'pointer', color: 'var(--text-primary)', fontSize: '0.8rem' }}>
             <Chrome size={16} /> Google
           </button>
-          <button onClick={() => handleSocialLogin('github')} style={{ flex: 1, background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '10px', padding: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', cursor: 'pointer', color: '#fff', fontSize: '0.8rem' }}>
+          <button onClick={() => handleSocialLogin('github')} style={{ flex: 1, background: 'var(--bg-panel-light)', border: '1px solid var(--border-color)', borderRadius: '10px', padding: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', cursor: 'pointer', color: 'var(--text-primary)', fontSize: '0.8rem' }}>
             <Github size={16} /> Github
           </button>
         </div>
         <div style={{ marginTop: '24px', textAlign: 'center' }}>
-          <p style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.5)' }}>
+          <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
             {mode === 'signup' ? 'Already have an account?' : mode === 'login' ? "Don't have an account?" : "Remembered your password?"}{' '}
             <button 
               onClick={() => {
@@ -153,7 +153,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ type: initialType, onClose
                 else setMode(mode === 'signup' ? 'login' : 'signup');
                 setError('');
               }}
-              style={{ background: 'transparent', border: 'none', color: '#D8B4FE', fontWeight: 600, cursor: 'pointer', padding: 0 }}
+              style={{ background: 'transparent', border: 'none', color: 'var(--accent-primary)', fontWeight: 600, cursor: 'pointer', padding: 0 }}
             >
               {mode === 'signup' ? 'Log in' : mode === 'login' ? 'Sign up' : 'Back to Login'}
             </button>

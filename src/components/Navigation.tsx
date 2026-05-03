@@ -326,12 +326,12 @@ export const Navigation: React.FC<NavigationProps> = ({
               }}>
                 
                 <div style={{
-                  background: 'var(--bg-panel)', backdropFilter: 'blur(16px)',
+                  background: 'var(--bg-panel-solid)', backdropFilter: 'blur(16px)',
                   border: '1px solid var(--border-color)', borderRadius: '14px',
                   padding: '6px', minWidth: '180px',
-                  boxShadow: '0 12px 30px rgba(0,0,0,0.15)', display: 'flex', flexDirection: 'column', gap: '4px'
+                  boxShadow: '0 12px 30px rgba(0,0,0,0.1)', display: 'flex', flexDirection: 'column', gap: '4px'
                 }}>
-                  <div style={{ padding: '10px 12px', borderBottom: '1px solid var(--border-color)', marginBottom: '4px' }}>
+                  <div style={{ padding: '10px 12px', borderBottom: '1px solid var(--border-color)', marginBottom: '4px', opacity: 0.9 }}>
                     <p style={{ margin: 0, fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Account</p>
                     <p style={{ margin: '2px 0 0 0', fontSize: '0.82rem', fontWeight: 600, color: 'var(--text-primary)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{session?.user?.email}</p>
                   </div>

@@ -70,11 +70,11 @@ const Kbd: React.FC<{ children: React.ReactNode }> = ({ children }) => (
     fontWeight: 700,
     fontFamily: '"Fira Code", monospace',
     letterSpacing: '0.02em',
-    background: 'rgba(255,255,255,0.06)',
-    border: '1px solid rgba(255,255,255,0.12)',
-    borderBottom: '2px solid rgba(255,255,255,0.08)',
+    background: 'var(--bg-panel-light)',
+    border: '1px solid var(--border-color)',
+    borderBottom: '2px solid var(--border-color)',
     color: 'var(--text-primary)',
-    boxShadow: '0 1px 3px rgba(0,0,0,0.3)',
+    boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
     minWidth: '24px',
     whiteSpace: 'nowrap',
   }}>
@@ -114,8 +114,9 @@ export const KeyboardShortcutsModal: React.FC<KeyboardShortcutsModalProps> = ({ 
           overflow: 'hidden',
           display: 'flex',
           flexDirection: 'column',
-          border: '1px solid var(--border-highlight)',
-          boxShadow: '0 24px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(168,85,247,0.1)',
+          border: '1px solid var(--border-color)',
+          boxShadow: '0 24px 80px rgba(0,0,0,0.3), 0 0 0 1px var(--border-color)',
+          background: 'var(--bg-panel-solid)',
           animation: 'slideUp 0.25s cubic-bezier(0.16,1,0.3,1)',
         }}
       >
@@ -124,7 +125,7 @@ export const KeyboardShortcutsModal: React.FC<KeyboardShortcutsModalProps> = ({ 
           display: 'flex', alignItems: 'center', justifyContent: 'space-between',
           padding: '20px 24px',
           borderBottom: '1px solid var(--border-color)',
-          background: 'rgba(168, 85, 247, 0.04)',
+          background: 'var(--bg-panel-light)',
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <div style={{
@@ -162,7 +163,7 @@ export const KeyboardShortcutsModal: React.FC<KeyboardShortcutsModalProps> = ({ 
               <div
                 key={group.title}
                 style={{
-                  background: 'rgba(255,255,255,0.02)',
+                  background: 'var(--bg-panel-light)',
                   border: '1px solid var(--border-color)',
                   borderRadius: '12px',
                   overflow: 'hidden',
@@ -171,7 +172,7 @@ export const KeyboardShortcutsModal: React.FC<KeyboardShortcutsModalProps> = ({ 
                 {/* Group header */}
                 <div style={{
                   padding: '10px 14px',
-                  background: 'rgba(168,85,247,0.05)',
+                  background: 'var(--bg-panel-light)',
                   borderBottom: '1px solid var(--border-color)',
                   display: 'flex', alignItems: 'center', gap: '8px',
                 }}>
