@@ -82,14 +82,14 @@ export const Navigation: React.FC<NavigationProps> = ({
         {timer !== undefined && timer !== null && (
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             {isSpeedChallenge && (
-              <div style={{ 
-                padding: '4px 10px', 
-                borderRadius: '6px', 
-                background: 'linear-gradient(135deg, #7C3AED, #DB2777)', 
-                color: '#fff', 
-                fontSize: '0.65rem', 
-                fontWeight: 800, 
-                textTransform: 'uppercase', 
+              <div style={{
+                padding: '4px 10px',
+                borderRadius: '6px',
+                background: 'linear-gradient(135deg, #7C3AED, #DB2777)',
+                color: '#fff',
+                fontSize: '0.65rem',
+                fontWeight: 800,
+                textTransform: 'uppercase',
                 letterSpacing: '0.05em',
                 boxShadow: '0 0 10px rgba(124,58,237,0.3)',
                 animation: 'pulse 2s infinite'
@@ -124,13 +124,13 @@ export const Navigation: React.FC<NavigationProps> = ({
             <button
               className="btn btn-secondary"
               onClick={onShareRoom}
-              style={{ 
-                color: '#10b981', 
+              style={{
+                color: '#10b981',
                 borderColor: 'rgba(16, 185, 129, 0.2)',
                 background: 'rgba(16, 185, 129, 0.05)',
                 boxShadow: '0 0 15px rgba(16, 185, 129, 0.1)',
                 display: 'flex', gap: '6px', alignItems: 'center',
-                borderTopRightRadius: roomCode ? '0' : '8px', 
+                borderTopRightRadius: roomCode ? '0' : '8px',
                 borderBottomRightRadius: roomCode ? '0' : '8px',
                 borderRight: roomCode ? 'none' : '1px solid rgba(16, 185, 129, 0.2)'
               }}
@@ -174,8 +174,8 @@ export const Navigation: React.FC<NavigationProps> = ({
         <button
           className="btn btn-secondary"
           onClick={onMentor}
-          style={{ 
-            color: 'var(--accent-primary)', 
+          style={{
+            color: 'var(--accent-primary)',
             borderColor: 'rgba(16, 85, 247, 0.2)',
             background: 'rgba(16, 85, 247, 0.05)',
             boxShadow: '0 0 15px rgba(16, 85, 247, 0.1)',
@@ -194,8 +194,8 @@ export const Navigation: React.FC<NavigationProps> = ({
         <button
           className="btn btn-secondary"
           onClick={isInterviewMode ? onEndInterview : onStartInterview}
-          style={{ 
-            color: isInterviewMode ? '#fca5a5' : '#D8B4FE', 
+          style={{
+            color: isInterviewMode ? '#fca5a5' : '#D8B4FE',
             borderColor: isInterviewMode ? 'rgba(239, 68, 68, 0.2)' : 'rgba(168, 85, 247, 0.2)',
             background: isInterviewMode ? 'rgba(239, 68, 68, 0.05)' : 'rgba(168, 85, 247, 0.05)',
             boxShadow: isInterviewMode ? '0 0 15px rgba(239, 68, 68, 0.1)' : '0 0 15px rgba(168, 85, 247, 0.1)',
@@ -214,10 +214,10 @@ export const Navigation: React.FC<NavigationProps> = ({
               <span>Finish & Score</span>
             </>
           ) : (
-             <>
-               <Award size={14} style={{ marginRight: '4px' }} />
-               <span>Mock Interview</span>
-             </>
+            <>
+              <Award size={14} style={{ marginRight: '4px' }} />
+              <span>Mock Interview</span>
+            </>
           )}
         </button>
 
@@ -232,7 +232,7 @@ export const Navigation: React.FC<NavigationProps> = ({
           {isRunning ? (
             <Loader size={16} className="animate-spin" />
           ) : isBlocked ? (
-             <Loader size={16} />
+            <Loader size={16} />
           ) : (
             <Play size={16} fill="currentColor" />
           )}
@@ -256,52 +256,52 @@ export const Navigation: React.FC<NavigationProps> = ({
       </div>
 
       <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '8px' }}>
-         <style>{`
+        <style>{`
             @keyframes pulseRing {
                 0% { transform: scale(0.9); opacity: 0.8; }
                 50% { transform: scale(1.15); opacity: 0.2; }
                 100% { transform: scale(0.9); opacity: 0.8; }
             }
          `}</style>
-         
-         <button
-           id="settings-btn"
-           onClick={onSettings}
-           style={{ width: '34px', height: '34px', background: 'var(--bg-panel-light)', border: '1px solid var(--border-color)', color: 'var(--text-muted)', cursor: 'pointer', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.2s', boxShadow: '0 2px 8px rgba(0,0,0,0.15)' }}
-           onMouseEnter={e => { e.currentTarget.style.color = 'var(--text-primary)'; e.currentTarget.style.background = 'var(--bg-panel)'; e.currentTarget.style.transform = 'scale(1.05)'; }}
-           onMouseLeave={e => { e.currentTarget.style.color = 'var(--text-muted)'; e.currentTarget.style.background = 'var(--bg-panel-light)'; e.currentTarget.style.transform = 'scale(1)'; }}
-           title="Settings"
-         >
-           <Settings size={15} />
-         </button>
 
-         <button
-           id="shortcuts-btn"
-           onClick={onShortcuts}
-           title="Keyboard Shortcuts (?)"
-           style={{ width: '34px', height: '34px', background: 'var(--bg-panel-light)', border: '1px solid var(--border-color)', color: 'var(--text-muted)', cursor: 'pointer', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.2s', boxShadow: '0 2px 8px rgba(0,0,0,0.15)' }}
-           onMouseEnter={e => { e.currentTarget.style.color = 'var(--text-primary)'; e.currentTarget.style.background = 'var(--bg-panel)'; e.currentTarget.style.transform = 'scale(1.05)'; }}
-           onMouseLeave={e => { e.currentTarget.style.color = 'var(--text-muted)'; e.currentTarget.style.background = 'var(--bg-panel-light)'; e.currentTarget.style.transform = 'scale(1)'; }}
-         >
-           <Keyboard size={15} />
-         </button>
+        <button
+          id="settings-btn"
+          onClick={onSettings}
+          style={{ width: '34px', height: '34px', background: 'var(--bg-panel-light)', border: '1px solid var(--border-color)', color: 'var(--text-muted)', cursor: 'pointer', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.2s', boxShadow: '0 2px 8px rgba(0,0,0,0.15)' }}
+          onMouseEnter={e => { e.currentTarget.style.color = 'var(--text-primary)'; e.currentTarget.style.background = 'var(--bg-panel)'; e.currentTarget.style.transform = 'scale(1.05)'; }}
+          onMouseLeave={e => { e.currentTarget.style.color = 'var(--text-muted)'; e.currentTarget.style.background = 'var(--bg-panel-light)'; e.currentTarget.style.transform = 'scale(1)'; }}
+          title="Settings"
+        >
+          <Settings size={15} />
+        </button>
 
-         {session && (
-           <div 
-             style={{ position: 'relative', marginLeft: '4px' }} 
-             onMouseEnter={() => setShowProfileMenu(true)} 
-             onMouseLeave={() => setShowProfileMenu(false)}
-           >
-             <button style={{ 
-               display: 'flex', alignItems: 'center', gap: '8px', 
-               padding: '6px 12px', borderRadius: '14px', 
-               background: 'var(--bg-panel-light)', border: '1px solid var(--border-color)',
-               color: 'var(--text-primary)', cursor: 'pointer', transition: 'all 0.3s ease'
-             }} className="hover-lift">
-              <div style={{ 
+        <button
+          id="shortcuts-btn"
+          onClick={onShortcuts}
+          title="Keyboard Shortcuts (?)"
+          style={{ width: '34px', height: '34px', background: 'var(--bg-panel-light)', border: '1px solid var(--border-color)', color: 'var(--text-muted)', cursor: 'pointer', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.2s', boxShadow: '0 2px 8px rgba(0,0,0,0.15)' }}
+          onMouseEnter={e => { e.currentTarget.style.color = 'var(--text-primary)'; e.currentTarget.style.background = 'var(--bg-panel)'; e.currentTarget.style.transform = 'scale(1.05)'; }}
+          onMouseLeave={e => { e.currentTarget.style.color = 'var(--text-muted)'; e.currentTarget.style.background = 'var(--bg-panel-light)'; e.currentTarget.style.transform = 'scale(1)'; }}
+        >
+          <Keyboard size={15} />
+        </button>
+
+        {session && (
+          <div
+            style={{ position: 'relative', marginLeft: '4px' }}
+            onMouseEnter={() => setShowProfileMenu(true)}
+            onMouseLeave={() => setShowProfileMenu(false)}
+          >
+            <button style={{
+              display: 'flex', alignItems: 'center', gap: '8px',
+              padding: '6px 12px', borderRadius: '14px',
+              background: 'var(--bg-panel-light)', border: '1px solid var(--border-color)',
+              color: 'var(--text-primary)', cursor: 'pointer', transition: 'all 0.3s ease'
+            }} className="hover-lift">
+              <div style={{
                 width: '28px', height: '28px', borderRadius: '50%', overflow: 'hidden',
-                background: 'linear-gradient(135deg, #A855F7 0%, #3B82F6 100%)', 
-                display: 'flex', alignItems: 'center', justifyContent: 'center', 
+                background: 'linear-gradient(135deg, #A855F7 0%, #3B82F6 100%)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
                 fontSize: '0.75rem', fontWeight: 700, color: '#fff',
                 boxShadow: '0 0 12px rgba(168, 85, 247, 0.2)'
               }}>
@@ -316,15 +316,15 @@ export const Navigation: React.FC<NavigationProps> = ({
               </span>
               <ChevronDown size={14} style={{ opacity: 0.6, transform: showProfileMenu ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s' }} />
             </button>
-            
+
             {showProfileMenu && (
-              <div style={{ 
+              <div style={{
                 position: 'absolute', top: '100%', right: 0, paddingTop: '8px', zIndex: 1000,
                 animation: 'dropdownReveal 0.25s cubic-bezier(0.1, 0.9, 0.2, 1)',
                 transformOrigin: 'top right',
                 perspective: '1000px'
               }}>
-                
+
                 <div style={{
                   background: 'var(--bg-panel-solid)', backdropFilter: 'blur(16px)',
                   border: '1px solid var(--border-color)', borderRadius: '14px',
@@ -335,9 +335,9 @@ export const Navigation: React.FC<NavigationProps> = ({
                     <p style={{ margin: 0, fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Account</p>
                     <p style={{ margin: '2px 0 0 0', fontSize: '0.82rem', fontWeight: 600, color: 'var(--text-primary)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{session?.user?.email}</p>
                   </div>
-                  
+
                   <button onClick={() => { onEditProfile?.(); setShowProfileMenu(false); }} style={{
-                    background: 'transparent', border: 'none', color: 'var(--text-primary)', 
+                    background: 'transparent', border: 'none', color: 'var(--text-primary)',
                     padding: '10px 12px', borderRadius: '10px', cursor: 'pointer',
                     display: 'flex', alignItems: 'center', gap: '10px', fontSize: '0.85rem',
                     textAlign: 'left'
@@ -346,7 +346,7 @@ export const Navigation: React.FC<NavigationProps> = ({
                   </button>
 
                   <button onClick={onHistory} style={{
-                    background: 'transparent', border: 'none', color: 'var(--text-primary)', 
+                    background: 'transparent', border: 'none', color: 'var(--text-primary)',
                     padding: '10px 12px', borderRadius: '10px', cursor: 'pointer',
                     display: 'flex', alignItems: 'center', gap: '10px', fontSize: '0.85rem',
                     textAlign: 'left'
@@ -354,10 +354,10 @@ export const Navigation: React.FC<NavigationProps> = ({
                     <Award size={15} color="#A855F7" /> Dashboard
                   </button>
                   <button onClick={handleLogout} style={{
-                      background: 'transparent', border: 'none', color: '#EF4444', 
-                      padding: '10px 12px', borderRadius: '10px', cursor: 'pointer',
-                      display: 'flex', alignItems: 'center', gap: '10px', fontSize: '0.85rem',
-                      textAlign: 'left'
+                    background: 'transparent', border: 'none', color: '#EF4444',
+                    padding: '10px 12px', borderRadius: '10px', cursor: 'pointer',
+                    display: 'flex', alignItems: 'center', gap: '10px', fontSize: '0.85rem',
+                    textAlign: 'left'
                   }} className="hover-menu-item">
                     <LogOut size={15} /> Logout
                   </button>

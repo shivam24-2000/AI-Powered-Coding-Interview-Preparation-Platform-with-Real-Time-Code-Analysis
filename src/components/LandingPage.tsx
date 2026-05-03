@@ -9,6 +9,14 @@ import { PrivacyPolicyModal } from './PrivacyPolicyModal';
 import { TermsOfUseModal } from './TermsOfUseModal';
 import { SecurityModal } from './SecurityModal';
 import { ComplianceModal } from './ComplianceModal';
+import { DocumentationModal } from './DocumentationModal';
+import { FridayWikiModal } from './FridayWikiModal';
+import { ChangelogModal } from './ChangelogModal';
+import { CommunityModal } from './CommunityModal';
+import { PlaygroundInfoModal } from './PlaygroundInfoModal';
+import { AIMockExamsModal } from './AIMockExamsModal';
+import { ProblemBankInfoModal } from './ProblemBankInfoModal';
+import { LeaderboardsInfoModal } from './LeaderboardsInfoModal';
 
 interface LandingPageProps {
   onStart: (problemId?: string) => void;
@@ -166,6 +174,14 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
   const [showTermsModal, setShowTermsModal] = useState(false);
   const [showSecurityModal, setShowSecurityModal] = useState(false);
   const [showComplianceModal, setShowComplianceModal] = useState(false);
+  const [showDocModal, setShowDocModal] = useState(false);
+  const [showWikiModal, setShowWikiModal] = useState(false);
+  const [showChangelogModal, setShowChangelogModal] = useState(false);
+  const [showCommunityModal, setShowCommunityModal] = useState(false);
+  const [showPlaygroundModal, setShowPlaygroundModal] = useState(false);
+  const [showExamModal, setShowExamModal] = useState(false);
+  const [showProblemBankModal, setShowProblemBankModal] = useState(false);
+  const [showLeaderboardsModal, setShowLeaderboardsModal] = useState(false);
 
   const handleLogout = () => {
     setShowLogoutConfirm(true);
@@ -1231,17 +1247,17 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
           <div style={{ flex: 1.5, display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '40px' }} className="footer-links-grid">
             <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
               <h4 style={{ color: '#fff', fontSize: '0.85rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.2em' }}>Platform</h4>
-              <a href="#playground-section" className="footer-link-v3">Playground</a>
-              <a href="#interview-section" className="footer-link-v3">AI Mock Exams</a>
-              <a href="#" className="footer-link-v3">Problem Bank</a>
-              <a href="#" className="footer-link-v3">Leaderboards</a>
+              <button onClick={() => setShowPlaygroundModal(true)} className="footer-link-v3" style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', textAlign: 'left' }}>Playground</button>
+              <button onClick={() => setShowExamModal(true)} className="footer-link-v3" style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', textAlign: 'left' }}>AI Mock Exams</button>
+              <button onClick={() => setShowProblemBankModal(true)} className="footer-link-v3" style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', textAlign: 'left' }}>Problem Bank</button>
+              <button onClick={() => setShowLeaderboardsModal(true)} className="footer-link-v3" style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', textAlign: 'left' }}>Leaderboards</button>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
               <h4 style={{ color: '#fff', fontSize: '0.85rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.2em' }}>Resources</h4>
-              <a href="#" className="footer-link-v3">Documentation</a>
-              <a href="#" className="footer-link-v3">Friday AI Wiki</a>
-              <a href="#" className="footer-link-v3">Changelog</a>
-              <a href="#" className="footer-link-v3">Community</a>
+              <button onClick={() => setShowDocModal(true)} className="footer-link-v3" style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', textAlign: 'left' }}>Documentation</button>
+              <button onClick={() => setShowWikiModal(true)} className="footer-link-v3" style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', textAlign: 'left' }}>Friday AI Wiki</button>
+              <button onClick={() => setShowChangelogModal(true)} className="footer-link-v3" style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', textAlign: 'left' }}>Changelog</button>
+              <button onClick={() => setShowCommunityModal(true)} className="footer-link-v3" style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', textAlign: 'left' }}>Community</button>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
               <h4 style={{ color: '#fff', fontSize: '0.85rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.2em' }}>Legal</h4>
@@ -1416,6 +1432,14 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
       {showTermsModal && <TermsOfUseModal onClose={() => setShowTermsModal(false)} />}
       {showSecurityModal && <SecurityModal onClose={() => setShowSecurityModal(false)} />}
       {showComplianceModal && <ComplianceModal onClose={() => setShowComplianceModal(false)} />}
+      {showDocModal && <DocumentationModal onClose={() => setShowDocModal(false)} />}
+      {showWikiModal && <FridayWikiModal onClose={() => setShowWikiModal(false)} />}
+      {showChangelogModal && <ChangelogModal onClose={() => setShowChangelogModal(false)} />}
+      {showCommunityModal && <CommunityModal onClose={() => setShowCommunityModal(false)} />}
+      {showPlaygroundModal && <PlaygroundInfoModal onClose={() => setShowPlaygroundModal(false)} />}
+      {showExamModal && <AIMockExamsModal onClose={() => setShowExamModal(false)} onStart={handleProtectedStart} />}
+      {showProblemBankModal && <ProblemBankInfoModal onClose={() => setShowProblemBankModal(false)} />}
+      {showLeaderboardsModal && <LeaderboardsInfoModal onClose={() => setShowLeaderboardsModal(false)} />}
 
       {/* 🎨 Embed scoped styles to run keyframes */}
       <style>{`

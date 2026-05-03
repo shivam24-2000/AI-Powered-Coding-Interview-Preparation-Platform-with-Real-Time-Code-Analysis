@@ -19,7 +19,7 @@ export const HistoryPage: React.FC<HistoryPageProps> = ({ onBack, session }) => 
       setLoading(true);
       const { data, error } = await supabase
         .from('submissions')
-        .select('id, problem_id, problem_title, status, language, created_at') 
+        .select('id, problem_id, problem_title, status, language, created_at')
         .order('created_at', { ascending: false });
 
       if (error) console.error('Failed fetching submissions:', error);
@@ -33,7 +33,7 @@ export const HistoryPage: React.FC<HistoryPageProps> = ({ onBack, session }) => 
   const stats = React.useMemo(() => {
     const totalPassed = submissions.filter(s => s.status === 'passed').length;
     const totalFailed = submissions.length - totalPassed;
-    
+
     const pieData = [
       { name: 'Passed', value: totalPassed, color: '#10B981' },
       { name: 'Failed', value: totalFailed, color: '#EF4444' }
@@ -59,8 +59,8 @@ export const HistoryPage: React.FC<HistoryPageProps> = ({ onBack, session }) => 
       { name: 'Hard', value: diffMap.Hard, color: '#EF4444' }
     ].filter(d => d.value > 0);
 
-    const langData = Object.entries(langMap).map(([name, value]) => ({ 
-      name: name.toUpperCase(), 
+    const langData = Object.entries(langMap).map(([name, value]) => ({
+      name: name.toUpperCase(),
       value,
       color: name === 'python' ? '#3776AB' : name === 'javascript' ? '#F7DF1E' : '#A855F7'
     }));
@@ -82,11 +82,11 @@ export const HistoryPage: React.FC<HistoryPageProps> = ({ onBack, session }) => 
       const today = new Date().toDateString();
       const yesterday = new Date(Date.now() - 86400000).toDateString();
       const lastSubDate = new Date(uniqueDates[0]).toDateString();
-      
+
       if (lastSubDate === today || lastSubDate === yesterday) {
         currentStreak = 1;
         for (let i = 0; i < uniqueDates.length - 1; i++) {
-          const diff = (uniqueDates[i] - uniqueDates[i+1]) / 86400000;
+          const diff = (uniqueDates[i] - uniqueDates[i + 1]) / 86400000;
           if (Math.round(diff) === 1) currentStreak++;
           else break;
         }
@@ -95,7 +95,7 @@ export const HistoryPage: React.FC<HistoryPageProps> = ({ onBack, session }) => 
       // Max streak
       tempStreak = 1;
       for (let i = 0; i < uniqueDates.length - 1; i++) {
-        const diff = (uniqueDates[i] - uniqueDates[i+1]) / 86400000;
+        const diff = (uniqueDates[i] - uniqueDates[i + 1]) / 86400000;
         if (Math.round(diff) === 1) tempStreak++;
         else {
           maxStreak = Math.max(maxStreak, tempStreak);
@@ -151,7 +151,7 @@ export const HistoryPage: React.FC<HistoryPageProps> = ({ onBack, session }) => 
         </div>
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-          
+
           {/* 📊 Metrics cards */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px' }}>
             <div className="glass-panel" style={{ padding: '20px', borderRadius: '16px', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.04)', display: 'flex', alignItems: 'center', gap: '16px' }}>
@@ -181,9 +181,9 @@ export const HistoryPage: React.FC<HistoryPageProps> = ({ onBack, session }) => 
               <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.7rem', color: 'rgba(255,255,255,0.3)' }}>
                 <span>Less</span>
                 {[0, 2, 5, 8].map(level => {
-                  const color = level === 0 ? 'rgba(255,255,255,0.05)' : 
-                                level < 3 ? 'rgba(168, 85, 247, 0.3)' :
-                                level < 6 ? 'rgba(168, 85, 247, 0.6)' : 'rgba(168, 85, 247, 1)';
+                  const color = level === 0 ? 'rgba(255,255,255,0.05)' :
+                    level < 3 ? 'rgba(168, 85, 247, 0.3)' :
+                      level < 6 ? 'rgba(168, 85, 247, 0.6)' : 'rgba(168, 85, 247, 1)';
                   return <div key={level} style={{ width: '10px', height: '10px', background: color, borderRadius: '2px' }} />;
                 })}
                 <span>More</span>
@@ -192,60 +192,60 @@ export const HistoryPage: React.FC<HistoryPageProps> = ({ onBack, session }) => 
 
             <div style={{ width: '100%', overflowX: 'auto', paddingBottom: '15px', borderRadius: '12px' }}>
               <div style={{ display: 'flex', gap: '16px', width: 'max-content', minWidth: '100%', justifyContent: 'flex-start', padding: '0 32px' }}>
-              {/* Day Labels */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', paddingTop: '24px', position: 'sticky', left: 0, background: 'var(--bg-panel)', zIndex: 5, paddingRight: '12px' }}>
-                {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((day, i) => (
-                  <div key={i} style={{ height: '16px', fontSize: '0.7rem', color: i % 2 === 1 ? 'rgba(255,255,255,0.3)' : 'transparent', display: 'flex', alignItems: 'center' }}>
-                    {day}
-                  </div>
-                ))}
-              </div>
-
-              {/* Grid with Month Labels */}
-              <div style={{ flex: 1 }}>
-                <div style={{ display: 'flex', marginBottom: '8px', height: '16px', gap: '6px' }}>
-                  {Array.from({ length: 52 }).map((_, i) => {
-                    const date = new Date(heatmapData[i * 7]?.date);
-                    const isNewMonth = i === 0 || date.getMonth() !== new Date(heatmapData[(i - 1) * 7]?.date).getMonth();
-                    
-                    return (
-                      <div key={i} style={{ width: '16px', fontSize: '0.65rem', color: 'rgba(255,255,255,0.3)', whiteSpace: 'nowrap' }}>
-                        {isNewMonth ? date.toLocaleString('default', { month: 'short' }) : ''}
-                      </div>
-                    );
-                  })}
-                </div>
-                <div style={{ display: 'flex', gap: '6px' }}>
-                  {Array.from({ length: 52 }).map((_, weekIdx) => (
-                    <div key={weekIdx} style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                      {Array.from({ length: 7 }).map((_, dayIdx) => {
-                        const dataIdx = weekIdx * 7 + dayIdx;
-                        const data = heatmapData[dataIdx];
-                        const color = data?.count === 0 ? 'rgba(255,255,255,0.05)' : 
-                                      data?.count < 3 ? 'rgba(168, 85, 247, 0.3)' :
-                                      data?.count < 6 ? 'rgba(168, 85, 247, 0.6)' : 'rgba(168, 85, 247, 1)';
-                        return (
-                          <div 
-                            key={dayIdx} 
-                            title={`${data?.date}: ${data?.count} submissions`}
-                            className="heatmap-square"
-                            style={{ 
-                              width: '16px', 
-                              height: '16px', 
-                              background: color, 
-                              borderRadius: '3px', 
-                              cursor: 'pointer',
-                              transition: 'transform 0.2s, background 0.2s' 
-                            }} 
-                          />
-                        );
-                      })}
+                {/* Day Labels */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', paddingTop: '24px', position: 'sticky', left: 0, background: 'var(--bg-panel)', zIndex: 5, paddingRight: '12px' }}>
+                  {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((day, i) => (
+                    <div key={i} style={{ height: '16px', fontSize: '0.7rem', color: i % 2 === 1 ? 'rgba(255,255,255,0.3)' : 'transparent', display: 'flex', alignItems: 'center' }}>
+                      {day}
                     </div>
                   ))}
                 </div>
+
+                {/* Grid with Month Labels */}
+                <div style={{ flex: 1 }}>
+                  <div style={{ display: 'flex', marginBottom: '8px', height: '16px', gap: '6px' }}>
+                    {Array.from({ length: 52 }).map((_, i) => {
+                      const date = new Date(heatmapData[i * 7]?.date);
+                      const isNewMonth = i === 0 || date.getMonth() !== new Date(heatmapData[(i - 1) * 7]?.date).getMonth();
+
+                      return (
+                        <div key={i} style={{ width: '16px', fontSize: '0.65rem', color: 'rgba(255,255,255,0.3)', whiteSpace: 'nowrap' }}>
+                          {isNewMonth ? date.toLocaleString('default', { month: 'short' }) : ''}
+                        </div>
+                      );
+                    })}
+                  </div>
+                  <div style={{ display: 'flex', gap: '6px' }}>
+                    {Array.from({ length: 52 }).map((_, weekIdx) => (
+                      <div key={weekIdx} style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                        {Array.from({ length: 7 }).map((_, dayIdx) => {
+                          const dataIdx = weekIdx * 7 + dayIdx;
+                          const data = heatmapData[dataIdx];
+                          const color = data?.count === 0 ? 'rgba(255,255,255,0.05)' :
+                            data?.count < 3 ? 'rgba(168, 85, 247, 0.3)' :
+                              data?.count < 6 ? 'rgba(168, 85, 247, 0.6)' : 'rgba(168, 85, 247, 1)';
+                          return (
+                            <div
+                              key={dayIdx}
+                              title={`${data?.date}: ${data?.count} submissions`}
+                              className="heatmap-square"
+                              style={{
+                                width: '16px',
+                                height: '16px',
+                                background: color,
+                                borderRadius: '3px',
+                                cursor: 'pointer',
+                                transition: 'transform 0.2s, background 0.2s'
+                              }}
+                            />
+                          );
+                        })}
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
           </div>
 
           {/* 📈 Graphs Container Grid */}
@@ -254,12 +254,12 @@ export const HistoryPage: React.FC<HistoryPageProps> = ({ onBack, session }) => 
               <h3 style={{ fontSize: '0.95rem', marginBottom: '16px', color: 'rgba(255,255,255,0.8)' }}>Solve Attempts breakdown</h3>
               <ResponsiveContainer width="100%" height="80%">
                 <PieChart>
-                  <Pie 
-                    data={pieData} 
-                    innerRadius="60%" 
-                    outerRadius="80%" 
-                    dataKey="value" 
-                    stroke="none" 
+                  <Pie
+                    data={pieData}
+                    innerRadius="60%"
+                    outerRadius="80%"
+                    dataKey="value"
+                    stroke="none"
                     isAnimationActive={true}
                     animationDuration={800}
                     animationBegin={0}
@@ -279,10 +279,10 @@ export const HistoryPage: React.FC<HistoryPageProps> = ({ onBack, session }) => 
                 <BarChart data={diffData}>
                   <XAxis dataKey="name" stroke="rgba(255,255,255,0.2)" fontSize={10} />
                   <YAxis hide />
-                  <Tooltip cursor={{fill: 'rgba(255,255,255,0.05)'}} contentStyle={{ background: 'rgba(0,0,0,0.85)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff' }} />
-                  <Bar 
-                    dataKey="value" 
-                    radius={[4, 4, 0, 0]} 
+                  <Tooltip cursor={{ fill: 'rgba(255,255,255,0.05)' }} contentStyle={{ background: 'rgba(0,0,0,0.85)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff' }} />
+                  <Bar
+                    dataKey="value"
+                    radius={[4, 4, 0, 0]}
                     isAnimationActive={true}
                     animationDuration={1000}
                   >
@@ -298,12 +298,12 @@ export const HistoryPage: React.FC<HistoryPageProps> = ({ onBack, session }) => 
               </h3>
               <ResponsiveContainer width="100%" height="80%">
                 <PieChart>
-                  <Pie 
-                    data={langData} 
-                    innerRadius="55%" 
-                    outerRadius="75%" 
-                    dataKey="value" 
-                    stroke="none" 
+                  <Pie
+                    data={langData}
+                    innerRadius="55%"
+                    outerRadius="75%"
+                    dataKey="value"
+                    stroke="none"
                     isAnimationActive={true}
                     animationDuration={1200}
                   >
@@ -360,17 +360,17 @@ export const HistoryPage: React.FC<HistoryPageProps> = ({ onBack, session }) => 
                   ))}
                 </tbody>
               </table>
-              
+
               {submissions.length > displayLimit && (
                 <div style={{ textAlign: 'center', marginTop: '20px' }}>
-                  <button 
+                  <button
                     onClick={() => setDisplayLimit(prev => prev + 20)}
-                    style={{ 
-                      background: 'rgba(168, 85, 247, 0.1)', 
-                      border: '1px solid rgba(168, 85, 247, 0.2)', 
-                      color: '#D8B4FE', 
-                      padding: '8px 24px', 
-                      borderRadius: '8px', 
+                    style={{
+                      background: 'rgba(168, 85, 247, 0.1)',
+                      border: '1px solid rgba(168, 85, 247, 0.2)',
+                      color: '#D8B4FE',
+                      padding: '8px 24px',
+                      borderRadius: '8px',
                       cursor: 'pointer',
                       fontSize: '0.8rem',
                       fontWeight: 600,

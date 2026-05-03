@@ -36,6 +36,7 @@ export const SecurityModal: React.FC<SecurityModalProps> = ({ onClose }) => {
         {/* ❌ Close Button */}
         <button
           onClick={onClose}
+          className="modal-close-btn"
           style={{
             position: 'absolute',
             top: '20px',
@@ -52,8 +53,6 @@ export const SecurityModal: React.FC<SecurityModalProps> = ({ onClose }) => {
             transition: 'all 0.2s',
             zIndex: 10
           }}
-          onMouseEnter={e => { e.currentTarget.style.color = '#fff'; e.currentTarget.style.background = 'rgba(255,255,255,0.1)'; }}
-          onMouseLeave={e => { e.currentTarget.style.color = 'var(--landing-text-dim)'; e.currentTarget.style.background = 'rgba(255,255,255,0.03)'; }}
         >
           <X size={20} />
         </button>
@@ -118,6 +117,18 @@ export const SecurityModal: React.FC<SecurityModalProps> = ({ onClose }) => {
             Close Security Brief
           </button>
         </div>
+        
+        <style>{`
+          .landing-light-mode .modal-close-btn {
+            background: #f1f5f9 !important;
+            border-color: #e2e8f0 !important;
+            color: #64748b !important;
+          }
+          .landing-light-mode .modal-close-btn:hover {
+            background: #e2e8f0 !important;
+            color: #0f172a !important;
+          }
+        `}</style>
       </div>
     </div>
   );
