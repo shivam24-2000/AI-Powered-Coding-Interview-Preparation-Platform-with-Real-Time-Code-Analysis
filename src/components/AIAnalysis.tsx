@@ -92,12 +92,13 @@ export const AIAnalysis: React.FC<AIAnalysisProps> = ({
       <div style={{ padding: '0 16px', background: 'rgba(255,255,255,0.01)', borderBottom: '1px solid var(--border-color)' }}>
         <div style={{
           display: 'flex', 
-          background: 'rgba(255,255,255,0.03)', 
+          background: 'var(--bg-panel-light)', 
           borderRadius: '10px', 
           padding: '4px', 
           margin: '8px 0 12px',
           gap: '4px',
-          position: 'relative'
+          position: 'relative',
+          border: '1px solid var(--border-color)',
         }}>
           <button 
             onClick={() => onTabChange('analysis')}
@@ -247,7 +248,7 @@ export const AIAnalysis: React.FC<AIAnalysisProps> = ({
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                   {state.edgeCases.map((edge) => (
-                    <div key={edge.id} style={{ padding: '10px', background: 'rgba(255, 255, 255, 0.02)', border: '1px solid var(--border-color)', borderRadius: '8px' }}>
+                    <div key={edge.id} style={{ padding: '10px', background: 'var(--bg-panel-light)', border: '1px solid var(--border-color)', borderRadius: '8px' }}>
                       <div style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '4px' }}>{edge.title}</div>
                       <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', lineHeight: 1.4 }}>{edge.description}</div>
                     </div>

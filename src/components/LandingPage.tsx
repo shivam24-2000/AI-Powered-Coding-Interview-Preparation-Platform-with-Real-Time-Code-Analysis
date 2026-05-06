@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { Terminal, Brain, Zap, Shield, LogOut, Award, X, Users, Mic, User, TrendingUp, CheckCircle, Star, ArrowRight, Sparkles, Sun, Moon, Command, Play, ChevronDown, Linkedin, Globe, Mail } from 'lucide-react';
+import { Terminal, Brain, Zap, Shield, LogOut, Award, X, Users, Mic, User, TrendingUp, CheckCircle, Star, ArrowRight, Sparkles, Sun, Moon, Command, Play, ChevronDown, Linkedin, Globe, Mail, Settings } from 'lucide-react';
 import { PROBLEMS } from '../problems';
 import { supabase } from '../supabase';
 import { AuthModal } from './AuthModal';
@@ -24,13 +24,14 @@ interface LandingPageProps {
   problems?: any[];
   onHistory: () => void;
   onEditProfile: () => void;
+  onSettings: () => void;
   isLightMode: boolean;
   onToggleLightMode: () => void;
 }
 
 
 
-export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHistory, onEditProfile, problems = PROBLEMS, isLightMode, onToggleLightMode }) => {
+export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHistory, onEditProfile, onSettings, problems = PROBLEMS, isLightMode, onToggleLightMode }) => {
   // === Interactive Hooks ===
   const sectionIds = ['hero-section', 'playground-section', 'interview-section', 'features-section', 'testimonials-section', 'cta-section'];
   const activeSection = useScrollSpy(sectionIds);
@@ -478,6 +479,14 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
                       textAlign: 'left'
                     }} className="hover-menu-item">
                       <Award size={14} color="#A855F7" /> Dashboard
+                    </button>
+                    <button onClick={() => { onSettings(); setShowProfileMenu(false); }} style={{
+                      background: 'transparent', border: 'none', color: 'var(--landing-text-primary)',
+                      padding: '8px 12px', borderRadius: '8px', cursor: 'pointer',
+                      display: 'flex', alignItems: 'center', gap: '10px', fontSize: '0.85rem',
+                      textAlign: 'left'
+                    }} className="hover-menu-item">
+                      <Settings size={14} color="#3B82F6" /> Settings
                     </button>
                     <button onClick={handleLogout} style={{
                       background: 'transparent', border: 'none', color: '#EF4444',

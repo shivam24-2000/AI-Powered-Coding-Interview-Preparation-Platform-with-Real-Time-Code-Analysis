@@ -93,7 +93,7 @@ body::before {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--border-color);
   border-radius: 10px;
 }
 
@@ -140,7 +140,7 @@ body::before {
 h1, h2, h3, h4 {
   font-weight: 700;
   letter-spacing: -0.025em;
-  color: #ffffff;
+  color: var(--text-main);
 }
 
 code, pre {
@@ -185,4 +185,142 @@ code, pre {
 
 .animate-spin {
   animation: spin 1s linear infinite;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   LIGHT THEME OVERRIDES  [data-theme="light-mode"]
+   Fixes all hardcoded rgba(255,255,255,...) dark-only values
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── Scrollbar ── */
+[data-theme="light-mode"] ::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.15);
+}
+[data-theme="light-mode"] ::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-primary);
+}
+
+/* ── Progress Dashboard ── */
+
+/* Wrapper text color */
+[data-theme="light-mode"] .history-page-root {
+  color: var(--text-main) !important;
+}
+
+/* Back button */
+[data-theme="light-mode"] .history-back-btn {
+  background: var(--bg-panel-light) !important;
+  border-color: var(--border-color) !important;
+  color: var(--text-main) !important;
+}
+[data-theme="light-mode"] .history-back-btn:hover {
+  border-color: var(--border-highlight) !important;
+  background: rgba(124, 58, 237, 0.08) !important;
+}
+
+/* Loading / empty state */
+[data-theme="light-mode"] .history-loading,
+[data-theme="light-mode"] .history-empty {
+  color: var(--text-muted) !important;
+}
+
+/* Metric cards */
+[data-theme="light-mode"] .history-metric-card {
+  background: var(--bg-panel-light) !important;
+  border-color: var(--border-color) !important;
+}
+[data-theme="light-mode"] .history-metric-label {
+  color: var(--text-muted) !important;
+}
+[data-theme="light-mode"] .history-metric-value {
+  color: var(--text-main) !important;
+}
+
+/* Section cards (heatmap, charts, topics, table) */
+[data-theme="light-mode"] .history-section-card {
+  background: var(--bg-panel-light) !important;
+  border-color: var(--border-color) !important;
+}
+[data-theme="light-mode"] .history-section-title {
+  color: var(--text-muted) !important;
+}
+[data-theme="light-mode"] .history-section-title-main {
+  color: var(--text-main) !important;
+}
+
+/* Heatmap */
+[data-theme="light-mode"] .history-heatmap-legend-text {
+  color: var(--text-muted) !important;
+}
+[data-theme="light-mode"] .history-heatmap-day-sticky {
+  background: var(--bg-panel-light) !important;
+}
+[data-theme="light-mode"] .history-heatmap-day-label {
+  color: transparent !important;
+}
+[data-theme="light-mode"] .history-heatmap-day-label.visible {
+  color: var(--text-muted) !important;
+}
+[data-theme="light-mode"] .history-heatmap-month-label {
+  color: var(--text-muted) !important;
+}
+[data-theme="light-mode"] .history-heatmap-empty {
+  background: rgba(0, 0, 0, 0.07) !important;
+  border: 1px solid var(--border-color);
+}
+
+/* Chart tooltips — recharts injects inline styles so we target the wrapper */
+[data-theme="light-mode"] .recharts-tooltip-wrapper .recharts-default-tooltip {
+  background: rgba(255, 255, 255, 0.98) !important;
+  border: 1px solid var(--border-color) !important;
+  color: var(--text-main) !important;
+  border-radius: 8px !important;
+}
+[data-theme="light-mode"] .recharts-tooltip-item {
+  color: var(--text-main) !important;
+}
+[data-theme="light-mode"] .recharts-cartesian-axis-tick text {
+  fill: var(--text-muted) !important;
+}
+[data-theme="light-mode"] .recharts-tooltip-cursor {
+  fill: rgba(0, 0, 0, 0.04) !important;
+}
+
+/* Domain Coverage tags */
+[data-theme="light-mode"] .history-tag-name {
+  color: var(--accent-primary) !important;
+}
+[data-theme="light-mode"] .history-tag-count {
+  background: rgba(0, 0, 0, 0.06) !important;
+  color: var(--text-muted) !important;
+}
+
+/* Submissions table */
+[data-theme="light-mode"] .history-table-head tr {
+  border-color: var(--border-color) !important;
+  color: var(--text-muted) !important;
+}
+[data-theme="light-mode"] .history-table-row {
+  border-color: var(--border-color) !important;
+  color: var(--text-main) !important;
+}
+[data-theme="light-mode"] .history-table-row:hover {
+  background: var(--bg-panel-light) !important;
+}
+[data-theme="light-mode"] .history-table-lang {
+  color: var(--text-muted) !important;
+}
+[data-theme="light-mode"] .history-table-date {
+  color: var(--text-muted) !important;
+}
+
+/* Load More button */
+[data-theme="light-mode"] .history-load-more {
+  color: var(--accent-primary) !important;
+}
+
+/* ── Workspace Panels (dock bars, resizer) ── */
+[data-theme="light-mode"] .dock-bar-results,
+[data-theme="light-mode"] .dock-bar-mentor {
+  background: var(--bg-panel-light) !important;
 }

@@ -3,6 +3,7 @@ import { supabase } from './supabase';
 import { Navigation } from './components/Navigation';
 import { LandingPage } from './components/LandingPage';
 import { HistoryPage } from './components/HistoryPage';
+import { SettingsPage } from './components/SettingsPage';
 import { ProblemDescription } from './components/ProblemDescription';
 import { CodeEditor } from './components/CodeEditor';
 import { AIAnalysis } from './components/AIAnalysis';
@@ -63,7 +64,7 @@ function App() {
     if (typeof window !== 'undefined') {
       const saved = localStorage.getItem('nexcode_settings');
       if (saved) {
-        try { return JSON.parse(saved); } catch (e) { }
+        try { return JSON.parse(saved); } catch { /* invalid JSON, use defaults */ }
       }
     }
     return DEFAULT_SETTINGS;
@@ -81,7 +82,7 @@ function App() {
   const [mentorOpen, setMentorOpen] = useState(false);
   const [isMentorFolded, setIsMentorFolded] = useState(false);
   const [isResultsFolded, setIsResultsFolded] = useState(true);
-  const [view, setView] = useState<'landing' | 'workspace' | 'history'>(() => {
+  const [view, setView] = useState<'landing' | 'workspace' | 'history' | 'settings'>(() => {
     if (typeof window !== 'undefined') {
       return (sessionStorage.getItem('activeView') as any) || 'landing';
     }
@@ -540,9 +541,9 @@ function App() {
     <div key={view} style={{
       animation: 'viewFadeIn 0.4s cubic-bezier(0.1, 0.9, 0.2, 1)',
       height: '100dvh',
-      overflowY: view === 'history' ? 'auto' : 'hidden',
+      overflowY: (view === 'history' || view === 'settings') ? 'auto' : 'hidden',
       overflowX: 'hidden',
-      background: '#030009'
+      background: 'var(--bg-dark)'
     }}>
       <style>{`
         @keyframes viewFadeIn {
@@ -569,6 +570,7 @@ function App() {
             problems={problems}
             onHistory={() => setView('history')}
             onEditProfile={() => setProfileOpen(true)}
+            onSettings={() => setView('settings')}
             isLightMode={settings.appTheme === 'light-mode'}
             onToggleLightMode={() => {
               const isLight = settings.appTheme === 'light-mode';
@@ -581,6 +583,14 @@ function App() {
           />
           {authToast && <AuthToast type={authToast} />}
         </>
+      ) : view === 'settings' ? (
+        <SettingsPage
+          onBack={() => setView('landing')}
+          session={session}
+          settings={settings}
+          onSettingsChange={setSettings}
+          onProfileUpdate={() => supabase.auth.getSession()}
+        />
       ) : view === 'history' ? (
         <HistoryPage onBack={() => setView('landing')} session={session} />
       ) : !selectedProblem ? (

@@ -258,6 +258,9 @@ export const applyAppTheme = (themeId: string) => {
   const theme = APP_THEMES.find(t => t.id === themeId) || APP_THEMES[0];
   const root = document.documentElement;
 
+  // Set data-theme so CSS can scope overrides (e.g. [data-theme="light"])
+  root.setAttribute('data-theme', themeId);
+
   root.style.setProperty('--bg-dark', theme.colors.bgDark);
   root.style.setProperty('--bg-panel', theme.colors.bgPanel);
   root.style.setProperty('--bg-panel-solid', theme.colors.bgPanelSolid);

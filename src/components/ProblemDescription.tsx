@@ -39,7 +39,7 @@ export const ProblemDescription: React.FC<ProblemDescriptionProps> = ({
             style={{
               display: 'flex', alignItems: 'center', gap: '8px',
               background: 'transparent', border: 'none', cursor: 'pointer',
-              color: activeTab === 'description' ? '#ffffff' : 'var(--text-muted)',
+              color: activeTab === 'description' ? 'var(--text-main)' : 'var(--text-muted)',
               borderBottom: activeTab === 'description' ? '2px solid var(--accent-primary)' : '2px solid transparent',
               padding: '0 16px', transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
               fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em',
@@ -47,7 +47,7 @@ export const ProblemDescription: React.FC<ProblemDescriptionProps> = ({
               textShadow: activeTab === 'description' ? '0 0 12px rgba(168, 85, 247, 0.5)' : 'none',
             }}
           >
-            <BookOpen size={14} style={{ opacity: activeTab === 'description' ? 1 : 0.6 }} />
+            <BookOpen size={14} style={{ opacity: activeTab === 'description' ? 1 : 0.7 }} />
             <span>Description</span>
           </button>
 
@@ -56,7 +56,7 @@ export const ProblemDescription: React.FC<ProblemDescriptionProps> = ({
             style={{
               display: 'flex', alignItems: 'center', gap: '8px',
               background: 'transparent', border: 'none', cursor: 'pointer',
-              color: activeTab === 'whiteboard' ? '#ffffff' : 'var(--text-muted)',
+              color: activeTab === 'whiteboard' ? 'var(--text-main)' : 'var(--text-muted)',
               borderBottom: activeTab === 'whiteboard' ? '2px solid var(--accent-primary)' : '2px solid transparent',
               padding: '0 16px', transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
               fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em',
@@ -64,7 +64,7 @@ export const ProblemDescription: React.FC<ProblemDescriptionProps> = ({
               textShadow: activeTab === 'whiteboard' ? '0 0 12px rgba(168, 85, 247, 0.5)' : 'none',
             }}
           >
-            <PenTool size={14} style={{ opacity: activeTab === 'whiteboard' ? 1 : 0.6 }} />
+            <PenTool size={14} style={{ opacity: activeTab === 'whiteboard' ? 1 : 0.7 }} />
             <span>Whiteboard</span>
           </button>
         </div>
@@ -77,10 +77,10 @@ export const ProblemDescription: React.FC<ProblemDescriptionProps> = ({
             style={{
               display: 'flex',
               alignItems: 'center',
-              background: 'rgba(255, 255, 255, 0.03)',
-              border: '1px solid rgba(255, 255, 255, 0.08)',
+              background: 'var(--bg-panel-light)',
+              border: '1px solid var(--border-color)',
               borderRadius: '8px',
-              color: '#ffffff',
+              color: 'var(--text-main)',
               cursor: 'pointer',
               fontSize: '0.7rem',
               fontWeight: 700,
@@ -89,17 +89,17 @@ export const ProblemDescription: React.FC<ProblemDescriptionProps> = ({
               whiteSpace: 'nowrap',
               textTransform: 'uppercase',
               letterSpacing: '0.05em',
-              boxShadow: '0 2px 10px rgba(0,0,0,0.2)',
+              boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
             }}
             onMouseOver={e => {
-              e.currentTarget.style.borderColor = 'rgba(168, 85, 247, 0.4)';
+              e.currentTarget.style.borderColor = 'var(--border-highlight)';
               e.currentTarget.style.background = 'rgba(168, 85, 247, 0.1)';
-              e.currentTarget.style.boxShadow = '0 0 15px rgba(168, 85, 247, 0.2)';
+              e.currentTarget.style.boxShadow = '0 0 15px rgba(168, 85, 247, 0.15)';
             }}
             onMouseOut={e => {
-              e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.08)';
-              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.03)';
-              e.currentTarget.style.boxShadow = '0 2px 10px rgba(0,0,0,0.2)';
+              e.currentTarget.style.borderColor = 'var(--border-color)';
+              e.currentTarget.style.background = 'var(--bg-panel-light)';
+              e.currentTarget.style.boxShadow = '0 2px 10px rgba(0,0,0,0.1)';
             }}
           >
             Switch Problem
