@@ -451,51 +451,113 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
               </button>
 
               {showProfileMenu && (
-                <div style={{ position: 'absolute', top: '100%', right: 0, paddingTop: '8px', zIndex: 1000 }}>
+                <div style={{ position: 'absolute', top: '100%', right: 0, paddingTop: '10px', zIndex: 1000 }}>
+                  <style>{`
+                    @keyframes dropdownSlideIn {
+                      from { opacity: 0; transform: translateY(-8px) scale(0.96); }
+                      to { opacity: 1; transform: translateY(0) scale(1); }
+                    }
+                    .profile-menu-item {
+                      transition: all 0.2s ease !important;
+                      position: relative;
+                      overflow: hidden;
+                    }
+                    .profile-menu-item:hover {
+                      background: var(--landing-border) !important;
+                      transform: translateX(4px);
+                    }
+                    .profile-menu-item:hover .menu-arrow {
+                      opacity: 1 !important;
+                      transform: translateX(0) !important;
+                    }
+                    .profile-menu-item:active { transform: translateX(4px) scale(0.98); }
+                  `}</style>
                   <div style={{
-                    background: 'var(--landing-glass-heavy)', backdropFilter: 'blur(10px)',
-                    border: '1px solid var(--landing-border)', borderRadius: '12px',
-                    padding: '8px', minWidth: '180px',
-                    boxShadow: '0 10px 25px rgba(0,0,0,0.1)', display: 'flex', flexDirection: 'column', gap: '4px'
+                    background: 'var(--landing-glass-heavy)', backdropFilter: 'blur(24px) saturate(1.8)',
+                    border: '1px solid var(--landing-border)', borderRadius: '20px',
+                    padding: '0', minWidth: '280px', overflow: 'hidden',
+                    boxShadow: '0 20px 60px rgba(0,0,0,0.3), 0 0 0 1px rgba(168,85,247,0.08), inset 0 1px 0 rgba(255,255,255,0.04)',
+                    animation: 'dropdownSlideIn 0.25s cubic-bezier(0.16, 1, 0.3, 1)',
                   }}>
-                    <div style={{ padding: '8px 12px', borderBottom: '1px solid var(--landing-border)', marginBottom: '4px', opacity: 0.8 }}>
-                      <p style={{ margin: 0, fontSize: '0.65rem', color: 'var(--landing-text-dim)', textTransform: 'uppercase', letterSpacing: '0.04em', fontWeight: 800 }}>Account</p>
-                      <p style={{ margin: '2px 0 0 0', fontSize: '0.78rem', fontWeight: 600, color: 'var(--landing-text-primary)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{session?.user?.email}</p>
+                    {/* ═══ Avatar Hero Header ═══ */}
+                    <div style={{
+                      padding: '20px', textAlign: 'center',
+                      background: 'linear-gradient(135deg, rgba(124,58,237,0.12) 0%, rgba(219,39,119,0.06) 100%)',
+                      borderBottom: '1px solid var(--landing-border)',
+                      position: 'relative', overflow: 'hidden',
+                    }}>
+                      {/* Background sparkle */}
+                      <div style={{ position: 'absolute', top: '-20px', right: '-20px', width: '80px', height: '80px', background: 'radial-gradient(circle, rgba(168,85,247,0.15) 0%, transparent 70%)', filter: 'blur(16px)' }} />
+                      <div style={{ position: 'absolute', bottom: '-10px', left: '-10px', width: '60px', height: '60px', background: 'radial-gradient(circle, rgba(219,39,119,0.1) 0%, transparent 70%)', filter: 'blur(12px)' }} />
+
+                      {/* Avatar with gradient ring */}
+                      <div style={{
+                        width: '56px', height: '56px', borderRadius: '50%', margin: '0 auto 10px auto',
+                        background: 'linear-gradient(135deg, #7C3AED, #DB2777, #F59E0B)',
+                        padding: '2.5px', position: 'relative',
+                      }}>
+                        <div style={{ width: '100%', height: '100%', borderRadius: '50%', overflow: 'hidden', background: 'var(--landing-card-bg)' }}>
+                          {session?.user?.user_metadata?.avatar_url ? (
+                            <img src={session.user.user_metadata.avatar_url} alt="Profile" className="invert-protect" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                          ) : (
+                            <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.4rem', background: 'linear-gradient(135deg, rgba(124,58,237,0.2), rgba(219,39,119,0.15))' }}>
+                              {(session?.user?.user_metadata?.full_name?.[0] || session?.user?.email?.[0] || '?').toUpperCase()}
+                            </div>
+                          )}
+                        </div>
+                        {/* Online status dot */}
+                        <div style={{ position: 'absolute', bottom: '2px', right: '2px', width: '12px', height: '12px', borderRadius: '50%', background: '#10B981', border: '2px solid var(--landing-card-bg)', boxShadow: '0 0 8px rgba(16,185,129,0.5)' }} />
+                      </div>
+
+                      <p style={{ margin: 0, fontSize: '0.95rem', fontWeight: 700, color: 'var(--landing-text-primary)', letterSpacing: '-0.01em' }}>
+                        {session?.user?.user_metadata?.full_name || session?.user?.email?.split('@')[0] || 'User'}
+                      </p>
+                      <p style={{ margin: '3px 0 0 0', fontSize: '0.72rem', color: 'var(--landing-text-dim)', maxWidth: '220px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', marginInline: 'auto' }}>
+                        {session?.user?.email}
+                      </p>
+                      {/* Member badge */}
+                      <div style={{ marginTop: '10px', display: 'inline-flex', alignItems: 'center', gap: '5px', padding: '3px 10px', borderRadius: '99px', background: 'rgba(168,85,247,0.1)', border: '1px solid rgba(168,85,247,0.2)', fontSize: '0.6rem', fontWeight: 700, color: '#A855F7', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+                        <Sparkles size={10} /> Pro Member
+                      </div>
                     </div>
 
-                    <button onClick={() => { onEditProfile?.(); setShowProfileMenu(false); }} style={{
-                      background: 'transparent', border: 'none', color: 'var(--landing-text-primary)',
-                      padding: '8px 12px', borderRadius: '8px', cursor: 'pointer',
-                      display: 'flex', alignItems: 'center', gap: '10px', fontSize: '0.85rem',
-                      textAlign: 'left'
-                    }} className="hover-menu-item">
-                      <User size={14} color="#10B981" /> Edit Profile
-                    </button>
+                    {/* ═══ Menu Items ═══ */}
+                    <div style={{ padding: '8px' }}>
+                      {([
+                        { label: 'Edit Profile', icon: <User size={15} />, iconBg: 'rgba(16,185,129,0.12)', iconColor: '#10B981', onClick: () => { onEditProfile?.(); setShowProfileMenu(false); } },
+                        { label: 'Dashboard', icon: <Award size={15} />, iconBg: 'rgba(168,85,247,0.12)', iconColor: '#A855F7', onClick: () => { onHistory(); setShowProfileMenu(false); } },
+                        { label: 'Settings', icon: <Settings size={15} />, iconBg: 'rgba(59,130,246,0.12)', iconColor: '#3B82F6', onClick: () => { onSettings(); setShowProfileMenu(false); } },
+                      ] as { label: string; icon: React.ReactNode; iconBg: string; iconColor: string; onClick: () => void }[]).map((item, i) => (
+                        <button key={i} onClick={item.onClick} className="profile-menu-item" style={{
+                          width: '100%', background: 'transparent', border: 'none',
+                          color: 'var(--landing-text-primary)', padding: '10px 12px', borderRadius: '12px',
+                          cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '12px',
+                          fontSize: '0.85rem', fontWeight: 500, textAlign: 'left',
+                        }}>
+                          <div style={{ width: '32px', height: '32px', borderRadius: '10px', background: item.iconBg, display: 'flex', alignItems: 'center', justifyContent: 'center', color: item.iconColor, flexShrink: 0 }}>
+                            {item.icon}
+                          </div>
+                          <span style={{ flex: 1 }}>{item.label}</span>
+                          <ChevronDown size={14} className="menu-arrow" style={{ opacity: 0, transform: 'translateX(-6px) rotate(-90deg)', color: 'var(--landing-text-dim)', transition: 'all 0.2s' }} />
+                        </button>
+                      ))}
 
-                    <button onClick={onHistory} style={{
-                      background: 'transparent', border: 'none', color: 'var(--landing-text-primary)',
-                      padding: '8px 12px', borderRadius: '8px', cursor: 'pointer',
-                      display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.85rem',
-                      textAlign: 'left'
-                    }} className="hover-menu-item">
-                      <Award size={14} color="#A855F7" /> Dashboard
-                    </button>
-                    <button onClick={() => { onSettings(); setShowProfileMenu(false); }} style={{
-                      background: 'transparent', border: 'none', color: 'var(--landing-text-primary)',
-                      padding: '8px 12px', borderRadius: '8px', cursor: 'pointer',
-                      display: 'flex', alignItems: 'center', gap: '10px', fontSize: '0.85rem',
-                      textAlign: 'left'
-                    }} className="hover-menu-item">
-                      <Settings size={14} color="#3B82F6" /> Settings
-                    </button>
-                    <button onClick={handleLogout} style={{
-                      background: 'transparent', border: 'none', color: '#EF4444',
-                      padding: '8px 12px', borderRadius: '8px', cursor: 'pointer',
-                      display: 'flex', alignItems: 'center', gap: '10px', fontSize: '0.85rem',
-                      textAlign: 'left'
-                    }} className="hover-menu-item">
-                      <LogOut size={14} /> Logout
-                    </button>
+                      {/* Divider */}
+                      <div style={{ height: '1px', background: 'var(--landing-border)', margin: '6px 12px' }} />
+
+                      {/* Logout */}
+                      <button onClick={handleLogout} className="profile-menu-item" style={{
+                        width: '100%', background: 'transparent', border: 'none',
+                        color: '#EF4444', padding: '10px 12px', borderRadius: '12px',
+                        cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '12px',
+                        fontSize: '0.85rem', fontWeight: 500, textAlign: 'left',
+                      }}>
+                        <div style={{ width: '32px', height: '32px', borderRadius: '10px', background: 'rgba(239,68,68,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                          <LogOut size={15} />
+                        </div>
+                        <span style={{ flex: 1 }}>Logout</span>
+                      </button>
+                    </div>
                   </div>
                 </div>
               )}
