@@ -105,7 +105,7 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ onClose, session, on
              <div style={{
                 width: '100%', height: '100%', borderRadius: '50%', overflow: 'hidden',
                 background: 'rgba(255,255,255,0.03)', border: '2px solid var(--accent-primary)',
-                boxShadow: '0 0 20px rgba(168, 85, 247, 0.3)', position: 'relative'
+                boxShadow: '0 0 20px rgba(140, 120, 180, 0.3)', position: 'relative'
              }}>
                 <img src={avatarUrl} alt="Avatar Preview" style={{ width: '100%', height: '100%' }} />
              </div>

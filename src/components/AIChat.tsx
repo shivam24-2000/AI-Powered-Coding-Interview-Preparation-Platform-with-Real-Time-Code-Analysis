@@ -158,10 +158,10 @@ export const AIChat: React.FC<AIChatProps> = ({ messages, onSendMessage, isTypin
           }}>
               <div style={{
                 width: '50px', height: '50px', borderRadius: '16px',
-                background: 'rgba(168, 85, 247, 0.1)', border: '1px solid rgba(168, 85, 247, 0.2)',
+                background: 'rgba(140, 120, 180, 0.1)', border: '1px solid rgba(140, 120, 180, 0.2)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 margin: '0 auto 16px', color: 'var(--accent-primary)',
-                boxShadow: '0 8px 16px rgba(168, 85, 247, 0.15)'
+                boxShadow: '0 8px 16px rgba(140, 120, 180, 0.15)'
               }}>
                 <Bot size={24} />
               </div>
@@ -185,14 +185,14 @@ export const AIChat: React.FC<AIChatProps> = ({ messages, onSendMessage, isTypin
               width: '30px', 
               height: '30px', 
               borderRadius: '10px', 
-              background: msg.role === 'user' ? 'rgba(99, 102, 241, 0.15)' : 'rgba(168, 85, 247, 0.15)',
+              background: msg.role === 'user' ? 'rgba(99, 102, 241, 0.15)' : 'rgba(140, 120, 180, 0.15)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               color: msg.role === 'user' ? 'white' : 'var(--accent-primary)',
               flexShrink: 0,
-              border: msg.role === 'assistant' ? '1px solid rgba(168, 85, 247, 0.2)' : '1px solid rgba(255,255,255,0.05)',
-              boxShadow: msg.role === 'assistant' ? '0 2px 8px rgba(168, 85, 247, 0.1)' : 'none'
+              border: msg.role === 'assistant' ? '1px solid rgba(140, 120, 180, 0.2)' : '1px solid rgba(255,255,255,0.05)',
+              boxShadow: msg.role === 'assistant' ? '0 2px 8px rgba(140, 120, 180, 0.1)' : 'none'
             }}>
               {msg.role === 'user' ? <User size={14} /> : <Bot size={14} />}
             </div>
@@ -224,12 +224,12 @@ export const AIChat: React.FC<AIChatProps> = ({ messages, onSendMessage, isTypin
               width: '30px', 
               height: '30px', 
               borderRadius: '10px', 
-              background: 'rgba(168, 85, 247, 0.15)',
+              background: 'rgba(140, 120, 180, 0.15)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               color: 'var(--accent-primary)',
-              border: '1px solid rgba(168, 85, 247, 0.2)'
+              border: '1px solid rgba(140, 120, 180, 0.2)'
             }}>
               <Bot size={14} />
             </div>

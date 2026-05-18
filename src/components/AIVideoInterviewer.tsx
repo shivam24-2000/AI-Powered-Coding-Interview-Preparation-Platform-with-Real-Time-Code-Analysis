@@ -234,7 +234,7 @@ export const AIVideoInterviewer: React.FC<AIVideoInterviewerProps> = ({
           animation: 'slideUp 0.3s ease',
         }}
       >
-        <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#A855F7', boxShadow: '0 0 8px #A855F7' }} />
+        <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#9b8abf', boxShadow: '0 0 8px #9b8abf' }} />
         Interview in Progress
       </button>
     );
@@ -361,7 +361,7 @@ export const AIVideoInterviewer: React.FC<AIVideoInterviewerProps> = ({
         }
         .typing-dot {
           width: 6px; height: 6px; border-radius: 50%;
-          background: rgba(168,85,247,0.7);
+          background: rgba(140,120,180,0.7);
           animation: typingDot 1.2s infinite ease-in-out;
         }
       `}</style>
@@ -374,7 +374,7 @@ export const AIVideoInterviewer: React.FC<AIVideoInterviewerProps> = ({
         borderRadius: '20px',
         overflow: 'hidden',
         boxShadow: isSpeaking
-          ? '0 24px 60px rgba(0,0,0,0.2), 0 0 40px rgba(168,85,247,0.1)'
+          ? '0 24px 60px rgba(0,0,0,0.2), 0 0 40px rgba(140,120,180,0.1)'
           : '0 24px 60px rgba(0,0,0,0.2)',
         position: 'relative',
         transition: 'border-color 0.4s, box-shadow 0.4s',
@@ -461,7 +461,7 @@ export const AIVideoInterviewer: React.FC<AIVideoInterviewerProps> = ({
                 <button className="vid-ctrl-btn" style={{ background: isVideoOn ? 'var(--bg-panel-light)' : 'rgba(239,68,68,0.1)' }} onClick={() => setIsVideoOn(p => !p)} title={isVideoOn ? 'Stop Video' : 'Start Video'}>
                   {isVideoOn ? <VideoIcon size={16} /> : <VideoOff size={16} color="#ef4444" />}
                 </button>
-                <button className="vid-ctrl-btn" onClick={() => setShowTranscript(p => !p)} style={{ background: showTranscript ? 'rgba(168,85,247,0.1)' : 'var(--bg-panel-light)' }} title="Toggle transcript">
+                <button className="vid-ctrl-btn" onClick={() => setShowTranscript(p => !p)} style={{ background: showTranscript ? 'rgba(140,120,180,0.1)' : 'var(--bg-panel-light)' }} title="Toggle transcript">
                   <Activity size={16} color={showTranscript ? 'var(--accent-primary)' : undefined} />
                 </button>
               </div>

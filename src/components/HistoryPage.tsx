@@ -41,7 +41,7 @@ function computeStats(submissions: any[], now: number) {
   const langData = Object.entries(langMap).map(([name, value]) => ({
     name: name.toUpperCase(),
     value,
-    color: name === 'python' ? '#3776AB' : name === 'javascript' ? '#F7DF1E' : '#A855F7'
+    color: name === 'python' ? '#3776AB' : name === 'javascript' ? '#F7DF1E' : '#9b8abf'
   }));
 
   const topTags = Object.entries(tagMap)
@@ -140,7 +140,7 @@ export const HistoryPage: React.FC<HistoryPageProps> = ({ onBack, session }) => 
         .heatmap-square:hover {
           transform: scale(1.3);
           z-index: 10;
-          box-shadow: 0 0 10px rgba(168, 85, 247, 0.5);
+          box-shadow: 0 0 10px rgba(140, 120, 180, 0.5);
         }
       `}</style>
 
@@ -184,8 +184,8 @@ export const HistoryPage: React.FC<HistoryPageProps> = ({ onBack, session }) => 
                 <span>Less</span>
                 {[0, 2, 5, 8].map(level => {
                   const color = level === 0 ? 'rgba(255,255,255,0.05)' :
-                    level < 3 ? 'rgba(168, 85, 247, 0.3)' :
-                      level < 6 ? 'rgba(168, 85, 247, 0.6)' : 'rgba(168, 85, 247, 1)';
+                    level < 3 ? 'rgba(140, 120, 180, 0.3)' :
+                      level < 6 ? 'rgba(140, 120, 180, 0.6)' : 'rgba(140, 120, 180, 1)';
                   return <div key={level} style={{ width: '10px', height: '10px', background: color, borderRadius: '2px' }} />;
                 })}
                 <span>More</span>
@@ -224,8 +224,8 @@ export const HistoryPage: React.FC<HistoryPageProps> = ({ onBack, session }) => 
                           const dataIdx = weekIdx * 7 + dayIdx;
                           const data = heatmapData[dataIdx];
                           const color = data?.count === 0 ? 'rgba(255,255,255,0.05)' :
-                            data?.count < 3 ? 'rgba(168, 85, 247, 0.3)' :
-                              data?.count < 6 ? 'rgba(168, 85, 247, 0.6)' : 'rgba(168, 85, 247, 1)';
+                            data?.count < 3 ? 'rgba(140, 120, 180, 0.3)' :
+                              data?.count < 6 ? 'rgba(140, 120, 180, 0.6)' : 'rgba(140, 120, 180, 1)';
                           return (
                             <div
                               key={dayIdx}
@@ -324,7 +324,7 @@ export const HistoryPage: React.FC<HistoryPageProps> = ({ onBack, session }) => 
             </h3>
             <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
               {topTags.map(([tag, count]) => (
-                <div key={tag} style={{ padding: '8px 16px', borderRadius: '12px', background: 'rgba(168, 85, 247, 0.08)', border: '1px solid rgba(168, 85, 247, 0.15)', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <div key={tag} style={{ padding: '8px 16px', borderRadius: '12px', background: 'rgba(140, 120, 180, 0.08)', border: '1px solid rgba(140, 120, 180, 0.15)', display: 'flex', alignItems: 'center', gap: '8px' }}>
                   <span className="history-tag-name" style={{ fontSize: '0.85rem', fontWeight: 600, color: '#D8B4FE' }}>{tag}</span>
                   <span className="history-tag-count" style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.4)', background: 'rgba(0,0,0,0.2)', padding: '2px 6px', borderRadius: '4px' }}>{count}</span>
                 </div>
@@ -369,8 +369,8 @@ export const HistoryPage: React.FC<HistoryPageProps> = ({ onBack, session }) => 
                     onClick={() => setDisplayLimit(prev => prev + 20)}
                     className="history-load-more hover-lift"
                     style={{
-                      background: 'rgba(168, 85, 247, 0.1)',
-                      border: '1px solid rgba(168, 85, 247, 0.2)',
+                      background: 'rgba(140, 120, 180, 0.1)',
+                      border: '1px solid rgba(140, 120, 180, 0.2)',
                       color: '#D8B4FE',
                       padding: '8px 24px',
                       borderRadius: '8px',

@@ -100,7 +100,7 @@ export const PrivacyPolicyModal: React.FC<PrivacyPolicyModalProps> = ({ onClose 
             and simulation history at any time through your dashboard settings.
           </Section>
 
-          <div style={{ marginTop: '40px', padding: '20px', background: 'rgba(168, 85, 247, 0.05)', borderRadius: '16px', border: '1px solid rgba(168, 85, 247, 0.1)' }}>
+          <div style={{ marginTop: '40px', padding: '20px', background: 'rgba(140, 120, 180, 0.05)', borderRadius: '16px', border: '1px solid rgba(140, 120, 180, 0.1)' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px', color: 'var(--landing-accent)', marginBottom: '8px', fontWeight: 700 }}>
               <Globe size={18} />
               Questions?
@@ -117,14 +117,14 @@ export const PrivacyPolicyModal: React.FC<PrivacyPolicyModalProps> = ({ onClose 
             onClick={onClose}
             style={{
               padding: '12px 30px',
-              background: 'linear-gradient(135deg, #7C3AED, #DB2777)',
+              background: 'linear-gradient(135deg, #7a6ca0, #a06080)',
               border: 'none',
               borderRadius: '12px',
               color: '#fff',
               fontWeight: 800,
               fontSize: '0.9rem',
               cursor: 'pointer',
-              boxShadow: '0 8px 25px rgba(124, 58, 237, 0.3)'
+              boxShadow: '0 8px 25px rgba(100, 80, 160, 0.3)'
             }}
           >
             I Understand

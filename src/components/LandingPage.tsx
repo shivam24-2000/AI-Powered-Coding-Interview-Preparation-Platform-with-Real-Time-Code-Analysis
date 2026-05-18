@@ -394,23 +394,23 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
       <div style={styles.bgMesh}></div>
 
       <div className="parallax-bg" style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none', zIndex: 1 }}>
-        <div style={{ ...styles.bgGlow, top: '-200px', left: '-100px', background: 'radial-gradient(circle, rgba(219, 39, 119, 0.25) 0%, transparent 70%)', animation: 'pulseGlow 10s infinite ease-in-out' }}></div>
-        <div style={{ ...styles.bgGlow, top: '-200px', right: '-100px', left: 'auto', background: 'radial-gradient(circle, rgba(124, 58, 237, 0.25) 0%, transparent 70%)', animation: 'pulseGlow 12s infinite ease-in-out reverse' }}></div>
-        <div style={{ ...styles.bgGlow, top: '400px', left: '30%', background: 'radial-gradient(circle, rgba(6, 182, 212, 0.15) 0%, transparent 70%)', animation: 'pulseGlow 15s infinite ease-in-out' }}></div>
+        <div style={{ ...styles.bgGlow, top: '-200px', left: '-100px', background: 'radial-gradient(circle, rgba(180, 100, 140, 0.08) 0%, transparent 70%)', animation: 'pulseGlow 10s infinite ease-in-out' }}></div>
+        <div style={{ ...styles.bgGlow, top: '-200px', right: '-100px', left: 'auto', background: 'radial-gradient(circle, rgba(100, 80, 180, 0.08) 0%, transparent 70%)', animation: 'pulseGlow 12s infinite ease-in-out reverse' }}></div>
+        <div style={{ ...styles.bgGlow, top: '400px', left: '30%', background: 'radial-gradient(circle, rgba(80, 140, 160, 0.05) 0%, transparent 70%)', animation: 'pulseGlow 15s infinite ease-in-out' }}></div>
 
-        {/* ⚡ Cyberpunk Grid Beams */}
+        {/* ⚡ Subtle Grid Beams */}
         <div className="grid-beam" style={{ left: '15%', animationDelay: '0s' }}></div>
-        <div className="grid-beam" style={{ left: '35%', animationDelay: '4s', background: 'linear-gradient(to bottom, transparent, rgba(6, 182, 212, 0.4), transparent)' }}></div>
+        <div className="grid-beam" style={{ left: '35%', animationDelay: '4s', background: 'linear-gradient(to bottom, transparent, rgba(80, 140, 160, 0.1), transparent)' }}></div>
         <div className="grid-beam" style={{ left: '60%', animationDelay: '1.5s' }}></div>
-        <div className="grid-beam" style={{ left: '85%', animationDelay: '6s', background: 'linear-gradient(to bottom, transparent, rgba(219, 39, 119, 0.3), transparent)' }}></div>
+        <div className="grid-beam" style={{ left: '85%', animationDelay: '6s', background: 'linear-gradient(to bottom, transparent, rgba(150, 100, 130, 0.08), transparent)' }}></div>
 
-        {/* 🪄 Magical Floating Particles */}
-        <div className="particle float-anim" style={{ left: '10%', animationDelay: '0s', animationDuration: '14s' }}>✦</div>
-        <div className="particle float-anim" style={{ left: '25%', animationDelay: '2s', animationDuration: '18s', fontSize: '0.8rem', color: '#00E5FF' }}>●</div>
-        <div className="particle float-anim" style={{ left: '45%', animationDelay: '1s', animationDuration: '16s', fontSize: '1rem' }}>✖</div>
-        <div className="particle float-anim" style={{ left: '70%', animationDelay: '3s', animationDuration: '20s', fontSize: '1.5rem', color: '#FF007A' }}>✧</div>
-        <div className="particle float-anim" style={{ left: '85%', animationDelay: '0.5s', animationDuration: '15s' }}>●</div>
-        <div className="particle float-anim" style={{ left: '95%', animationDelay: '4s', animationDuration: '19s' }}>✦</div>
+        {/* Soft Floating Particles */}
+        <div className="particle float-anim" style={{ left: '10%', animationDelay: '0s', animationDuration: '14s', opacity: 0.15 }}>✦</div>
+        <div className="particle float-anim" style={{ left: '25%', animationDelay: '2s', animationDuration: '18s', fontSize: '0.8rem', color: '#7aacba', opacity: 0.12 }}>●</div>
+        <div className="particle float-anim" style={{ left: '45%', animationDelay: '1s', animationDuration: '16s', fontSize: '1rem', opacity: 0.12 }}>✖</div>
+        <div className="particle float-anim" style={{ left: '70%', animationDelay: '3s', animationDuration: '20s', fontSize: '1.5rem', color: '#c06088', opacity: 0.1 }}>✧</div>
+        <div className="particle float-anim" style={{ left: '85%', animationDelay: '0.5s', animationDuration: '15s', opacity: 0.12 }}>●</div>
+        <div className="particle float-anim" style={{ left: '95%', animationDelay: '4s', animationDuration: '19s', opacity: 0.12 }}>✦</div>
       </div>
 
       {/* 🧭 Navbar */}
@@ -443,7 +443,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
                 className="hover-lift"
               >
                 {session?.user?.user_metadata?.avatar_url ? (
-                  <img src={session.user.user_metadata.avatar_url} alt="Profile" className="invert-protect" style={{ width: '22px', height: '22px', borderRadius: '50%', objectFit: 'cover', border: '1px solid rgba(168, 85, 247, 0.4)' }} />
+                  <img src={session.user.user_metadata.avatar_url} alt="Profile" className="invert-protect" style={{ width: '22px', height: '22px', borderRadius: '50%', objectFit: 'cover', border: '1px solid rgba(140, 120, 180, 0.2)' }} />
                 ) : (
                   <span>👋</span>
                 )}
@@ -476,24 +476,24 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
                     background: 'var(--landing-glass-heavy)', backdropFilter: 'blur(24px) saturate(1.8)',
                     border: '1px solid var(--landing-border)', borderRadius: '20px',
                     padding: '0', minWidth: '280px', overflow: 'hidden',
-                    boxShadow: '0 20px 60px rgba(0,0,0,0.3), 0 0 0 1px rgba(168,85,247,0.08), inset 0 1px 0 rgba(255,255,255,0.04)',
+                    boxShadow: '0 20px 60px rgba(0,0,0,0.3), 0 0 0 1px rgba(140,120,180,0.04), inset 0 1px 0 rgba(255,255,255,0.04)',
                     animation: 'dropdownSlideIn 0.25s cubic-bezier(0.16, 1, 0.3, 1)',
                   }}>
                     {/* ═══ Avatar Hero Header ═══ */}
                     <div style={{
                       padding: '20px', textAlign: 'center',
-                      background: 'linear-gradient(135deg, rgba(124,58,237,0.12) 0%, rgba(219,39,119,0.06) 100%)',
+                      background: 'linear-gradient(135deg, rgba(100,80,160,0.06) 0%, rgba(160,100,120,0.03) 100%)',
                       borderBottom: '1px solid var(--landing-border)',
                       position: 'relative', overflow: 'hidden',
                     }}>
                       {/* Background sparkle */}
-                      <div style={{ position: 'absolute', top: '-20px', right: '-20px', width: '80px', height: '80px', background: 'radial-gradient(circle, rgba(168,85,247,0.15) 0%, transparent 70%)', filter: 'blur(16px)' }} />
+                      <div style={{ position: 'absolute', top: '-20px', right: '-20px', width: '80px', height: '80px', background: 'radial-gradient(circle, rgba(140,120,180,0.07) 0%, transparent 70%)', filter: 'blur(16px)' }} />
                       <div style={{ position: 'absolute', bottom: '-10px', left: '-10px', width: '60px', height: '60px', background: 'radial-gradient(circle, rgba(219,39,119,0.1) 0%, transparent 70%)', filter: 'blur(12px)' }} />
 
                       {/* Avatar with gradient ring */}
                       <div style={{
                         width: '56px', height: '56px', borderRadius: '50%', margin: '0 auto 10px auto',
-                        background: 'linear-gradient(135deg, #7C3AED, #DB2777, #F59E0B)',
+                        background: 'linear-gradient(135deg, #7a6ca0, #a06080, #F59E0B)',
                         padding: '2.5px', position: 'relative',
                       }}>
                         <div style={{ width: '100%', height: '100%', borderRadius: '50%', overflow: 'hidden', background: 'var(--landing-card-bg)' }}>
@@ -516,7 +516,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
                         {session?.user?.email}
                       </p>
                       {/* Member badge */}
-                      <div style={{ marginTop: '10px', display: 'inline-flex', alignItems: 'center', gap: '5px', padding: '3px 10px', borderRadius: '99px', background: 'rgba(168,85,247,0.1)', border: '1px solid rgba(168,85,247,0.2)', fontSize: '0.6rem', fontWeight: 700, color: '#A855F7', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+                      <div style={{ marginTop: '10px', display: 'inline-flex', alignItems: 'center', gap: '5px', padding: '3px 10px', borderRadius: '99px', background: 'rgba(140,120,180,0.05)', border: '1px solid rgba(140,120,180,0.1)', fontSize: '0.6rem', fontWeight: 700, color: '#9b8abf', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
                         <Sparkles size={10} /> Pro Member
                       </div>
                     </div>
@@ -525,7 +525,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
                     <div style={{ padding: '8px' }}>
                       {([
                         { label: 'Edit Profile', icon: <User size={15} />, iconBg: 'rgba(16,185,129,0.12)', iconColor: '#10B981', onClick: () => { onEditProfile?.(); setShowProfileMenu(false); } },
-                        { label: 'Dashboard', icon: <Award size={15} />, iconBg: 'rgba(168,85,247,0.12)', iconColor: '#A855F7', onClick: () => { onHistory(); setShowProfileMenu(false); } },
+                        { label: 'Dashboard', icon: <Award size={15} />, iconBg: 'rgba(140,120,180,0.06)', iconColor: '#9b8abf', onClick: () => { onHistory(); setShowProfileMenu(false); } },
                         { label: 'Settings', icon: <Settings size={15} />, iconBg: 'rgba(59,130,246,0.12)', iconColor: '#3B82F6', onClick: () => { onSettings(); setShowProfileMenu(false); } },
                       ] as { label: string; icon: React.ReactNode; iconBg: string; iconColor: string; onClick: () => void }[]).map((item, i) => (
                         <button key={i} onClick={item.onClick} className="profile-menu-item" style={{
@@ -590,7 +590,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
 
         <div style={{ display: 'flex', gap: '14px', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center', marginBottom: '44px', position: 'relative' }}>
           <div style={{ position: 'relative' }}>
-            <button style={{ background: 'linear-gradient(135deg, #FF007A, #7000FF)', color: '#ffffff', border: 'none', padding: '16px 36px', borderRadius: '16px', fontWeight: 800, fontSize: '1rem', cursor: 'pointer', position: 'relative', zIndex: 2, boxShadow: '0 8px 40px rgba(112,0,255,0.4), inset 0 2px 2px rgba(255,255,255,0.2)', display: 'flex', alignItems: 'center', gap: '10px', letterSpacing: '-0.01em', overflow: 'hidden' }} onClick={() => {
+            <button style={{ background: 'linear-gradient(135deg, #7a6ca0, #5a6090)', color: '#ffffff', border: 'none', padding: '16px 36px', borderRadius: '16px', fontWeight: 800, fontSize: '1rem', cursor: 'pointer', position: 'relative', zIndex: 2, boxShadow: '0 6px 24px rgba(90,80,140,0.2), inset 0 1px 1px rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', gap: '10px', letterSpacing: '-0.01em', overflow: 'hidden' }} onClick={() => {
               if (!session) {
                 setAuthModal('signup');
               } else {
@@ -603,9 +603,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
           </div>
           <button
             onClick={() => { handleProtectedStart(); }}
-            style={{ background: 'var(--landing-card-bg)', border: '1px solid rgba(168,85,247,0.3)', color: 'var(--landing-accent)', padding: '15px 28px', borderRadius: '14px', fontWeight: 700, fontSize: '0.92rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', backdropFilter: 'blur(10px)', transition: 'all 0.3s' }}
-            onMouseEnter={e => { e.currentTarget.style.background = 'rgba(168,85,247,0.12)'; e.currentTarget.style.borderColor = 'rgba(168,85,247,0.6)'; e.currentTarget.style.transform = 'translateY(-2px)'; }}
-            onMouseLeave={e => { e.currentTarget.style.background = 'var(--landing-card-bg)'; e.currentTarget.style.borderColor = 'rgba(168,85,247,0.3)'; e.currentTarget.style.transform = 'translateY(0)'; }}
+            style={{ background: 'var(--landing-card-bg)', border: '1px solid rgba(140,120,180,0.2)', color: 'var(--landing-accent)', padding: '15px 28px', borderRadius: '14px', fontWeight: 700, fontSize: '0.92rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', backdropFilter: 'blur(10px)', transition: 'all 0.3s' }}
+            onMouseEnter={e => { e.currentTarget.style.background = 'rgba(140,120,180,0.06)'; e.currentTarget.style.borderColor = 'rgba(140,120,180,0.35)'; e.currentTarget.style.transform = 'translateY(-1px)'; }}
+            onMouseLeave={e => { e.currentTarget.style.background = 'var(--landing-card-bg)'; e.currentTarget.style.borderColor = 'rgba(140,120,180,0.2)'; e.currentTarget.style.transform = 'translateY(0)'; }}
           >
             <Mic size={16} /> Try AI Mock Interview
           </button>
@@ -652,7 +652,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
             </pre>
           </div>
           <div style={styles.floatingFriday} className="friday-pulse">
-            <Brain size={16} className="float-anim" color="#A855F7" />
+            <Brain size={16} className="float-anim" color="#9b8abf" />
             <span style={{ animation: 'textFade 3.5s infinite ease-in-out' }}>{fridayText}</span>
           </div>
         </div>
@@ -664,7 +664,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
             marginBottom: '48px',
             width: '100%',
             maxWidth: '720px',
-            background: 'linear-gradient(135deg, rgba(124,58,237,0.1) 0%, rgba(219,39,119,0.05) 100%)',
+            background: 'linear-gradient(135deg, rgba(100,80,180,0.06) 0%, rgba(160,100,120,0.03) 100%)',
             border: '1px solid var(--landing-accent-primary)',
             borderRadius: '24px',
             padding: '24px',
@@ -674,18 +674,18 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
             position: 'relative',
             overflow: 'hidden',
             backdropFilter: 'blur(20px)',
-            boxShadow: '0 8px 32px rgba(124,58,237,0.15)'
+            boxShadow: '0 6px 24px rgba(100,80,180,0.08)'
           }}
         >
-          <div style={{ position: 'absolute', top: '-20px', right: '-20px', width: '100px', height: '100px', background: 'radial-gradient(circle, rgba(124,58,237,0.2) 0%, transparent 70%)', filter: 'blur(20px)' }} />
+          <div style={{ position: 'absolute', top: '-20px', right: '-20px', width: '100px', height: '100px', background: 'radial-gradient(circle, rgba(100,80,180,0.08) 0%, transparent 70%)', filter: 'blur(20px)' }} />
 
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <div style={{ padding: '8px', borderRadius: '12px', background: 'rgba(124,58,237,0.2)', color: '#A855F7' }}>
+              <div style={{ padding: '8px', borderRadius: '12px', background: 'rgba(100,80,180,0.1)', color: '#9b8abf' }}>
                 <Zap size={20} fill="currentColor" />
               </div>
               <div>
-                <div style={{ fontSize: '0.65rem', fontWeight: 900, color: '#A855F7', textTransform: 'uppercase', letterSpacing: '0.15em' }}>Daily Speed Challenge</div>
+                <div style={{ fontSize: '0.65rem', fontWeight: 900, color: '#9b8abf', textTransform: 'uppercase', letterSpacing: '0.15em' }}>Daily Speed Challenge</div>
                 <div style={{ fontSize: '1.2rem', fontWeight: 900, color: 'var(--landing-text-primary)', letterSpacing: '-0.02em' }}>{dailyChallenge.title}</div>
               </div>
             </div>
@@ -720,7 +720,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
               marginTop: '8px',
               padding: '12px',
               borderRadius: '12px',
-              background: 'linear-gradient(135deg, #7C3AED, #DB2777)',
+              background: 'linear-gradient(135deg, #7a6ca0, #a06080)',
               color: '#fff',
               fontSize: '0.85rem',
               fontWeight: 800,
@@ -730,7 +730,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
               alignItems: 'center',
               justifyContent: 'center',
               gap: '8px',
-              boxShadow: '0 4px 15px rgba(124,58,237,0.3)'
+              boxShadow: '0 4px 12px rgba(100,80,180,0.15)'
             }}
           >
             Start Speed Challenge <ArrowRight size={16} />
@@ -740,10 +740,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
         {/* 📊 Social Proof Stats */}
         <div ref={statsRef} className="stagger-in" style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', justifyContent: 'center', marginBottom: '48px', width: '100%', maxWidth: '720px' }}>
           {[
-            { count: counters.solved, suffix: '+', label: 'Problems Solved', icon: <CheckCircle size={20} color="#10b981" />, gradient: 'rgba(16,185,129,0.08)' },
-            { count: counters.pass, suffix: '%', label: 'Pass Rate', icon: <TrendingUp size={20} color="#A855F7" />, gradient: 'rgba(168,85,247,0.06)' },
-            { count: counters.langs, suffix: '+', label: 'Languages', icon: <Terminal size={20} color="#00E5FF" />, gradient: 'rgba(0,229,255,0.05)' },
-            { count: counters.mocks, suffix: '+', label: 'Mock Interviews', icon: <Star size={20} color="#f59e0b" />, gradient: 'rgba(245,158,11,0.06)' },
+            { count: counters.solved, suffix: '+', label: 'Problems Solved', icon: <CheckCircle size={20} color="#4aaa88" />, gradient: 'rgba(74,170,136,0.05)' },
+            { count: counters.pass, suffix: '%', label: 'Pass Rate', icon: <TrendingUp size={20} color="#9b8abf" />, gradient: 'rgba(155,138,191,0.04)' },
+            { count: counters.langs, suffix: '+', label: 'Languages', icon: <Terminal size={20} color="#7aacba" />, gradient: 'rgba(122,172,186,0.04)' },
+            { count: counters.mocks, suffix: '+', label: 'Mock Interviews', icon: <Star size={20} color="#c8a040" />, gradient: 'rgba(200,160,64,0.04)' },
           ].map((s, i) => (
             <div key={i} className="stat-card hover-glow" style={{ flex: '1 1 150px', background: s.gradient, border: '1px solid var(--landing-border)', borderRadius: '18px', padding: '24px 16px', textAlign: 'center', backdropFilter: 'blur(16px)', position: 'relative', overflow: 'hidden' }}>
               <div style={{ width: '40px', height: '40px', borderRadius: '12px', background: 'var(--landing-border-light)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 12px auto' }}>{s.icon}</div>
@@ -756,7 +756,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
         {/* ✨ Interactive Code Sandbox */}
         <section id="playground-section" style={{ maxWidth: '1100px', margin: '0 auto 100px auto', padding: '0 24px', position: 'relative' }}>
           <div style={{ textAlign: 'center', marginBottom: '48px' }}>
-            <h2 style={{ fontSize: '2.4rem', fontWeight: 900, color: 'var(--landing-text-primary)', letterSpacing: '-0.04em', marginBottom: '12px' }}>Try It <span style={{ background: 'linear-gradient(135deg, #00E5FF, #7C3AED)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Right Now</span></h2>
+            <h2 style={{ fontSize: '2.4rem', fontWeight: 900, color: 'var(--landing-text-primary)', letterSpacing: '-0.04em', marginBottom: '12px' }}>Try It <span style={{ background: 'linear-gradient(135deg, #7aacba, #7a6ca0)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Right Now</span></h2>
             <p style={{ color: 'var(--landing-text-muted)', fontSize: '1rem', maxWidth: '600px', margin: '0 auto' }}>Pick an algorithm, hit Run, and watch Friday analyze it in real-time. No signup required.</p>
           </div>
 
@@ -770,10 +770,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
                 style={{
                   padding: '8px 20px', borderRadius: '12px', fontSize: '0.82rem', fontWeight: 700,
                   cursor: 'pointer', transition: 'all 0.3s',
-                  background: activeSandbox === i ? 'linear-gradient(135deg, #7C3AED, #DB2777)' : 'var(--landing-card-bg)',
+                  background: activeSandbox === i ? 'linear-gradient(135deg, #7a6ca0, #a06080)' : 'var(--landing-card-bg)',
                   border: activeSandbox === i ? 'none' : '1px solid var(--landing-border)',
                   color: activeSandbox === i ? '#fff' : 'var(--landing-text-muted)',
-                  boxShadow: activeSandbox === i ? '0 6px 20px rgba(124,58,237,0.35)' : 'none',
+                  boxShadow: activeSandbox === i ? '0 4px 14px rgba(100,80,180,0.2)' : 'none',
                   transform: activeSandbox === i ? 'scale(1.05)' : 'scale(1)',
                 }}
               >
@@ -812,7 +812,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
                     </span>
                   );
                 })}</code>
-                <span style={{ width: '2px', height: '1.2em', background: '#7C3AED', display: 'inline-block', verticalAlign: 'middle', animation: 'blink 1s infinite', marginLeft: '2px' }} />
+                <span style={{ width: '2px', height: '1.2em', background: '#7a6ca0', display: 'inline-block', verticalAlign: 'middle', animation: 'blink 1s infinite', marginLeft: '2px' }} />
               </pre>
 
               {/* Run button */}
@@ -824,7 +824,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
                 style={{
                   position: 'absolute', bottom: '20px', right: '20px',
                   padding: '10px 24px', borderRadius: '12px',
-                  background: isSandboxRunning ? 'rgba(168,85,247,0.2)' : 'linear-gradient(135deg, #10B981, #059669)',
+                  background: isSandboxRunning ? 'rgba(140,120,180,0.1)' : 'linear-gradient(135deg, #10B981, #059669)',
                   border: 'none', color: '#fff', fontWeight: 800, fontSize: '0.82rem',
                   cursor: isSandboxRunning ? 'wait' : 'pointer',
                   display: 'flex', alignItems: 'center', gap: '8px',
@@ -840,7 +840,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
               </button>
 
               {/* Friday Overlay Tooltip */}
-              <div style={{ position: 'absolute', top: '90px', right: '30px', maxWidth: '200px', background: 'rgba(124, 58, 237, 0.1)', border: '1px solid rgba(168, 85, 247, 0.4)', padding: '12px', borderRadius: '12px', backdropFilter: 'blur(10px)', animation: 'float 4s ease-in-out infinite' }}>
+              <div style={{ position: 'absolute', top: '90px', right: '30px', maxWidth: '200px', background: 'rgba(100, 80, 160, 0.05)', border: '1px solid rgba(140, 120, 180, 0.2)', padding: '12px', borderRadius: '12px', backdropFilter: 'blur(10px)', animation: 'float 4s ease-in-out infinite' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
                   <Sparkles size={14} color="var(--landing-accent)" />
                   <span style={{ fontSize: '0.7rem', fontWeight: 800, color: 'var(--landing-accent)' }}>FRIDAY</span>
@@ -852,7 +852,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
             {/* Right: Output Console */}
             <div style={{ padding: '24px', borderLeft: '1px solid var(--landing-border)', background: 'var(--landing-bg-primary)', display: 'flex', flexDirection: 'column' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px', paddingBottom: '12px', borderBottom: '1px solid var(--landing-border-light)' }}>
-                <Terminal size={14} color="#A855F7" />
+                <Terminal size={14} color="#9b8abf" />
                 <span style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--landing-text-dim)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>Output</span>
                 <div style={{ marginLeft: 'auto', width: '6px', height: '6px', borderRadius: '50%', background: isSandboxRunning ? '#f59e0b' : sandboxOutput.length > 0 ? 'var(--landing-success)' : 'var(--landing-border-strong)', boxShadow: isSandboxRunning ? '0 0 8px #f59e0b' : sandboxOutput.length > 0 ? '0 0 8px var(--landing-success)' : 'none' }} />
               </div>
@@ -885,15 +885,15 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
         {/* 🏢 Trusted By Bar */}
         <div className="stagger-in" style={{ width: '100%', maxWidth: '800px', margin: '0 auto 64px auto', textAlign: 'center' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '16px', justifyContent: 'center', marginBottom: '18px' }}>
-            <div style={{ flex: 1, maxWidth: '120px', height: '1px', background: 'linear-gradient(to right, transparent, rgba(168,85,247,0.2))' }} />
+            <div style={{ flex: 1, maxWidth: '120px', height: '1px', background: 'linear-gradient(to right, transparent, rgba(140,120,180,0.1))' }} />
             <p style={{ fontSize: '0.65rem', color: 'var(--landing-text-dim)', textTransform: 'uppercase', letterSpacing: '0.14em', fontWeight: 700, margin: 0 }}>Trusted by engineers at</p>
-            <div style={{ flex: 1, maxWidth: '120px', height: '1px', background: 'linear-gradient(to left, transparent, rgba(168,85,247,0.2))' }} />
+            <div style={{ flex: 1, maxWidth: '120px', height: '1px', background: 'linear-gradient(to left, transparent, rgba(140,120,180,0.1))' }} />
           </div>
           <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', flexWrap: 'wrap', alignItems: 'center' }}>
             {['Google', 'Meta', 'Amazon', 'Apple', 'Microsoft', 'Netflix', 'Stripe'].map((co, i) => (
               <React.Fragment key={co}>
                 <span className="company-name" style={{ fontSize: '1rem', fontWeight: 800, color: 'var(--landing-text-dim)', letterSpacing: '0.01em', transition: 'color 0.3s, text-shadow 0.3s', padding: '4px 8px' }}>{co}</span>
-                {i < 6 && <span style={{ color: 'rgba(168,85,247,0.2)', fontSize: '0.5rem' }}>●</span>}
+                {i < 6 && <span style={{ color: 'rgba(140,120,180,0.1)', fontSize: '0.5rem' }}>●</span>}
               </React.Fragment>
             ))}
           </div>
@@ -902,14 +902,14 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
         {/* 🛠️ popular problems grid  */}
         <div style={{ margin: '0 0 24px 0', textAlign: 'center' }} className="stagger-in">
           <h2 style={{ fontSize: '1.6rem', fontWeight: 900, color: 'var(--landing-text-primary)', letterSpacing: '-0.02em', marginBottom: '8px' }}>
-            Pick a <span style={{ background: 'linear-gradient(135deg, #A855F7, #EC4899)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Challenge</span> to Start
+            Pick a <span style={{ background: 'linear-gradient(135deg, #9b8abf, #c06088)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Challenge</span> to Start
           </h2>
           <p style={{ color: 'var(--landing-text-dim)', fontSize: '0.85rem', margin: '0 0 20px 0' }}>Jump straight into curated problems with AI-powered verification.</p>
 
           {/* Difficulty Filter Tabs */}
           <div style={{ display: 'flex', justifyContent: 'center', gap: '6px' }}>
             {(['All', 'Easy', 'Medium', 'Hard'] as const).map(d => {
-              const colors: Record<string, string> = { All: '#A855F7', Easy: 'var(--landing-success)', Medium: '#f59e0b', Hard: '#ef4444' };
+              const colors: Record<string, string> = { All: '#9b8abf', Easy: 'var(--landing-success)', Medium: '#f59e0b', Hard: '#ef4444' };
               const isActive = difficultyFilter === d;
               return (
                 <button
@@ -959,7 +959,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
                   {p.tags?.slice(0, 2).map((t: string) => (
                     <span key={t} style={{ fontSize: '0.65rem', color: 'var(--landing-text-muted)', background: 'var(--landing-border-light)', padding: '3px 8px', borderRadius: '6px', border: '1px solid var(--landing-border-light)' }}>{t}</span>
                   ))}
-                  <ArrowRight size={14} color="rgba(168,85,247,0.4)" style={{ marginLeft: 'auto' }} />
+                  <ArrowRight size={14} color="rgba(140,120,180,0.2)" style={{ marginLeft: 'auto' }} />
                 </div>
               </div>
             ));
@@ -968,7 +968,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
         {/* 📈 Timeline Tracks (How It Works) */}
         <div style={{ margin: '0 0 24px 0', textAlign: 'center' }} className="stagger-in">
           <h2 style={{ fontSize: '1.6rem', fontWeight: 900, color: 'var(--landing-text-primary)', letterSpacing: '-0.02em', marginBottom: '8px' }}>
-            How It <span style={{ background: 'linear-gradient(135deg, #00E5FF, #A855F7)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Works</span>
+            How It <span style={{ background: 'linear-gradient(135deg, #7aacba, #9b8abf)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Works</span>
           </h2>
           <p style={{ color: 'var(--landing-text-dim)', fontSize: '0.82rem', margin: 0 }}>From problem selection to a hiring scorecard — in minutes.</p>
         </div>
@@ -984,8 +984,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
             <h4>Code in Monaco IDE</h4>
             <p>Write solutions with VS Code-grade syntax highlighting in Python, Java, C++, Go, and more.</p>
           </div>
-          <div className="timeline-card hover-lift hover-glow" style={{ borderColor: 'rgba(168,85,247,0.2)' }}>
-            <div className="timeline-dot" style={{ background: 'rgba(168,85,247,0.25)', boxShadow: '0 0 16px rgba(168,85,247,0.5)' }}>3</div>
+          <div className="timeline-card hover-lift hover-glow" style={{ borderColor: 'rgba(140,120,180,0.1)' }}>
+            <div className="timeline-dot" style={{ background: 'rgba(140,120,180,0.12)', boxShadow: '0 0 16px rgba(140,120,180,0.25)' }}>3</div>
             <h4>🎥 AI Mock Interview</h4>
             <p>Face Alex on a live video call. Speak or type your answers. Get asked follow-up questions live.</p>
           </div>
@@ -1000,8 +1000,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
       {/* 🎥 AI INTERVIEW SHOWCASE */}
       <section id="interview-section" style={{ maxWidth: '1000px', margin: '0 auto 64px auto', padding: '0 24px', position: 'relative', zIndex: 5 }}>
         <div style={{ textAlign: 'center', marginBottom: '36px' }}>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(168,85,247,0.08)', border: '1px solid rgba(168,85,247,0.25)', padding: '5px 14px', borderRadius: '99px', marginBottom: '16px' }}>
-            <div style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#A855F7', boxShadow: '0 0 8px #A855F7' }} />
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(140,120,180,0.06)', border: '1px solid rgba(140,120,180,0.15)', padding: '5px 14px', borderRadius: '99px', marginBottom: '16px' }}>
+            <div style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#9b8abf', boxShadow: '0 0 6px rgba(155,138,191,0.3)' }} />
             <span style={{ fontSize: '0.72rem', fontWeight: 800, color: 'var(--landing-accent)', letterSpacing: '0.06em', textTransform: 'uppercase' }}>New — Now Live</span>
           </div>
           <h2 style={{ fontSize: '2rem', fontWeight: 900, color: 'var(--landing-text-primary)', letterSpacing: '-0.03em', marginBottom: '10px' }}>AI Video Mock Interview</h2>
@@ -1011,7 +1011,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
         </div>
 
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }} className="interview-showcase-grid">
-          <div style={{ background: 'var(--landing-glass-heavy)', border: '1px solid rgba(168,85,247,0.2)', borderRadius: '20px', overflow: 'hidden', position: 'relative', boxShadow: '0 24px 60px rgba(0,0,0,0.5)', isolation: 'isolate' }} className="hover-lift hover-glow">
+          <div style={{ background: 'var(--landing-glass-heavy)', border: '1px solid rgba(140,120,180,0.12)', borderRadius: '20px', overflow: 'hidden', position: 'relative', boxShadow: '0 20px 48px rgba(0,0,0,0.3)', isolation: 'isolate' }} className="hover-lift hover-glow">
             <img
               src={`${(import.meta as any).env.BASE_URL}assets/interviewers/avatar.png`}
               alt="Alex — AI Interviewer"
@@ -1038,7 +1038,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
             ].map((f, i) => (
               <div key={i}
                 style={{ background: 'var(--landing-card-bg)', border: '1px solid var(--landing-border-light)', borderRadius: '14px', padding: '14px 16px', display: 'flex', alignItems: 'flex-start', gap: '12px', transition: 'border-color 0.3s, background 0.3s' }}
-                onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(168,85,247,0.3)'; e.currentTarget.style.background = 'rgba(168,85,247,0.04)'; }}
+                onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(140,120,180,0.18)'; e.currentTarget.style.background = 'rgba(140,120,180,0.03)'; }}
                 onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--landing-border-light)'; e.currentTarget.style.background = 'var(--landing-card-bg)'; }}
               >
                 <span style={{ fontSize: '1.3rem', lineHeight: 1, flexShrink: 0 }}>{f.icon}</span>
@@ -1050,7 +1050,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
             ))}
             <button
               onClick={() => { handleProtectedStart(); }}
-              style={{ marginTop: '4px', padding: '14px', background: 'linear-gradient(135deg, #7C3AED, #DB2777)', border: 'none', borderRadius: '14px', color: 'var(--landing-text-primary)', fontWeight: 800, fontSize: '0.9rem', cursor: 'pointer', boxShadow: '0 8px 24px rgba(124,58,237,0.35)', transition: 'transform 0.2s', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
+              style={{ marginTop: '4px', padding: '14px', background: 'linear-gradient(135deg, #7a6ca0, #a06080)', border: 'none', borderRadius: '14px', color: 'var(--landing-text-primary)', fontWeight: 800, fontSize: '0.9rem', cursor: 'pointer', boxShadow: '0 6px 18px rgba(100,80,180,0.18)', transition: 'transform 0.2s', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
               onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-2px)'}
               onMouseLeave={e => e.currentTarget.style.transform = 'translateY(0)'}
             >
@@ -1071,7 +1071,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
             <p>Evaluate your suboptimal loops into static trace memory parameters fully streamed in live execution bounds.</p>
 
             <div style={{ display: 'flex', gap: '12px', marginTop: '16px' }}>
-              <div style={{ padding: '8px 16px', background: 'rgba(168, 85, 247, 0.1)', border: '1px solid rgba(168, 85, 247, 0.2)', borderRadius: '12px', fontStyle: 'italic', fontWeight: 700, fontSize: '0.9rem', color: 'var(--landing-accent)' }}>Time: O(N)</div>
+              <div style={{ padding: '8px 16px', background: 'rgba(140, 120, 180, 0.06)', border: '1px solid rgba(140, 120, 180, 0.12)', borderRadius: '12px', fontStyle: 'italic', fontWeight: 700, fontSize: '0.9rem', color: 'var(--landing-accent)' }}>Time: O(N)</div>
               <div style={{ padding: '8px 16px', background: 'var(--landing-card-bg)', border: '1px solid var(--landing-border-light)', borderRadius: '12px', fontStyle: 'italic', fontWeight: 600, fontSize: '0.9rem', color: 'var(--landing-text-muted)' }}>Space: O(N)</div>
             </div>
           </div>
@@ -1080,10 +1080,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
         {/* 💬 Card 2: Small (Friday Chat) */}
         <div className="bento-item hover-lift hover-glow">
           <div className="border-beam"></div>
-          <div style={styles.iconBox}><Terminal size={20} color="#A855F7" /></div>
+          <div style={styles.iconBox}><Terminal size={20} color="#9b8abf" /></div>
           <h3>Friday Assist</h3>
           <p>Get subtle contextual assists like optimal solver maps dynamically framing steps natively.</p>
-          <div style={{ marginTop: '12px', padding: '6px 12px', background: 'rgba(168,85,247,0.06)', borderRadius: '8px', fontSize: '0.72rem', border: '1px solid rgba(168,85,247,0.1)', color: 'var(--landing-accent)' }}>
+          <div style={{ marginTop: '12px', padding: '6px 12px', background: 'rgba(140,120,180,0.04)', borderRadius: '8px', fontSize: '0.72rem', border: '1px solid rgba(140,120,180,0.08)', color: 'var(--landing-accent)' }}>
             "Use a Hashmap for O(1) searches!"
           </div>
         </div>
@@ -1144,9 +1144,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
         </div>
 
         {/* 🤖 Card 7: Wide (AI Video Interviewer) */}
-        <div className="bento-item bento-2x1 hover-lift hover-glow" style={{ background: 'rgba(168,85,247,0.04)', border: '1px solid rgba(168,85,247,0.15)' }}>
+        <div className="bento-item bento-2x1 hover-lift hover-glow" style={{ background: 'rgba(168,85,247,0.04)', border: '1px solid rgba(140,120,180,0.07)' }}>
           <div className="border-beam" style={{ opacity: 0.3 }}></div>
-          <div style={{ background: 'rgba(168,85,247,0.15)', padding: '10px', borderRadius: '10px', color: 'var(--landing-accent)', marginBottom: '12px', width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div style={{ background: 'rgba(140,120,180,0.07)', padding: '10px', borderRadius: '10px', color: 'var(--landing-accent)', marginBottom: '12px', width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <img src={`${(import.meta as any).env.BASE_URL}assets/interviewers/avatar.png`} alt="Alex" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '8px' }} />
           </div>
           <div>
@@ -1157,9 +1157,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
             <h3>AI Video Mock Interview</h3>
             <p>Get interviewed by Alex, your AI Senior Engineer. Speak your answers, get live feedback, and receive a real hiring verdict.</p>
             <div style={{ display: 'flex', gap: '8px', marginTop: '14px', flexWrap: 'wrap' }}>
-              <span style={{ fontSize: '0.65rem', padding: '3px 10px', borderRadius: '6px', background: 'rgba(168,85,247,0.1)', color: 'var(--landing-accent)', border: '1px solid rgba(168,85,247,0.2)', fontWeight: 700 }}>🎙️ Voice Input</span>
-              <span style={{ fontSize: '0.65rem', padding: '3px 10px', borderRadius: '6px', background: 'rgba(168,85,247,0.1)', color: 'var(--landing-accent)', border: '1px solid rgba(168,85,247,0.2)', fontWeight: 700 }}>📊 Scorecard</span>
-              <span style={{ fontSize: '0.65rem', padding: '3px 10px', borderRadius: '6px', background: 'rgba(168,85,247,0.1)', color: 'var(--landing-accent)', border: '1px solid rgba(168,85,247,0.2)', fontWeight: 700 }}>🎥 Video Call UI</span>
+              <span style={{ fontSize: '0.65rem', padding: '3px 10px', borderRadius: '6px', background: 'rgba(140,120,180,0.05)', color: 'var(--landing-accent)', border: '1px solid rgba(140,120,180,0.1)', fontWeight: 700 }}>🎙️ Voice Input</span>
+              <span style={{ fontSize: '0.65rem', padding: '3px 10px', borderRadius: '6px', background: 'rgba(140,120,180,0.05)', color: 'var(--landing-accent)', border: '1px solid rgba(140,120,180,0.1)', fontWeight: 700 }}>📊 Scorecard</span>
+              <span style={{ fontSize: '0.65rem', padding: '3px 10px', borderRadius: '6px', background: 'rgba(140,120,180,0.05)', color: 'var(--landing-accent)', border: '1px solid rgba(140,120,180,0.1)', fontWeight: 700 }}>🎥 Video Call UI</span>
             </div>
           </div>
         </div>
@@ -1168,13 +1168,13 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
       {/* ⚖️ Comparison Section */}
       <section className="stagger-in" style={{ maxWidth: '900px', margin: '0 auto 80px auto', padding: '0 24px', position: 'relative', zIndex: 5 }}>
         <div style={{ textAlign: 'center', marginBottom: '36px' }}>
-          <h2 style={{ fontSize: '2rem', fontWeight: 900, color: 'var(--landing-text-primary)', letterSpacing: '-0.03em', marginBottom: '10px' }}>Why <span style={{ background: 'linear-gradient(135deg, #00E5FF, #7C3AED)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>NexCode AI?</span></h2>
+          <h2 style={{ fontSize: '2rem', fontWeight: 900, color: 'var(--landing-text-primary)', letterSpacing: '-0.03em', marginBottom: '10px' }}>Why <span style={{ background: 'linear-gradient(135deg, #7aacba, #7a6ca0)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>NexCode AI?</span></h2>
           <p style={{ color: 'var(--landing-text-muted)', fontSize: '0.9rem', margin: 0 }}>See how we fundamentally change interview preparation.</p>
         </div>
 
         <div style={{ background: 'rgba(14, 10, 24, 0.7)', borderRadius: '24px', position: 'relative', border: '1px solid var(--landing-border-light)', backdropFilter: 'blur(20px)', boxShadow: '0 20px 40px rgba(0,0,0,0.6)' }} className="hover-glow">
           {/* Subtle glow behind the entire table */}
-          <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '100%', height: '100%', background: 'radial-gradient(circle, rgba(168,85,247,0.05) 0%, transparent 70%)', pointerEvents: 'none', zIndex: 0 }} />
+          <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '100%', height: '100%', background: 'radial-gradient(circle, rgba(140,120,180,0.025) 0%, transparent 70%)', pointerEvents: 'none', zIndex: 0 }} />
 
           <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.9rem', position: 'relative', zIndex: 1, tableLayout: 'fixed' }}>
             <colgroup>
@@ -1186,12 +1186,12 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
               <tr>
                 <th style={{ padding: '24px 28px', textAlign: 'left', color: 'var(--landing-text-muted)', fontWeight: 600, borderBottom: '1px solid var(--landing-border)' }}>Feature</th>
                 <th style={{
-                  padding: '24px 20px', textAlign: 'center', borderBottom: '1px solid rgba(168,85,247,0.3)',
-                  background: 'linear-gradient(to bottom, rgba(168,85,247,0.02), rgba(168,85,247,0.15))',
-                  borderLeft: '1px solid rgba(168,85,247,0.3)', borderRight: '1px solid rgba(168,85,247,0.3)',
+                  padding: '24px 20px', textAlign: 'center', borderBottom: '1px solid rgba(140,120,180,0.15)',
+                  background: 'linear-gradient(to bottom, rgba(168,85,247,0.02), rgba(140,120,180,0.07))',
+                  borderLeft: '1px solid rgba(140,120,180,0.15)', borderRight: '1px solid rgba(140,120,180,0.15)',
                   borderTopLeftRadius: '16px', borderTopRightRadius: '16px'
                 }}>
-                  <div className="nexcode-col-header" style={{ display: 'inline-block', background: 'linear-gradient(135deg, #fff, var(--landing-accent))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', fontWeight: 900, letterSpacing: '0.02em', fontSize: '1.05rem', textShadow: '0 0 20px rgba(168,85,247,0.4)' }}>NexCode AI</div>
+                  <div className="nexcode-col-header" style={{ display: 'inline-block', background: 'linear-gradient(135deg, #fff, var(--landing-accent))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', fontWeight: 900, letterSpacing: '0.02em', fontSize: '1.05rem', textShadow: '0 0 20px rgba(140,120,180,0.2)' }}>NexCode AI</div>
                 </th>
                 <th style={{ padding: '24px 20px', textAlign: 'center', color: 'var(--landing-text-dim)', fontWeight: 600, borderBottom: '1px solid var(--landing-border)' }}>Others</th>
               </tr>
@@ -1215,10 +1215,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
                     {/* The NexCode highlighted column */}
                     <td style={{
                       padding: '18px 20px', textAlign: 'center',
-                      background: 'rgba(168,85,247,0.1)',
-                      borderLeft: '1px solid rgba(168,85,247,0.3)',
-                      borderRight: '1px solid rgba(168,85,247,0.3)',
-                      borderBottom: isLast ? '1px solid rgba(168,85,247,0.3)' : '1px solid rgba(168,85,247,0.15)',
+                      background: 'rgba(140,120,180,0.05)',
+                      borderLeft: '1px solid rgba(140,120,180,0.15)',
+                      borderRight: '1px solid rgba(140,120,180,0.15)',
+                      borderBottom: isLast ? '1px solid rgba(140,120,180,0.15)' : '1px solid rgba(140,120,180,0.07)',
                       borderBottomLeftRadius: isLast ? '16px' : '0',
                       borderBottomRightRadius: isLast ? '16px' : '0'
                     }}>
@@ -1251,9 +1251,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
             {[...Array(2)].map((_, i) => (
               <React.Fragment key={i}>
                 {[
-                  { name: "Sarah K.", role: "SDE II @ Microsoft", text: "Friday's feedback on my communication was a game-changer for my actual onsite.", color: "#7C3AED" },
+                  { name: "Sarah K.", role: "SDE II @ Microsoft", text: "Friday's feedback on my communication was a game-changer for my actual onsite.", color: "#7a6ca0" },
                   { name: "David L.", role: "Senior Engineer @ Google", text: "The most realistic interview simulation I've found. Alex is scary good.", color: "#3B82F6" },
-                  { name: "Mona R.", role: "Frontend Dev @ Vercel", text: "I went from panicking during live coding to being completely calm.", color: "#EC4899" },
+                  { name: "Mona R.", role: "Frontend Dev @ Vercel", text: "I went from panicking during live coding to being completely calm.", color: "#c06088" },
                   { name: "Kevin T.", role: "SDE @ Amazon", text: "The real-time complexity analysis is something I've never seen before.", color: "#10B981" },
                   { name: "Elena P.", role: "UCLA Student", text: "Helped me land my first internship at a top-tier tech firm. Forever grateful!", color: "#F59E0B" },
                 ].map((t, idx) => (
@@ -1278,15 +1278,15 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
 
       {/* 🚀 Final CTA Banner */}
       <section id="cta-section" className="stagger-in" style={{ maxWidth: '900px', margin: '0 auto 100px auto', padding: '0 24px', position: 'relative', zIndex: 5 }}>
-        <div style={{ background: 'linear-gradient(135deg, rgba(124,58,237,0.12), rgba(219,39,119,0.08))', border: '1px solid rgba(168,85,247,0.2)', borderRadius: '24px', padding: '48px 32px', textAlign: 'center', position: 'relative', overflow: 'hidden' }} className="hover-glow">
-          <div style={{ position: 'absolute', top: '-50px', right: '-50px', width: '200px', height: '200px', background: 'radial-gradient(circle, rgba(168,85,247,0.2), transparent 70%)', borderRadius: '50%' }} />
+        <div style={{ background: 'linear-gradient(135deg, rgba(100,80,160,0.06), rgba(160,100,120,0.04))', border: '1px solid rgba(140,120,180,0.1)', borderRadius: '24px', padding: '48px 32px', textAlign: 'center', position: 'relative', overflow: 'hidden' }} className="hover-glow">
+          <div style={{ position: 'absolute', top: '-50px', right: '-50px', width: '200px', height: '200px', background: 'radial-gradient(circle, rgba(140,120,180,0.1), transparent 70%)', borderRadius: '50%' }} />
           <div style={{ position: 'absolute', bottom: '-50px', left: '-50px', width: '200px', height: '200px', background: 'radial-gradient(circle, rgba(219,39,119,0.15), transparent 70%)', borderRadius: '50%' }} />
           <h2 style={{ fontSize: '1.8rem', fontWeight: 900, color: 'var(--landing-text-primary)', letterSpacing: '-0.02em', marginBottom: '12px', position: 'relative', zIndex: 1 }}>Ready to Ace Your Next Interview?</h2>
           <p style={{ color: 'var(--landing-text-muted)', fontSize: '0.9rem', maxWidth: '460px', margin: '0 auto 28px', lineHeight: 1.6, position: 'relative', zIndex: 1 }}>Join thousands of developers who improved their interview performance with NexCode AI.</p>
           <button
             onClick={() => { handleProtectedStart(); }}
             className="magic-btn"
-            style={{ padding: '16px 36px', background: 'linear-gradient(135deg, #7C3AED, #DB2777)', border: 'none', borderRadius: '14px', color: '#ffffff', fontWeight: 800, fontSize: '1rem', cursor: 'pointer', boxShadow: '0 10px 40px rgba(124,58,237,0.35)', display: 'inline-flex', alignItems: 'center', gap: '10px', position: 'relative', zIndex: 1 }}
+            style={{ padding: '16px 36px', background: 'linear-gradient(135deg, #7a6ca0, #a06080)', border: 'none', borderRadius: '14px', color: '#ffffff', fontWeight: 800, fontSize: '1rem', cursor: 'pointer', boxShadow: '0 10px 40px rgba(100,80,160,0.18)', display: 'inline-flex', alignItems: 'center', gap: '10px', position: 'relative', zIndex: 1 }}
           >
             Get Started Free <ArrowRight size={18} />
           </button>
@@ -1353,7 +1353,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
               API v2.4 Status: Operational
             </div>
             <div style={{ padding: '8px 16px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '12px', color: '#fff', fontSize: '0.75rem', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <Globe size={14} color="#A855F7" /> USD / English
+              <Globe size={14} color="#9b8abf" /> USD / English
             </div>
           </div>
         </div>
@@ -1469,7 +1469,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
                 onClick={handleStartWithTags}
                 style={{
                   flex: 2, padding: '13px',
-                  background: selectedTags.length > 0 ? 'linear-gradient(135deg, #7C3AED, #DB2777)' : 'var(--landing-border-light)',
+                  background: selectedTags.length > 0 ? 'linear-gradient(135deg, #7a6ca0, #a06080)' : 'var(--landing-border-light)',
                   border: 'none', borderRadius: '14px',
                   color: selectedTags.length > 0 ? 'var(--landing-text-primary)' : 'var(--landing-text-dim)',
                   fontWeight: 800, cursor: selectedTags.length > 0 ? 'pointer' : 'not-allowed',
@@ -1543,7 +1543,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
           position: absolute;
           width: 1px;
           height: 15vh;
-          background: linear-gradient(to bottom, transparent, rgba(168, 85, 247, 0.4), transparent);
+          background: linear-gradient(to bottom, transparent, rgba(140, 120, 180, 0.2), transparent);
           animation: beamTravel 8s infinite linear;
           top: -15vh;
           opacity: 0;
@@ -1565,7 +1565,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
         .particle {
           position: absolute;
           bottom: -5vh;
-          color: rgba(168, 85, 247, 0.5);
+          color: rgba(140, 120, 180, 0.25);
           font-size: 1.2rem;
           animation: drift 15s infinite linear;
           text-shadow: 0 0 10px currentColor;
@@ -1632,7 +1632,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
             left: 50px;
             right: 50px;
             height: 1px;
-            border-top: 1px dashed rgba(168, 85, 247, 0.3);
+            border-top: 1px dashed rgba(140, 120, 180, 0.15);
             z-index: 0;
           }
         }
@@ -1652,10 +1652,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
         .timeline-card h4 { font-size: 0.88rem; font-weight: 700; color: var(--landing-text-primary); margin: 0 0 4px 0; }
         .timeline-card p { font-size: 0.74rem; color: var(--landing-text-muted); line-height: 1.4; margin: 0; }
         .timeline-dot {
-          width: 28px; height: 28px; background: rgba(168, 85, 247, 0.15); border: 1px solid rgba(168, 85, 247, 0.3);
+          width: 28px; height: 28px; background: rgba(140, 120, 180, 0.07); border: 1px solid rgba(140, 120, 180, 0.15);
           border-radius: 50%; display: flex; align-items: center; justify-content: center;
           color: var(--landing-accent); font-weight: 800; font-size: 0.8rem; margin-bottom: 12px;
-          box-shadow: 0 0 10px rgba(168, 85, 247, 0.3);
+          box-shadow: 0 0 10px rgba(140, 120, 180, 0.15);
         }
 
         /* Scroll Animations (Modern Scroll Timelines) */
@@ -1697,8 +1697,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
         }
         .hover-lift:hover {
           transform: translateY(-8px) scale(1.01);
-          box-shadow: 0 15px 40px rgba(168, 85, 247, 0.2);
-          border-color: rgba(168, 85, 247, 0.5) !important;
+          box-shadow: 0 15px 40px rgba(140, 120, 180, 0.1);
+          border-color: rgba(140, 120, 180, 0.25) !important;
           background: rgba(255,255,255,0.04) !important;
         }
 
@@ -1716,7 +1716,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
           transition: background 0.3s;
         }
         .hover-glow:hover::before {
-          background: radial-gradient(800px circle at var(--mouse-x, -1000px) var(--mouse-y, -1000px), rgba(168, 85, 247, 0.15), transparent 40%);
+          background: radial-gradient(800px circle at var(--mouse-x, -1000px) var(--mouse-y, -1000px), rgba(140, 120, 180, 0.07), transparent 40%);
         }
         .hover-glow > * { position: relative; z-index: 1; }
 
@@ -1725,7 +1725,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
           inset: 0;
           border-radius: inherit;
           padding: 1px;
-          background: linear-gradient(135deg, #FF007A 0%, #7000FF 50%, #00E5FF 100%);
+          background: linear-gradient(135deg, #9a7088 0%, #6a60a0 50%, #7aacba 100%);
           -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
           mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
           -webkit-mask-composite: xor;
@@ -1780,7 +1780,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
         .friday-avatar {
           width: 50px;
           height: 50px;
-          background: linear-gradient(135deg, #7C3AED, #DB2777);
+          background: linear-gradient(135deg, #7a6ca0, #a06080);
           border-radius: 16px;
           display: flex;
           align-items: center;
@@ -1795,7 +1795,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
           position: absolute;
           inset: -4px;
           border-radius: 18px;
-          border: 2px solid #7C3AED;
+          border: 2px solid #7a6ca0;
           animation: pulse-ring 2s infinite;
         }
 
@@ -1807,7 +1807,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
         .friday-bubble {
           background: rgba(20, 16, 28, 0.95);
           backdrop-filter: blur(12px);
-          border: 1px solid rgba(168, 85, 247, 0.3);
+          border: 1px solid rgba(140, 120, 180, 0.15);
           padding: 14px 18px;
           border-radius: 18px;
           color: #fff;
@@ -1827,8 +1827,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
           width: 16px;
           height: 16px;
           background: rgba(20, 16, 28, 0.95);
-          border-right: 1px solid rgba(168, 85, 247, 0.3);
-          border-bottom: 1px solid rgba(168, 85, 247, 0.3);
+          border-right: 1px solid rgba(140, 120, 180, 0.15);
+          border-bottom: 1px solid rgba(140, 120, 180, 0.15);
           transform: rotate(45deg);
         }
 
@@ -1867,7 +1867,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
 
         .testimonial-card:hover {
           background: rgba(255,255,255,0.05);
-          border-color: rgba(168,85,247,0.3);
+          border-color: rgba(140,120,180,0.15);
         }
 
         @keyframes marquee-scroll {
@@ -1891,7 +1891,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
         
         .main-preview-ui:hover {
           transform: translateY(-10px) scale(1.01);
-          border-color: rgba(168, 85, 247, 0.3);
+          border-color: rgba(140, 120, 180, 0.15);
         }
 
         .scroll-reveal {
@@ -1927,8 +1927,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
         }
         .stat-card:hover {
           transform: translateY(-6px);
-          box-shadow: 0 12px 36px rgba(168, 85, 247, 0.18);
-          border-color: rgba(168, 85, 247, 0.3) !important;
+          box-shadow: 0 12px 36px rgba(140, 120, 180, 0.08);
+          border-color: rgba(140, 120, 180, 0.15) !important;
         }
 
         /* Live dot pulse */
@@ -1948,7 +1948,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
           bottom: 24px;
           left: 24px;
           background: rgba(14, 10, 24, 0.9);
-          border: 1px solid rgba(168, 85, 247, 0.25);
+          border: 1px solid rgba(140, 120, 180, 0.12);
           backdrop-filter: blur(16px);
           padding: 12px 18px;
           border-radius: 12px;
@@ -1973,7 +1973,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
         }
         .company-name:hover {
           color: var(--landing-text-accent) !important;
-          text-shadow: 0 0 20px rgba(168, 85, 247, 0.3) !important;
+          text-shadow: 0 0 20px rgba(140, 120, 180, 0.15) !important;
         }
 
         /* Problem card enhanced */
@@ -1984,7 +1984,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
           transform: translateY(-6px) scale(1.01);
           box-shadow: 0 12px 36px rgba(0,0,0,0.4);
           background: rgba(255,255,255,0.04) !important;
-          border-color: rgba(168, 85, 247, 0.3) !important;
+          border-color: rgba(140, 120, 180, 0.15) !important;
         }
 
         /* Comparison table styling */
@@ -2056,7 +2056,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
           left: 0;
           width: 100%;
           height: 3px;
-          background: linear-gradient(90deg, #FF007A, #7C3AED, #00E5FF);
+          background: linear-gradient(90deg, #9a7088, #7a6ca0, #7aacba);
           transform-origin: left;
           z-index: 9999;
           transition: transform 0.1s linear;
@@ -2086,14 +2086,14 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
           padding: 0;
         }
         .nav-dot:hover {
-          background: rgba(168, 85, 247, 0.5);
+          background: rgba(140, 120, 180, 0.25);
           transform: scale(1.4);
-          box-shadow: 0 0 12px rgba(168, 85, 247, 0.4);
+          box-shadow: 0 0 12px rgba(140, 120, 180, 0.2);
         }
         .nav-dot-active {
-          background: #A855F7 !important;
+          background: #9b8abf !important;
           transform: scale(1.3);
-          box-shadow: 0 0 16px rgba(168, 85, 247, 0.6);
+          box-shadow: 0 0 16px rgba(140, 120, 180, 0.3);
           border-color: rgba(168, 85, 247, 0.8);
         }
         .nav-dot-label {
@@ -2196,7 +2196,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
         }
         .sandbox-panel:hover {
           transform: translateY(-6px) !important;
-          border-color: rgba(168, 85, 247, 0.25) !important;
+          border-color: rgba(140, 120, 180, 0.12) !important;
         }
         @media (max-width: 768px) {
           .sandbox-panel {
@@ -2229,7 +2229,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
           top: 80px;
           left: 50%;
           transform: translateX(-50%);
-          background: linear-gradient(135deg, rgba(251,191,36,0.15), rgba(168,85,247,0.15));
+          background: linear-gradient(135deg, rgba(251,191,36,0.15), rgba(140,120,180,0.07));
           border: 1px solid rgba(251,191,36,0.3);
           padding: 12px 24px;
           border-radius: 16px;
@@ -2251,47 +2251,47 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
 
         /* Professional CSS Variable Theme Architecture */
         :root {
-          --landing-bg-primary: #030009;
-          --landing-text-primary: #ffffff;
-          --landing-text-high: rgba(255, 255, 255, 0.85);
-          --landing-text-accent: rgba(255, 255, 255, 0.65);
-          --landing-text-muted: rgba(255, 255, 255, 0.6);
-          --landing-text-dim: rgba(255, 255, 255, 0.45);
-          --landing-accent: #D8B4FE;
-          --landing-success: #10B981;
-          --landing-danger: #fca5a5;
+          --landing-bg-primary: #050510;
+          --landing-text-primary: #e0e2e8;
+          --landing-text-high: rgba(255, 255, 255, 0.78);
+          --landing-text-accent: rgba(255, 255, 255, 0.58);
+          --landing-text-muted: rgba(255, 255, 255, 0.5);
+          --landing-text-dim: rgba(255, 255, 255, 0.35);
+          --landing-accent: #b8a0d8;
+          --landing-success: #4aaa88;
+          --landing-danger: #d8a0a0;
           
-          --landing-border-strong: rgba(255, 255, 255, 0.25);
-          --landing-border: rgba(255, 255, 255, 0.08);
-          --landing-border-light: rgba(255, 255, 255, 0.04);
+          --landing-border-strong: rgba(255, 255, 255, 0.18);
+          --landing-border: rgba(255, 255, 255, 0.06);
+          --landing-border-light: rgba(255, 255, 255, 0.03);
           
-          --landing-card-bg: rgba(255, 255, 255, 0.02);
+          --landing-card-bg: rgba(255, 255, 255, 0.015);
           
-          --landing-glass: rgba(3, 1, 8, 0.6);
-          --landing-glass-dark: rgba(3, 1, 8, 0.75);
-          --landing-glass-heavy: rgba(20, 16, 28, 0.95);
+          --landing-glass: rgba(5, 5, 16, 0.55);
+          --landing-glass-dark: rgba(5, 5, 16, 0.7);
+          --landing-glass-heavy: rgba(20, 18, 28, 0.92);
         }
 
         .landing-light-mode {
-          --landing-bg-primary: #fafafa;
-          --landing-text-primary: #0f172a;
-          --landing-text-high: #1e293b;
-          --landing-text-accent: #334155;
-          --landing-text-muted: #475569;
-          --landing-text-dim: rgba(0, 0, 0, 0.5);
-          --landing-accent: #7C3AED;
-          --landing-success: #059669;
-          --landing-danger: #ef4444;
+          --landing-bg-primary: #f5f6f8;
+          --landing-text-primary: #1a1f2e;
+          --landing-text-high: #2d3348;
+          --landing-text-accent: #404860;
+          --landing-text-muted: #5a6278;
+          --landing-text-dim: rgba(0, 0, 0, 0.42);
+          --landing-accent: #6d5b9e;
+          --landing-success: #3d8a6a;
+          --landing-danger: #c06060;
           
-          --landing-border-strong: rgba(0, 0, 0, 0.15);
-          --landing-border: rgba(0, 0, 0, 0.08);
-          --landing-border-light: rgba(0, 0, 0, 0.05);
+          --landing-border-strong: rgba(0, 0, 0, 0.12);
+          --landing-border: rgba(0, 0, 0, 0.06);
+          --landing-border-light: rgba(0, 0, 0, 0.04);
           
           --landing-card-bg: #ffffff;
           
           --landing-glass: rgba(255, 255, 255, 0.8);
-          --landing-glass-dark: rgba(255, 255, 255, 0.9);
-          --landing-glass-heavy: rgba(255, 255, 255, 0.95);
+          --landing-glass-dark: rgba(255, 255, 255, 0.88);
+          --landing-glass-heavy: rgba(255, 255, 255, 0.94);
           
           background-color: var(--landing-bg-primary) !important;
           color: var(--landing-text-primary) !important;
@@ -2306,7 +2306,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
         .landing-light-mode span.text-change-anim { color: var(--landing-text-primary) !important; }
         
         .landing-light-mode h2 span {
-          background: linear-gradient(270deg, #db2777 0%, #7c3aed 50%, #0ea5e9 100%) !important;
+          background: linear-gradient(270deg, #9a6080 0%, #6860a0 50%, #5a8898 100%) !important;
           -webkit-background-clip: text !important;
           -webkit-text-fill-color: transparent !important;
           background-size: 200% auto !important;
@@ -2357,8 +2357,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
 
         .landing-light-mode button[style*="background: 'var(--landing-card-bg)'"] {
            background: #F3F4F6 !important;
-           border-color: rgba(168,85,247,0.3) !important;
-           color: #7C3AED !important;
+           border-color: rgba(140,120,180,0.15) !important;
+           color: #7a6ca0 !important;
         }
         
         .landing-light-mode .hover-menu-item { color: var(--landing-text-primary) !important; }
@@ -2384,7 +2384,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
 
         /* NexCode AI Gradient Header explicitly needs dark/vibrant gradient in light mode */
         .landing-light-mode th .nexcode-col-header {
-           background: linear-gradient(135deg, #7C3AED, #DB2777) !important;
+           background: linear-gradient(135deg, #7a6ca0, #a06080) !important;
            -webkit-background-clip: text !important;
            -webkit-text-fill-color: transparent !important;
         }
@@ -2439,7 +2439,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
           background: #030009;
           position: relative;
           padding: 120px 24px 60px;
-          border-top: 1px solid rgba(168, 85, 247, 0.1);
+          border-top: 1px solid rgba(140, 120, 180, 0.05);
           z-index: 10;
           transition: background 0.5s ease, border-color 0.5s ease;
         }
@@ -2509,7 +2509,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
           background: var(--landing-accent);
           color: #fff !important;
           transform: scale(1.1) rotate(8deg);
-          box-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
+          box-shadow: 0 0 20px rgba(140, 120, 180, 0.2);
           border-color: transparent;
         }
 
@@ -2734,31 +2734,31 @@ const styles: Record<string, React.CSSProperties> = {
     position: 'fixed',
     width: '500px',
     height: '500px',
-    background: 'radial-gradient(circle, rgba(168, 85, 247, 0.4) 0%, transparent 60%)',
+    background: 'radial-gradient(circle, rgba(155, 138, 191, 0.06) 0%, transparent 60%)',
     borderRadius: '50%',
     pointerEvents: 'none',
     zIndex: 0,
     transform: 'translate(-50%, -50%)',
-    filter: 'blur(60px)',
+    filter: 'blur(80px)',
     mixBlendMode: 'screen'
   },
   bgMesh: {
     position: 'absolute',
     inset: 0,
-    backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px)',
+    backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0.008) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.008) 1px, transparent 1px)',
     backgroundSize: '32px 32px',
-    opacity: 0.8,
+    opacity: 0.5,
     zIndex: 0
   },
   bgGlow: {
     position: 'absolute',
     width: '600px',
     height: '600px',
-    background: 'radial-gradient(circle, rgba(168, 85, 247, 0.12) 0%, rgba(139, 92, 246, 0.03) 50%, transparent 100%)',
+    background: 'radial-gradient(circle, rgba(140, 120, 180, 0.05) 0%, rgba(120, 100, 160, 0.015) 50%, transparent 100%)',
     top: '-150px',
     left: 'calc(50% - 300px)',
     borderRadius: '50%',
-    filter: 'blur(50px)',
+    filter: 'blur(60px)',
     zIndex: 1,
     animation: 'pulseGlow 8s infinite ease-in-out'
   },
@@ -2774,11 +2774,11 @@ const styles: Record<string, React.CSSProperties> = {
     top: 0
   },
   logo: { display: 'flex', alignItems: 'center', gap: '10px' },
-  logoIcon: { background: 'rgba(168, 85, 247, 0.1)', padding: '6px', borderRadius: '8px', border: '1px solid rgba(168, 85, 247, 0.2)' },
+  logoIcon: { background: 'rgba(140, 120, 180, 0.05)', padding: '6px', borderRadius: '8px', border: '1px solid rgba(140, 120, 180, 0.1)' },
   logoText: { fontWeight: 800, fontSize: '1.2rem', letterSpacing: '-0.02em', color: 'var(--landing-text-primary)' },
   navBtn: {
     fontSize: '0.78rem', borderRadius: '20px', padding: '7px 16px',
-    background: 'rgba(168, 85, 247, 0.12)', border: '1px solid rgba(168, 85, 247, 0.3)',
+    background: 'rgba(140, 120, 180, 0.08)', border: '1px solid rgba(140, 120, 180, 0.18)',
     color: 'var(--landing-accent)', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px'
   },
   loginBtn: {
@@ -2786,9 +2786,9 @@ const styles: Record<string, React.CSSProperties> = {
     padding: '7px 15px', borderRadius: '12px', fontSize: '0.78rem', fontWeight: 600, cursor: 'pointer', transition: 'all 0.3s'
   },
   signUpBtn: {
-    background: 'linear-gradient(135deg, #7C3AED, #DB2777)', border: '1px solid var(--landing-border-strong)', color: 'var(--landing-text-primary)',
+    background: 'linear-gradient(135deg, #7a6ca0, #a06080)', border: '1px solid var(--landing-border-strong)', color: 'var(--landing-text-primary)',
     padding: '7px 15px', borderRadius: '12px', fontSize: '0.78rem', fontWeight: 700, cursor: 'pointer',
-    boxShadow: '0 4px 15px rgba(124, 58, 237, 0.25)', transition: 'all 0.3s'
+    boxShadow: '0 4px 12px rgba(100, 80, 140, 0.15)', transition: 'all 0.3s'
   },
   logoutBtn: {
     background: 'rgba(239, 68, 68, 0.06)', border: '1px solid rgba(239, 68, 68, 0.2)', color: 'var(--landing-danger)',
@@ -2800,13 +2800,13 @@ const styles: Record<string, React.CSSProperties> = {
     padding: '48px 24px 32px 24px', textAlign: 'center', zIndex: 5, animation: 'slideUp 0.8s ease-out'
   },
   badge: {
-    background: 'rgba(168, 85, 247, 0.08)', border: '1px solid rgba(168, 85, 247, 0.2)',
+    background: 'rgba(140, 120, 180, 0.06)', border: '1px solid rgba(140, 120, 180, 0.12)',
     color: 'var(--landing-accent)', fontSize: '0.75rem', padding: '4px 12px', borderRadius: '16px',
     display: 'flex', alignItems: 'center', gap: '6px', fontWeight: 600, marginBottom: '20px'
   },
   title: { fontSize: '3.4rem', fontWeight: 900, lineHeight: 1.08, letterSpacing: '-0.035em', marginBottom: '18px', maxWidth: '800px' },
   gradientText: {
-    background: 'linear-gradient(270deg, #FF007A 0%, #7000FF 50%, #00E5FF 100%)',
+    background: 'linear-gradient(270deg, #b080a8 0%, #8080b8 50%, #7aa8b8 100%)',
     backgroundSize: '200% auto',
     animation: 'gradientPan 5s linear infinite',
     WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', display: 'inline-block', minWidth: '400px'
@@ -2814,7 +2814,7 @@ const styles: Record<string, React.CSSProperties> = {
   subtitle: { fontSize: '1rem', color: 'var(--landing-text-muted)', maxWidth: '520px', lineHeight: 1.65, marginBottom: '28px' },
   previewContainer: {
     width: '100%', maxWidth: '550px', background: 'var(--landing-glass)', border: '1px solid var(--landing-border)',
-    borderRadius: '14px', boxShadow: '0 20px 80px rgba(0,0,0,0.4)', backdropFilter: 'blur(20px)',
+    borderRadius: '14px', boxShadow: '0 16px 60px rgba(0,0,0,0.25)', backdropFilter: 'blur(20px)',
     textAlign: 'left', position: 'relative', marginBottom: '50px'
   },
   previewHeader: { padding: '12px 16px', borderBottom: '1px solid var(--landing-border-light)', display: 'flex', alignItems: 'center', gap: '12px' },
@@ -2824,8 +2824,8 @@ const styles: Record<string, React.CSSProperties> = {
   previewContent: { padding: '16px 20px', fontFamily: '"Fira Code", monospace', fontSize: '0.78rem', color: 'var(--landing-text-high)' },
   codeBlock: { margin: 0, lineHeight: 1.5 },
   floatingFriday: {
-    position: 'absolute', bottom: '-16px', right: '20px', background: 'rgba(168, 85, 247, 0.12)',
-    border: '1px solid rgba(168, 85, 247, 0.25)', backdropFilter: 'blur(12px)', padding: '8px 14px',
+    position: 'absolute', bottom: '-16px', right: '20px', background: 'rgba(140, 120, 180, 0.08)',
+    border: '1px solid rgba(140, 120, 180, 0.15)', backdropFilter: 'blur(12px)', padding: '8px 14px',
     borderRadius: '12px', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.72rem', fontWeight: 600
   },
   sectionHeader: { margin: '0 0 20px 0', textAlign: 'center' },
@@ -2836,7 +2836,7 @@ const styles: Record<string, React.CSSProperties> = {
   problemCard: {
     flex: '1 1 220px', background: 'var(--landing-card-bg)', border: '1px solid var(--landing-border)',
     borderRadius: '12px', padding: '16px', textAlign: 'left', cursor: 'pointer', backdropFilter: 'blur(12px)',
-    boxShadow: '0 4px 20px rgba(0,0,0,0.3)'
+    boxShadow: '0 4px 16px rgba(0,0,0,0.15)'
   },
   features: {
     display: 'flex', justifyContent: 'center', gap: '20px', padding: '0 20px', maxWidth: '900px', margin: '0 auto', flexWrap: 'wrap', zIndex: 5
@@ -2845,7 +2845,7 @@ const styles: Record<string, React.CSSProperties> = {
     flex: '1 1 260px', background: 'var(--landing-card-bg)', border: '1px solid var(--landing-border-light)',
     borderRadius: '16px', padding: '20px', display: 'flex', flexDirection: 'column', alignItems: 'flex-start'
   },
-  iconBox: { background: 'rgba(168, 85, 247, 0.1)', padding: '10px', borderRadius: '10px', color: 'var(--landing-accent)', marginBottom: '12px' },
+  iconBox: { background: 'rgba(140, 120, 180, 0.06)', padding: '10px', borderRadius: '10px', color: 'var(--landing-accent)', marginBottom: '12px' },
   modalBackdrop: {
     position: 'fixed', inset: 0, background: 'var(--landing-glass-dark)', backdropFilter: 'blur(12px)',
     display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100, animation: 'fadeIn 0.2s ease-out'
@@ -2853,7 +2853,7 @@ const styles: Record<string, React.CSSProperties> = {
   tagModal: {
     width: '100%', maxWidth: '440px', background: 'var(--landing-glass-heavy)',
     border: '1px solid var(--landing-border)', borderRadius: '16px', padding: '24px',
-    boxShadow: '0 20px 60px rgba(0, 0, 0, 0.6)'
+    boxShadow: '0 16px 48px rgba(0, 0, 0, 0.35)'
   },
   tagGrid: {
     display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(130px, 1fr))',

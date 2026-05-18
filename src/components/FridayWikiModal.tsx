@@ -23,18 +23,18 @@ export const FridayWikiModal: React.FC<FridayWikiModalProps> = ({ onClose }) => 
         maxWidth: '850px',
         maxHeight: '90vh',
         background: 'rgba(10, 5, 20, 0.95)',
-        border: '1px solid rgba(168, 85, 247, 0.2)',
+        border: '1px solid rgba(140, 120, 180, 0.2)',
         borderRadius: '32px',
         display: 'flex',
         flexDirection: 'column',
         position: 'relative',
         overflow: 'hidden',
-        boxShadow: '0 40px 100px rgba(124, 58, 237, 0.2), inset 0 0 40px rgba(168, 85, 247, 0.05)',
+        boxShadow: '0 40px 100px rgba(100, 80, 160, 0.2), inset 0 0 40px rgba(140, 120, 180, 0.05)',
         animation: 'viewScaleUp 0.4s cubic-bezier(0.16, 1, 0.3, 1)'
       }} className="friday-wiki-container">
         
         {/* ✨ Glowing Background Elements */}
-        <div style={{ position: 'absolute', top: '-100px', right: '-100px', width: '300px', height: '300px', background: 'radial-gradient(circle, rgba(124, 58, 237, 0.15) 0%, transparent 70%)', filter: 'blur(40px)', zIndex: 0 }} />
+        <div style={{ position: 'absolute', top: '-100px', right: '-100px', width: '300px', height: '300px', background: 'radial-gradient(circle, rgba(100, 80, 160, 0.15) 0%, transparent 70%)', filter: 'blur(40px)', zIndex: 0 }} />
         <div style={{ position: 'absolute', bottom: '-100px', left: '-100px', width: '300px', height: '300px', background: 'radial-gradient(circle, rgba(6, 182, 212, 0.1) 0%, transparent 70%)', filter: 'blur(40px)', zIndex: 0 }} />
 
         {/* ❌ Close Button */}
@@ -64,12 +64,12 @@ export const FridayWikiModal: React.FC<FridayWikiModalProps> = ({ onClose }) => 
         {/* 🧠 Header Section */}
         <div style={{ padding: '50px 50px 30px', position: 'relative', zIndex: 1 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '12px' }}>
-            <div style={{ padding: '12px', background: 'rgba(168, 85, 247, 0.1)', border: '1px solid rgba(168, 85, 247, 0.2)', borderRadius: '16px' }}>
-              <Brain size={32} className="glow-icon" color="#A855F7" />
+            <div style={{ padding: '12px', background: 'rgba(140, 120, 180, 0.1)', border: '1px solid rgba(140, 120, 180, 0.2)', borderRadius: '16px' }}>
+              <Brain size={32} className="glow-icon" color="#9b8abf" />
             </div>
             <div>
               <h2 style={{ fontSize: '2.4rem', fontWeight: 900, letterSpacing: '-0.04em', margin: 0, color: '#fff' }}>Friday AI <span style={{ color: 'rgba(255,255,255,0.3)', fontWeight: 300 }}>Wiki</span></h2>
-              <p style={{ color: 'rgba(168, 85, 247, 0.8)', fontSize: '0.9rem', margin: '4px 0 0', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em' }}>Behavioral Intelligence Core v4.2</p>
+              <p style={{ color: 'rgba(140, 120, 180, 0.8)', fontSize: '0.9rem', margin: '4px 0 0', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em' }}>Behavioral Intelligence Core v4.2</p>
             </div>
           </div>
         </div>
@@ -106,9 +106,9 @@ export const FridayWikiModal: React.FC<FridayWikiModalProps> = ({ onClose }) => 
                 </div>
               </div>
 
-              <div style={{ padding: '24px', background: 'linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(6, 182, 212, 0.1))', border: '1px solid rgba(168, 85, 247, 0.2)', borderRadius: '24px' }}>
+              <div style={{ padding: '24px', background: 'linear-gradient(135deg, rgba(100, 80, 160, 0.1), rgba(6, 182, 212, 0.1))', border: '1px solid rgba(140, 120, 180, 0.2)', borderRadius: '24px' }}>
                 <h4 style={{ margin: '0 0 12px 0', fontSize: '1rem', color: 'var(--landing-text-primary)', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <Sparkles size={18} color="#A855F7" /> Easter Eggs
+                  <Sparkles size={18} color="#9b8abf" /> Easter Eggs
                 </h4>
                 <p style={{ margin: 0, fontSize: '0.85rem', color: 'var(--landing-text-muted)', lineHeight: 1.6 }}>
                   Friday loves talking about sci-fi. Try asking her about <i>"The Turing Test"</i> or <i>"Moore's Law"</i> during a session for unique dialogue!
@@ -133,15 +133,15 @@ export const FridayWikiModal: React.FC<FridayWikiModalProps> = ({ onClose }) => 
         {/* 🎨 Theme Scoped Styles */}
         <style>{`
           .glow-icon {
-            filter: drop-shadow(0 0 8px rgba(168, 85, 247, 0.6));
+            filter: drop-shadow(0 0 8px rgba(140, 120, 180, 0.6));
             animation: pulse-glow 3s infinite ease-in-out;
           }
           @keyframes pulse-glow {
-            0%, 100% { filter: drop-shadow(0 0 8px rgba(168, 85, 247, 0.4)); }
-            50% { filter: drop-shadow(0 0 15px rgba(168, 85, 247, 0.8)); }
+            0%, 100% { filter: drop-shadow(0 0 8px rgba(140, 120, 180, 0.4)); }
+            50% { filter: drop-shadow(0 0 15px rgba(140, 120, 180, 0.8)); }
           }
           .friday-wiki-container .modal-close-btn:hover {
-            background: rgba(168, 85, 247, 0.2) !important;
+            background: rgba(140, 120, 180, 0.2) !important;
             color: #fff !important;
           }
           .landing-light-mode .friday-wiki-container {
@@ -172,7 +172,7 @@ const WikiSection: React.FC<{ title: string, children: React.ReactNode }> = ({ t
 
 const FeatureRow: React.FC<{ icon: React.ReactNode, title: string, desc: string }> = ({ icon, title, desc }) => (
   <div style={{ display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
-    <div style={{ color: '#A855F7', marginTop: '4px' }}>{icon}</div>
+    <div style={{ color: '#9b8abf', marginTop: '4px' }}>{icon}</div>
     <div>
       <h4 style={{ margin: '0 0 2px 0', fontSize: '1rem', color: 'var(--landing-text-primary)', fontWeight: 800 }}>{title}</h4>
       <p style={{ margin: 0, fontSize: '0.85rem', color: 'var(--landing-text-muted)', lineHeight: 1.5 }}>{desc}</p>

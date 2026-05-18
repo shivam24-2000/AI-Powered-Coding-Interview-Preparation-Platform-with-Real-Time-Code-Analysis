@@ -61,7 +61,7 @@ export const AIMockExamsModal: React.FC<AIMockExamsModalProps> = ({ onClose, onS
         {/* 🏆 Header */}
         <div style={{ padding: '40px 40px 20px', borderBottom: '1px solid var(--landing-border-light)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
-            <Award size={24} color="#A855F7" />
+            <Award size={24} color="#9b8abf" />
             <h2 style={{ fontSize: '1.8rem', fontWeight: 900, letterSpacing: '-0.02em', margin: 0 }} className="text-gradient">AI Mock Exams</h2>
           </div>
           <p style={{ color: 'var(--landing-text-muted)', fontSize: '0.9rem', margin: 0 }}>
@@ -86,15 +86,15 @@ export const AIMockExamsModal: React.FC<AIMockExamsModalProps> = ({ onClose, onS
               Friday dynamically adjusts the complexity of the problem based on your performance in the first 15 minutes.
             </ExamFeature>
 
-            <ExamFeature icon={<BarChart2 size={20} color="#A855F7" />} title="Detailed Scorecard">
+            <ExamFeature icon={<BarChart2 size={20} color="#9b8abf" />} title="Detailed Scorecard">
               Receive a granular breakdown of your Technical Skills, Behavioral Response, and overall Hireability.
             </ExamFeature>
 
           </div>
 
-          <div style={{ marginTop: '40px', display: 'flex', gap: '20px', padding: '24px', background: 'rgba(168, 85, 247, 0.05)', borderRadius: '20px', border: '1px solid rgba(168, 85, 247, 0.1)' }}>
-            <div style={{ padding: '12px', background: 'rgba(168, 85, 247, 0.1)', borderRadius: '14px', height: 'fit-content' }}>
-              <ShieldAlert size={24} color="#A855F7" />
+          <div style={{ marginTop: '40px', display: 'flex', gap: '20px', padding: '24px', background: 'rgba(140, 120, 180, 0.05)', borderRadius: '20px', border: '1px solid rgba(140, 120, 180, 0.1)' }}>
+            <div style={{ padding: '12px', background: 'rgba(140, 120, 180, 0.1)', borderRadius: '14px', height: 'fit-content' }}>
+              <ShieldAlert size={24} color="#9b8abf" />
             </div>
             <div>
               <h4 style={{ margin: '0 0 6px 0', fontSize: '1.1rem', fontWeight: 800, color: 'var(--landing-text-primary)' }}>Exam Protocol</h4>
@@ -118,14 +118,14 @@ export const AIMockExamsModal: React.FC<AIMockExamsModalProps> = ({ onClose, onS
             onClick={() => { onClose(); onStart(); }}
             style={{
               padding: '12px 30px',
-              background: 'linear-gradient(135deg, #A855F7, #DB2777)',
+              background: 'linear-gradient(135deg, #9b8abf, #a06080)',
               border: 'none',
               borderRadius: '12px',
               color: '#fff',
               fontWeight: 800,
               fontSize: '0.9rem',
               cursor: 'pointer',
-              boxShadow: '0 8px 25px rgba(168, 85, 247, 0.3)',
+              boxShadow: '0 8px 25px rgba(140, 120, 180, 0.3)',
               display: 'flex',
               alignItems: 'center',
               gap: '10px'

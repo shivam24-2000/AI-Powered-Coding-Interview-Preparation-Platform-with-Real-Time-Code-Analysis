@@ -63,9 +63,9 @@
 }
 
 .btn-primary:hover:not(:disabled) {
-  background: #ffffff;
-  transform: translateY(-1.5px);
-  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+  background: #f0f0f4;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
 }
 
 .btn-secondary {
@@ -83,13 +83,13 @@
 .btn-accent {
   background: var(--accent-gradient);
   color: white;
-  box-shadow: 0 4px 15px 0 rgba(168, 85, 247, 0.3);
+  box-shadow: 0 4px 12px 0 rgba(155, 138, 191, 0.15);
 }
 
 .btn-accent:hover:not(:disabled) {
-  transform: translateY(-1.5px);
-  box-shadow: 0 8px 25px 0 rgba(168, 85, 247, 0.4);
-  filter: brightness(1.1);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px 0 rgba(155, 138, 191, 0.2);
+  filter: brightness(1.05);
 }
 
 .main-workspace {
@@ -166,7 +166,7 @@
 }
 
 .resizer:hover, .resizer:active {
-  background: rgba(168, 85, 247, 0.1);
+  background: rgba(155, 138, 191, 0.06);
 }
 
 .resizer.horizontal {
@@ -190,7 +190,7 @@
 .resizer:hover .resizer-handle,
 .resizer:active .resizer-handle {
   background: var(--accent-primary);
-  box-shadow: 0 0 15px var(--glow-primary);
+  box-shadow: 0 0 8px var(--glow-primary);
 }
 
 .resizer.horizontal .resizer-handle {
@@ -433,8 +433,8 @@ code {
 .status-indicator {
   padding: 6px 14px;
   border-radius: 99px;
-  background: rgba(168, 85, 247, 0.05);
-  border: 1px solid rgba(168, 85, 247, 0.1);
+  background: rgba(155, 138, 191, 0.04);
+  border: 1px solid rgba(155, 138, 191, 0.08);
 }
 
 /* Mobile Responsiveness */

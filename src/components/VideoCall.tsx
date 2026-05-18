@@ -153,7 +153,7 @@ export const VideoCall: React.FC<VideoCallProps> = ({ channel, peerRole }) => {
          boxShadow: '0 10px 30px rgba(0,0,0,0.5)'
       }}>
          <video ref={remoteVideoRef} autoPlay playsInline style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-         <div style={{ position: 'absolute', bottom: '6px', left: '6px', padding: '2px 6px', background: 'rgba(0,0,0,0.6)', borderRadius: '4px', fontSize: '0.65rem', color: '#A855F7' }}>
+         <div style={{ position: 'absolute', bottom: '6px', left: '6px', padding: '2px 6px', background: 'rgba(0,0,0,0.6)', borderRadius: '4px', fontSize: '0.65rem', color: '#9b8abf' }}>
             {peerRole === 'coder' ? 'Interviewer' : 'Coder'}
          </div>
       </div>

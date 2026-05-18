@@ -95,7 +95,7 @@ export const DocumentationModal: React.FC<DocumentationModalProps> = ({ onClose 
                 After completing the code, Friday will conduct a behavioral review. You will then receive a comprehensive scorecard detailing your technical and soft-skill performance.
               </DocStep>
               
-              <div style={{ marginTop: '30px', padding: '20px', background: 'rgba(124, 58, 237, 0.05)', borderRadius: '16px', border: '1px solid rgba(124, 58, 237, 0.1)' }}>
+              <div style={{ marginTop: '30px', padding: '20px', background: 'rgba(100, 80, 160, 0.05)', borderRadius: '16px', border: '1px solid rgba(100, 80, 160, 0.1)' }}>
                 <h4 style={{ margin: '0 0 10px 0', fontSize: '1rem', color: 'var(--landing-accent)', fontWeight: 800 }}>Pro Tip: Use the IDE</h4>
                 <p style={{ margin: 0, fontSize: '0.9rem', color: 'var(--landing-text-muted)', lineHeight: 1.6 }}>
                   Our IDE supports Vim/Emacs modes and advanced autocomplete. Use <kbd style={{ background: 'var(--landing-border)', padding: '2px 6px', borderRadius: '4px', fontSize: '0.8rem', color: 'var(--landing-text-primary)' }}>Ctrl + Space</kbd> for suggestions.
@@ -113,7 +113,7 @@ export const DocumentationModal: React.FC<DocumentationModalProps> = ({ onClose 
                 desc="As you type, our engine calculates the Big O complexity of your algorithm. Optimized solutions trigger 'Sparkle' events."
               />
               <FeatureCard 
-                icon={<Brain size={20} color="#A855F7" />}
+                icon={<Brain size={20} color="#9b8abf" />}
                 title="Behavioral Logic"
                 desc="Friday monitors your 'Think-Time' and 'Revision-Rate'. Asking clarifying questions early in the session significantly boosts your communication score."
               />
@@ -159,10 +159,10 @@ export const DocumentationModal: React.FC<DocumentationModalProps> = ({ onClose 
           }
           .doc-tab-btn:hover {
             color: var(--landing-text-primary);
-            background: rgba(124, 58, 237, 0.05);
+            background: rgba(100, 80, 160, 0.05);
           }
           .doc-tab-btn.active {
-            background: rgba(124, 58, 237, 0.1);
+            background: rgba(100, 80, 160, 0.1);
             border-bottom-color: var(--landing-accent);
             color: var(--landing-text-primary);
           }

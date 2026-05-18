@@ -44,7 +44,7 @@ export const ProblemDescription: React.FC<ProblemDescriptionProps> = ({
               padding: '0 16px', transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
               fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em',
               height: '100%', marginBottom: '-1px',
-              textShadow: activeTab === 'description' ? '0 0 12px rgba(168, 85, 247, 0.5)' : 'none',
+              textShadow: activeTab === 'description' ? '0 0 12px rgba(140, 120, 180, 0.5)' : 'none',
             }}
           >
             <BookOpen size={14} style={{ opacity: activeTab === 'description' ? 1 : 0.7 }} />
@@ -61,7 +61,7 @@ export const ProblemDescription: React.FC<ProblemDescriptionProps> = ({
               padding: '0 16px', transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
               fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em',
               height: '100%', marginBottom: '-1px',
-              textShadow: activeTab === 'whiteboard' ? '0 0 12px rgba(168, 85, 247, 0.5)' : 'none',
+              textShadow: activeTab === 'whiteboard' ? '0 0 12px rgba(140, 120, 180, 0.5)' : 'none',
             }}
           >
             <PenTool size={14} style={{ opacity: activeTab === 'whiteboard' ? 1 : 0.7 }} />
@@ -93,8 +93,8 @@ export const ProblemDescription: React.FC<ProblemDescriptionProps> = ({
             }}
             onMouseOver={e => {
               e.currentTarget.style.borderColor = 'var(--border-highlight)';
-              e.currentTarget.style.background = 'rgba(168, 85, 247, 0.1)';
-              e.currentTarget.style.boxShadow = '0 0 15px rgba(168, 85, 247, 0.15)';
+              e.currentTarget.style.background = 'rgba(140, 120, 180, 0.1)';
+              e.currentTarget.style.boxShadow = '0 0 15px rgba(140, 120, 180, 0.15)';
             }}
             onMouseOut={e => {
               e.currentTarget.style.borderColor = 'var(--border-color)';

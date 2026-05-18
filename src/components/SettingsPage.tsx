@@ -137,7 +137,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
               transition: 'all 0.2s',
               background: activeTab === t.id ? 'var(--accent-primary)' : 'transparent',
               color: activeTab === t.id ? '#fff' : 'var(--text-muted)',
-              boxShadow: activeTab === t.id ? '0 4px 12px rgba(124,58,237,0.25)' : 'none',
+              boxShadow: activeTab === t.id ? '0 4px 12px rgba(100,80,160,0.25)' : 'none',
             }}
           >
             {t.icon} {t.label}
@@ -153,7 +153,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
             <div style={{ display: 'flex', gap: '32px', alignItems: 'flex-start', flexWrap: 'wrap' }}>
               {/* Avatar Preview */}
               <div style={{ position: 'relative', width: '100px', height: '100px', flexShrink: 0 }}>
-                <div style={{ width: '100%', height: '100%', borderRadius: '50%', overflow: 'hidden', background: 'var(--bg-panel)', border: '2px solid var(--accent-primary)', boxShadow: '0 0 20px rgba(168,85,247,0.2)' }}>
+                <div style={{ width: '100%', height: '100%', borderRadius: '50%', overflow: 'hidden', background: 'var(--bg-panel)', border: '2px solid var(--accent-primary)', boxShadow: '0 0 20px rgba(140,120,180,0.2)' }}>
                   <img src={avatarUrl} alt="Avatar" style={{ width: '100%', height: '100%' }} />
                 </div>
                 <div onClick={() => setSeed(Math.random().toString(36).substring(7))} style={{ position: 'absolute', bottom: 0, right: 0, background: 'var(--accent-primary)', width: '30px', height: '30px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: '#fff', border: '2px solid var(--bg-panel-light)' }} title="Randomize">
@@ -208,7 +208,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
               padding: '12px 28px', borderRadius: '12px', fontWeight: 700, fontSize: '0.88rem', cursor: 'pointer',
               border: 'none', display: 'flex', alignItems: 'center', gap: '8px', transition: 'all 0.2s',
               background: saveSuccess ? '#10B981' : 'var(--accent-primary)', color: '#fff',
-              boxShadow: '0 4px 12px rgba(124,58,237,0.25)', opacity: isSaving ? 0.7 : 1,
+              boxShadow: '0 4px 12px rgba(100,80,160,0.25)', opacity: isSaving ? 0.7 : 1,
             }}>
               {isSaving ? 'Saving...' : saveSuccess ? <><Check size={16} /> Saved!</> : 'Save Profile'}
             </button>

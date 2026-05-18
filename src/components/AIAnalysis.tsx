@@ -57,7 +57,7 @@ export const AIAnalysis: React.FC<AIAnalysisProps> = ({
             className={`btn btn-icon ${isAutoEnabled ? 'active' : ''}`}
             title={isAutoEnabled ? "Disable Auto-Friday" : "Enable Auto-Friday"}
             style={{ 
-              background: isAutoEnabled ? 'rgba(168, 85, 247, 0.1)' : 'transparent',
+              background: isAutoEnabled ? 'rgba(140, 120, 180, 0.1)' : 'transparent',
               padding: '4px',
               borderRadius: '6px',
               color: isAutoEnabled ? 'var(--accent-primary)' : 'var(--text-muted)'
@@ -222,14 +222,14 @@ export const AIAnalysis: React.FC<AIAnalysisProps> = ({
                         width: '20px', 
                         height: '20px', 
                         borderRadius: '50%', 
-                        background: 'rgba(168, 85, 247, 0.1)', 
+                        background: 'rgba(140, 120, 180, 0.1)', 
                         color: 'var(--accent-primary)',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
                         fontSize: '0.7rem',
                         fontWeight: 700,
-                        border: '1px solid rgba(168, 85, 247, 0.2)'
+                        border: '1px solid rgba(140, 120, 180, 0.2)'
                       }}>
                         {idx + 1}
                       </div>

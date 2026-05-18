@@ -134,8 +134,8 @@ export const HintPanel: React.FC<HintPanelProps> = ({ hints: initialHints, probl
           width: '100%',
           maxWidth: '520px',
           overflow: 'hidden',
-          border: '1px solid rgba(168,85,247,0.2)',
-          boxShadow: '0 24px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(168,85,247,0.08)',
+          border: '1px solid rgba(140,120,180,0.2)',
+          boxShadow: '0 24px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(140,120,180,0.08)',
           animation: 'slideUp 0.25s cubic-bezier(0.16,1,0.3,1)',
         }}
       >
@@ -144,7 +144,7 @@ export const HintPanel: React.FC<HintPanelProps> = ({ hints: initialHints, probl
           padding: '18px 20px',
           borderBottom: '1px solid var(--border-color)',
           display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-          background: 'rgba(168,85,247,0.04)',
+          background: 'rgba(140,120,180,0.04)',
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <div style={{
