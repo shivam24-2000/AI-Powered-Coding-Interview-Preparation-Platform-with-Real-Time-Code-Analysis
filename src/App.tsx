@@ -1,9 +1,9 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, lazy, Suspense } from 'react';
 import { supabase } from './supabase';
 import { Navigation } from './components/Navigation';
-import { LandingPage } from './components/LandingPage';
-import { HistoryPage } from './components/HistoryPage';
-import { SettingsPage } from './components/SettingsPage';
+const LandingPage = lazy(() => import('./components/LandingPage').then(m => ({ default: m.LandingPage })));
+const HistoryPage = lazy(() => import('./components/HistoryPage').then(m => ({ default: m.HistoryPage })));
+const SettingsPage = lazy(() => import('./components/SettingsPage').then(m => ({ default: m.SettingsPage })));
 import { ProblemDescription } from './components/ProblemDescription';
 import { CodeEditor } from './components/CodeEditor';
 import { AIAnalysis } from './components/AIAnalysis';
@@ -15,7 +15,7 @@ import { ShareRoomModal } from './components/ShareRoomModal';
 import { VideoCall } from './components/VideoCall';
 import { IdleTimeout } from './components/IdleTimeout';
 import { ProfileModal } from './components/ProfileModal';
-import { AIVideoInterviewer } from './components/AIVideoInterviewer';
+const AIVideoInterviewer = lazy(() => import('./components/AIVideoInterviewer').then(m => ({ default: m.AIVideoInterviewer })));
 import type { AnalysisState, ChatMessage, InterviewEvaluation, InterviewPhase } from './types';
 import { InterviewScorecardModal } from './components/InterviewScorecardModal';
 import { generateInterviewEvaluation } from './aiService';
@@ -537,7 +537,14 @@ function App() {
   };
 
 
+  const suspenseFallback = (
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh', background: 'var(--bg-dark)', color: 'var(--text-muted)' }}>
+      <Loader size={28} className="animate-spin" style={{ opacity: 0.5 }} />
+    </div>
+  );
+
   return (
+    <Suspense fallback={suspenseFallback}>
     <div key={view} style={{
       animation: 'viewFadeIn 0.4s cubic-bezier(0.1, 0.9, 0.2, 1)',
       height: '100dvh',
@@ -832,6 +839,7 @@ function App() {
       )}
 
     </div>
+    </Suspense>
   );
 }
 

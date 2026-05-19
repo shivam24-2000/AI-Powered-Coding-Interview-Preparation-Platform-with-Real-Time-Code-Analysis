@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { Terminal, Brain, Zap, Shield, LogOut, Award, X, Users, Mic, User, TrendingUp, CheckCircle, Star, ArrowRight, Sparkles, Sun, Moon, Command, Play, ChevronDown, Linkedin, Globe, Mail, Settings } from 'lucide-react';
+import { Terminal, Brain, Zap, Shield, LogOut, Award, X, Users, Mic, User, TrendingUp, CheckCircle, Star, ArrowRight, Sparkles, Command, Play, ChevronDown, Linkedin, Globe, Mail, Settings } from 'lucide-react';
 import { PROBLEMS } from '../problems';
 import { supabase } from '../supabase';
 import { AuthModal } from './AuthModal';
@@ -31,7 +31,7 @@ interface LandingPageProps {
 
 
 
-export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHistory, onEditProfile, onSettings, problems = PROBLEMS, isLightMode, onToggleLightMode }) => {
+export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHistory, onEditProfile, onSettings, problems = PROBLEMS, isLightMode }) => {
   // === Interactive Hooks ===
   const sectionIds = ['hero-section', 'playground-section', 'interview-section', 'features-section', 'testimonials-section', 'cta-section'];
   const activeSection = useScrollSpy(sectionIds);
