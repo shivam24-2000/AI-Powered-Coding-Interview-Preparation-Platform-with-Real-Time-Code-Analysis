@@ -60,41 +60,56 @@ export const AIChat: React.FC<AIChatProps> = ({ messages, onSendMessage, isTypin
     };
   }, []);
 
-  useEffect(() => {
-    const speakMessage = async (text: string) => {
-      window.speechSynthesis.cancel(); // Stop overlap
-      const speech = new SpeechSynthesisUtterance(text);
-      let voices = window.speechSynthesis.getVoices();
-      
-      // Sometimes voices load asynchronously
-      if (voices.length === 0) {
-         await new Promise(r => setTimeout(r, 100));
-         voices = window.speechSynthesis.getVoices();
-      }
+  const lastSpokenMsgIdRef = useRef<string | null>(null);
 
-      // Google UK English Female is a Neural high-fidelity voice in Chrome!
-      const idealVoice = voices.find(v => 
-        v.name.includes('Google UK English Female') || 
-        v.name.includes('Samantha') || 
+  const speakText = (text: string) => {
+    window.speechSynthesis.cancel();
+
+    const doSpeak = (voices: SpeechSynthesisVoice[]) => {
+      const speech = new SpeechSynthesisUtterance(text);
+      const idealVoice = voices.find(v =>
+        v.name.includes('Google UK English Female') ||
+        v.name.includes('Samantha') ||
         v.name.includes('Victoria') ||
         v.name.toLowerCase().includes('female')
       ) || voices.find(v => v.name.includes('Google')) || voices[0];
-
       if (idealVoice) speech.voice = idealVoice;
-      
-      speech.rate = 1.1; // Slightly faster for natural fast-paced speech
-      speech.pitch = 0.95; // Warm, resonant depth
-
+      speech.rate = 1.1;
+      speech.pitch = 0.95;
       window.speechSynthesis.speak(speech);
     };
 
-    if (useVoice && messages.length > 0) {
-      const lastMessage = messages[messages.length - 1];
-      if (lastMessage.role === 'assistant') {
-        speakMessage(lastMessage.content);
-      }
+    const voices = window.speechSynthesis.getVoices();
+    if (voices.length > 0) {
+      doSpeak(voices);
+    } else {
+      // Voices not loaded yet — wait for them
+      const onVoicesReady = () => {
+        window.speechSynthesis.onvoiceschanged = null;
+        doSpeak(window.speechSynthesis.getVoices());
+      };
+      window.speechSynthesis.onvoiceschanged = onVoicesReady;
+      // Fallback: speak without voice selection after 300ms
+      setTimeout(() => {
+        if (window.speechSynthesis.getVoices().length === 0) {
+          const speech = new SpeechSynthesisUtterance(text);
+          speech.rate = 1.1;
+          speech.pitch = 0.95;
+          window.speechSynthesis.speak(speech);
+        }
+      }, 300);
     }
-  }, [messages, useVoice]);
+  };
+
+  // Auto-speak NEW assistant messages while voice is already enabled
+  useEffect(() => {
+    if (!useVoice || messages.length === 0) return;
+    const lastMessage = messages[messages.length - 1];
+    if (lastMessage.role !== 'assistant') return;
+    if (lastMessage.id === lastSpokenMsgIdRef.current) return;
+    lastSpokenMsgIdRef.current = lastMessage.id;
+    speakText(lastMessage.content);
+  }, [messages]);
 
   const toggleListening = () => {
     if (!recognitionRef.current) {
@@ -115,10 +130,18 @@ export const AIChat: React.FC<AIChatProps> = ({ messages, onSendMessage, isTypin
   };
 
   const toggleVoiceOutput = () => {
-     setUseVoice(prev => {
-       if (prev) window.speechSynthesis.cancel();
-       return !prev;
-     });
+    if (useVoice) {
+      window.speechSynthesis.cancel();
+      setUseVoice(false);
+    } else {
+      setUseVoice(true);
+      // Speak last assistant message immediately from click context (browser autoplay policy)
+      const lastAssistant = [...messages].reverse().find(m => m.role === 'assistant');
+      if (lastAssistant) {
+        lastSpokenMsgIdRef.current = lastAssistant.id;
+        speakText(lastAssistant.content);
+      }
+    }
   };
 
   useEffect(() => {

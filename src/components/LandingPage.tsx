@@ -427,13 +427,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
         </div>
 
         <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-          <button
-            onClick={onToggleLightMode}
-            style={{ background: 'var(--landing-border-light)', border: '1px solid var(--landing-border-strong)', cursor: 'pointer', borderRadius: '50%', width: '36px', height: '36px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--landing-text-primary)', transition: 'all 0.2s ease' }}
-            className="hover-lift invert-protect"
-          >
-            {isLightMode ? <Sun size={18} color="#f59e0b" /> : <Moon size={18} color="#D8B4FE" />}
-          </button>
+
 
           {session ? (
             <div style={{ position: 'relative' }}>
