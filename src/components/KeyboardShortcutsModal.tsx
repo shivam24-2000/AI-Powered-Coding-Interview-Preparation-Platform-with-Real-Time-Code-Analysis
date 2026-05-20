@@ -130,11 +130,11 @@ export const KeyboardShortcutsModal: React.FC<KeyboardShortcutsModalProps> = ({ 
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <div style={{
               width: '36px', height: '36px', borderRadius: '10px',
-              background: 'rgba(140, 120, 180, 0.12)',
-              border: '1px solid rgba(140, 120, 180, 0.25)',
+              background: 'rgba(150, 118, 200, 0.12)',
+              border: '1px solid rgba(150, 118, 200, 0.25)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               color: 'var(--accent-primary)',
-              boxShadow: '0 4px 12px rgba(140,120,180,0.15)',
+              boxShadow: '0 4px 12px rgba(150,118,200,0.15)',
             }}>
               <Keyboard size={18} />
             </div>

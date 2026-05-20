@@ -81,7 +81,7 @@ export const ProblemBankInfoModal: React.FC<ProblemBankInfoModalProps> = ({ onCl
               Sort by data structure, algorithm type, or difficulty level. Find exactly what you need to study in seconds.
             </BankFeature>
 
-            <BankFeature icon={<CheckCircle size={20} color="#9b8abf" />} title="Solution Verified">
+            <BankFeature icon={<CheckCircle size={20} color="#a78bce" />} title="Solution Verified">
               Every problem comes with community-vetted solutions in 5+ languages, including O(n) complexity breakdowns.
             </BankFeature>
 

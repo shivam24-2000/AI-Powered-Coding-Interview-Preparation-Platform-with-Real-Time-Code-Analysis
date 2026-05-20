@@ -97,7 +97,7 @@ export const TermsOfUseModal: React.FC<TermsOfUseModalProps> = ({ onClose }) => 
             To the maximum extent permitted by law, NexCode AI shall not be liable for any indirect, incidental, or consequential damages resulting from your use of the platform.
           </Section>
 
-          <div style={{ marginTop: '40px', padding: '20px', background: 'rgba(140, 120, 180, 0.05)', borderRadius: '16px', border: '1px solid rgba(140, 120, 180, 0.1)' }}>
+          <div style={{ marginTop: '40px', padding: '20px', background: 'rgba(150, 118, 200, 0.05)', borderRadius: '16px', border: '1px solid rgba(150, 118, 200, 0.1)' }}>
             <p style={{ margin: 0, fontSize: '0.85rem', color: 'var(--landing-text-muted)', lineHeight: 1.6, textAlign: 'center' }}>
               Continued use of the platform constitutes your agreement to the latest version of these terms.
             </p>
@@ -110,7 +110,7 @@ export const TermsOfUseModal: React.FC<TermsOfUseModalProps> = ({ onClose }) => 
             onClick={onClose}
             style={{
               padding: '12px 30px',
-              background: 'linear-gradient(135deg, #7a6ca0, #a06080)',
+              background: 'linear-gradient(135deg, #8570b0, #aa5888)',
               border: 'none',
               borderRadius: '12px',
               color: '#fff',

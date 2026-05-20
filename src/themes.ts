@@ -27,13 +27,13 @@ export const APP_THEMES: AppTheme[] = [
       bgPanelSolid: '#0c0c18',
       bgPanelLight: 'rgba(255, 255, 255, 0.025)',
       borderColor: 'rgba(255, 255, 255, 0.07)',
-      borderHighlight: 'rgba(139, 92, 246, 0.2)',
+      borderHighlight: 'rgba(139, 92, 246, 0.25)',
       textMain: '#e8eaf0',
       textPrimary: '#e8eaf0',
       textMuted: '#8892a8',
-      accentPrimary: '#9b8abf',
-      accentSecondary: '#7577b8',
-      accentGradient: 'linear-gradient(135deg, #9b8abf 0%, #7577b8 100%)'
+      accentPrimary: '#a78bce',
+      accentSecondary: '#7e82c9',
+      accentGradient: 'linear-gradient(135deg, #a78bce 0%, #7e82c9 100%)'
     }
   },
   {
@@ -49,9 +49,9 @@ export const APP_THEMES: AppTheme[] = [
       textMain: '#1a1f2e',
       textPrimary: '#1a1f2e',
       textMuted: '#6b7280',
-      accentPrimary: '#6d5b9e',
-      accentSecondary: '#c06088',
-      accentGradient: 'linear-gradient(135deg, #6d5b9e 0%, #c06088 100%)'
+      accentPrimary: '#7a62b0',
+      accentSecondary: '#c85890',
+      accentGradient: 'linear-gradient(135deg, #7a62b0 0%, #c85890 100%)'
     }
   },
   {
@@ -62,14 +62,14 @@ export const APP_THEMES: AppTheme[] = [
       bgPanel: 'rgba(6, 24, 16, 0.5)',
       bgPanelSolid: '#071e14',
       bgPanelLight: 'rgba(255, 255, 255, 0.025)',
-      borderColor: 'rgba(16, 185, 129, 0.1)',
-      borderHighlight: 'rgba(16, 185, 129, 0.25)',
+      borderColor: 'rgba(16, 185, 129, 0.12)',
+      borderHighlight: 'rgba(16, 185, 129, 0.3)',
       textMain: '#daf0e5',
       textPrimary: '#daf0e5',
       textMuted: '#7ec4a0',
-      accentPrimary: '#5aad8a',
-      accentSecondary: '#3d8a6a',
-      accentGradient: 'linear-gradient(135deg, #6abf96 0%, #3d8a6a 100%)'
+      accentPrimary: '#52c08e',
+      accentSecondary: '#3a9a70',
+      accentGradient: 'linear-gradient(135deg, #5ecc9a 0%, #3a9a70 100%)'
     }
   },
   {
@@ -80,14 +80,14 @@ export const APP_THEMES: AppTheme[] = [
       bgPanel: 'rgba(8, 18, 34, 0.55)',
       bgPanelSolid: '#0c1828',
       bgPanelLight: 'rgba(255, 255, 255, 0.03)',
-      borderColor: 'rgba(56, 189, 248, 0.1)',
-      borderHighlight: 'rgba(56, 189, 248, 0.25)',
+      borderColor: 'rgba(56, 189, 248, 0.12)',
+      borderHighlight: 'rgba(56, 189, 248, 0.3)',
       textMain: '#dbedf8',
       textPrimary: '#dbedf8',
       textMuted: '#7bb8d8',
-      accentPrimary: '#5a9cbf',
-      accentSecondary: '#4080a8',
-      accentGradient: 'linear-gradient(135deg, #6aadcc 0%, #4080a8 100%)'
+      accentPrimary: '#58a8d0',
+      accentSecondary: '#3c8ab8',
+      accentGradient: 'linear-gradient(135deg, #62b8dd 0%, #3c8ab8 100%)'
     }
   },
   {
@@ -103,9 +103,9 @@ export const APP_THEMES: AppTheme[] = [
       textMain: '#f0e4e5',
       textPrimary: '#f0e4e5',
       textMuted: '#d09aa2',
-      accentPrimary: '#c46070',
-      accentSecondary: '#a0384e',
-      accentGradient: 'linear-gradient(135deg, #d07585 0%, #a0384e 100%)'
+      accentPrimary: '#d06878',
+      accentSecondary: '#aa3a52',
+      accentGradient: 'linear-gradient(135deg, #dc7d8e 0%, #aa3a52 100%)'
     }
   },
   {
@@ -121,9 +121,9 @@ export const APP_THEMES: AppTheme[] = [
       textMain: '#f0e8f0',
       textPrimary: '#f0e8f0',
       textMuted: '#c880a0',
-      accentPrimary: '#c06088',
-      accentSecondary: '#c8a030',
-      accentGradient: 'linear-gradient(135deg, #c06088 0%, #c8a030 100%)'
+      accentPrimary: '#d06090',
+      accentSecondary: '#d4a830',
+      accentGradient: 'linear-gradient(135deg, #d06090 0%, #d4a830 100%)'
     }
   },
   {
@@ -157,9 +157,9 @@ export const APP_THEMES: AppTheme[] = [
       textMain: '#e8e8e2',
       textPrimary: '#e8e8e2',
       textMuted: '#6272a4',
-      accentPrimary: '#a088cc',
-      accentSecondary: '#d878aa',
-      accentGradient: 'linear-gradient(135deg, #a088cc 0%, #d878aa 100%)'
+      accentPrimary: '#b090dd',
+      accentSecondary: '#e078b0',
+      accentGradient: 'linear-gradient(135deg, #b090dd 0%, #e078b0 100%)'
     }
   },
   {
@@ -175,9 +175,9 @@ export const APP_THEMES: AppTheme[] = [
       textMain: '#f0e8dd',
       textPrimary: '#f0e8dd',
       textMuted: '#c8a070',
-      accentPrimary: '#c88030',
-      accentSecondary: '#c06828',
-      accentGradient: 'linear-gradient(135deg, #d09040 0%, #c06828 100%)'
+      accentPrimary: '#d48a30',
+      accentSecondary: '#cc6e28',
+      accentGradient: 'linear-gradient(135deg, #dc9840 0%, #cc6e28 100%)'
     }
   },
   {
@@ -193,9 +193,9 @@ export const APP_THEMES: AppTheme[] = [
       textMain: '#d8dee9',
       textPrimary: '#d8dee9',
       textMuted: '#b0b8c8',
-      accentPrimary: '#7aacba',
-      accentSecondary: '#557a96',
-      accentGradient: 'linear-gradient(135deg, #7aacba 0%, #557a96 100%)'
+      accentPrimary: '#82b8c8',
+      accentSecondary: '#5a88a6',
+      accentGradient: 'linear-gradient(135deg, #82b8c8 0%, #5a88a6 100%)'
     }
   },
   {
@@ -229,9 +229,9 @@ export const APP_THEMES: AppTheme[] = [
       textMain: '#ddd0a0',
       textPrimary: '#ddd0a0',
       textMuted: '#a89984',
-      accentPrimary: '#cc7830',
-      accentSecondary: '#d0a838',
-      accentGradient: 'linear-gradient(135deg, #cc7830 0%, #d0a838 100%)'
+      accentPrimary: '#d88030',
+      accentSecondary: '#dcb038',
+      accentGradient: 'linear-gradient(135deg, #d88030 0%, #dcb038 100%)'
     }
   },
   {
@@ -247,9 +247,9 @@ export const APP_THEMES: AppTheme[] = [
       textMain: '#e0e0e8',
       textPrimary: '#e0e0e8',
       textMuted: '#9878c0',
-      accentPrimary: '#60c8c8',
-      accentSecondary: '#c060c0',
-      accentGradient: 'linear-gradient(135deg, #60c8c8 0%, #c060c0 100%)'
+      accentPrimary: '#58d8d8',
+      accentSecondary: '#cc58cc',
+      accentGradient: 'linear-gradient(135deg, #58d8d8 0%, #cc58cc 100%)'
     }
   }
 ];

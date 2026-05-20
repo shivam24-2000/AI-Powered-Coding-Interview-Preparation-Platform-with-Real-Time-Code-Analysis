@@ -81,7 +81,7 @@ export const LeaderboardsInfoModal: React.FC<LeaderboardsInfoModalProps> = ({ on
               Users in the top 100 on our global board are featured in a monthly report sent directly to partner FAANG recruiters.
             </RankFeature>
 
-            <RankFeature icon={<Zap size={20} color="#9b8abf" />} title="Weekly Sprints">
+            <RankFeature icon={<Zap size={20} color="#a78bce" />} title="Weekly Sprints">
               Don't worry about being late to the game. Our weekly sprint boards reset every Sunday, giving everyone a fresh start.
             </RankFeature>
 
@@ -98,12 +98,12 @@ export const LeaderboardsInfoModal: React.FC<LeaderboardsInfoModalProps> = ({ on
               <TierBadge label="Gold" color="#FBBF24" />
               <TierBadge label="Emerald" color="#10B981" />
               <TierBadge label="Diamond" color="#3B82F6" />
-              <TierBadge label="NexLegend" color="#9b8abf" />
+              <TierBadge label="NexLegend" color="#a78bce" />
             </div>
           </div>
 
-          <div style={{ marginTop: '30px', padding: '24px', background: 'rgba(140, 120, 180, 0.05)', borderRadius: '20px', border: '1px solid rgba(140, 120, 180, 0.1)', display: 'flex', gap: '16px', alignItems: 'center' }}>
-            <ShieldCheck size={24} color="#9b8abf" />
+          <div style={{ marginTop: '30px', padding: '24px', background: 'rgba(150, 118, 200, 0.05)', borderRadius: '20px', border: '1px solid rgba(150, 118, 200, 0.1)', display: 'flex', gap: '16px', alignItems: 'center' }}>
+            <ShieldCheck size={24} color="#a78bce" />
             <p style={{ margin: 0, fontSize: '0.9rem', color: 'var(--landing-text-muted)', lineHeight: 1.5 }}>
               Our <b>Anti-Cheat Engine</b> monitors keystroke dynamics and solution originality to ensure the board stays fair and prestigious.
             </p>

@@ -61,7 +61,7 @@ export const Navigation: React.FC<NavigationProps> = ({
     <nav className="navbar" style={{ display: 'grid', gridTemplateColumns: '1fr auto 1fr', alignItems: 'center', width: '100%', gap: '16px' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
         {onBackToLanding && (
-          <button onClick={onBackToLanding} className="hover-lift" style={{ background: 'rgba(140, 120, 180, 0.08)', border: '1px solid rgba(140, 120, 180, 0.18)', color: '#D8B4FE', cursor: 'pointer', padding: '9px', borderRadius: '11px', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.3s ease', boxShadow: '0 4px 12px rgba(140, 120, 180, 0.06)' }}>
+          <button onClick={onBackToLanding} className="hover-lift" style={{ background: 'rgba(150, 118, 200, 0.08)', border: '1px solid rgba(150, 118, 200, 0.18)', color: '#D8B4FE', cursor: 'pointer', padding: '9px', borderRadius: '11px', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.3s ease', boxShadow: '0 4px 12px rgba(150, 118, 200, 0.06)' }}>
             <ArrowLeft size={16} strokeWidth={2.5} />
           </button>
         )}
@@ -85,7 +85,7 @@ export const Navigation: React.FC<NavigationProps> = ({
               <div style={{
                 padding: '4px 10px',
                 borderRadius: '6px',
-                background: 'linear-gradient(135deg, #7a6ca0, #a06080)',
+                background: 'linear-gradient(135deg, #8570b0, #aa5888)',
                 color: '#fff',
                 fontSize: '0.65rem',
                 fontWeight: 800,
@@ -103,8 +103,8 @@ export const Navigation: React.FC<NavigationProps> = ({
               gap: '8px',
               padding: '5px 14px',
               borderRadius: '99px',
-              background: 'rgba(140, 120, 180, 0.1)',
-              border: '1px solid rgba(140, 120, 180, 0.2)',
+              background: 'rgba(150, 118, 200, 0.1)',
+              border: '1px solid rgba(150, 118, 200, 0.2)',
               fontFamily: 'monospace',
               fontSize: '0.85rem',
               fontWeight: 700,
@@ -112,7 +112,7 @@ export const Navigation: React.FC<NavigationProps> = ({
               minWidth: '80px',
               justifyContent: 'center',
               letterSpacing: '0.05em',
-              boxShadow: 'inset 0 0 10px rgba(140, 120, 180, 0.1)'
+              boxShadow: 'inset 0 0 10px rgba(150, 118, 200, 0.1)'
             }}>
               <span style={{ fontSize: '1rem', marginRight: '4px' }}>⏱</span> {timer}
             </div>
@@ -196,9 +196,9 @@ export const Navigation: React.FC<NavigationProps> = ({
           onClick={isInterviewMode ? onEndInterview : onStartInterview}
           style={{
             color: isInterviewMode ? '#fca5a5' : '#D8B4FE',
-            borderColor: isInterviewMode ? 'rgba(239, 68, 68, 0.2)' : 'rgba(140, 120, 180, 0.2)',
-            background: isInterviewMode ? 'rgba(239, 68, 68, 0.05)' : 'rgba(140, 120, 180, 0.05)',
-            boxShadow: isInterviewMode ? '0 0 15px rgba(239, 68, 68, 0.1)' : '0 0 15px rgba(140, 120, 180, 0.1)',
+            borderColor: isInterviewMode ? 'rgba(239, 68, 68, 0.2)' : 'rgba(150, 118, 200, 0.2)',
+            background: isInterviewMode ? 'rgba(239, 68, 68, 0.05)' : 'rgba(150, 118, 200, 0.05)',
+            boxShadow: isInterviewMode ? '0 0 15px rgba(239, 68, 68, 0.1)' : '0 0 15px rgba(150, 118, 200, 0.1)',
             borderTopLeftRadius: '0',
             borderBottomLeftRadius: '0',
             paddingLeft: '10px',
@@ -300,10 +300,10 @@ export const Navigation: React.FC<NavigationProps> = ({
             }} className="hover-lift">
               <div style={{
                 width: '28px', height: '28px', borderRadius: '50%', overflow: 'hidden',
-                background: 'linear-gradient(135deg, #9b8abf 0%, #3B82F6 100%)',
+                background: 'linear-gradient(135deg, #a78bce 0%, #3B82F6 100%)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 fontSize: '0.75rem', fontWeight: 700, color: '#fff',
-                boxShadow: '0 0 12px rgba(140, 120, 180, 0.2)'
+                boxShadow: '0 0 12px rgba(150, 118, 200, 0.2)'
               }}>
                 {session?.user?.user_metadata?.avatar_url ? (
                   <img src={session.user.user_metadata.avatar_url} alt="Profile" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
@@ -351,7 +351,7 @@ export const Navigation: React.FC<NavigationProps> = ({
                     display: 'flex', alignItems: 'center', gap: '10px', fontSize: '0.85rem',
                     textAlign: 'left'
                   }} className="hover-menu-item">
-                    <Award size={15} color="#9b8abf" /> Dashboard
+                    <Award size={15} color="#a78bce" /> Dashboard
                   </button>
                   <button onClick={handleLogout} style={{
                     background: 'transparent', border: 'none', color: '#EF4444',

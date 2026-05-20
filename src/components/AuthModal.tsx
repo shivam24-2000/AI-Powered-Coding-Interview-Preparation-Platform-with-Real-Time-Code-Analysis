@@ -124,7 +124,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ type: initialType, onClose
 
           <button 
             type="submit" disabled={loading}
-            style={{ marginTop: '10px', background: 'linear-gradient(135deg, #7a6ca0, #a06080)', border: 'none', color: '#fff', padding: '11px', borderRadius: '10px', fontSize: '0.82rem', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', boxShadow: '0 4px 15px rgba(100, 80, 160, 0.25)' }}
+            style={{ marginTop: '10px', background: 'linear-gradient(135deg, #8570b0, #aa5888)', border: 'none', color: '#fff', padding: '11px', borderRadius: '10px', fontSize: '0.82rem', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', boxShadow: '0 4px 15px rgba(100, 80, 160, 0.25)' }}
           >
             {loading ? <Loader size={16} className="rotate" /> : mode === 'signup' ? 'Create Account' : mode === 'login' ? 'Login' : 'Send Reset Link'}
           </button>

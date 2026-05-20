@@ -7,21 +7,21 @@
   --bg-panel-light: rgba(255, 255, 255, 0.025);
   
   --border-color: rgba(255, 255, 255, 0.07); /* Subtle thin borders */
-  --border-highlight: rgba(139, 92, 246, 0.2);
+  --border-highlight: rgba(139, 92, 246, 0.25);
   
   --text-main: #e8eaf0;
   --text-primary: #e8eaf0;
   --text-muted: #8892a8;
   
-  --accent-primary: #9b8abf; /* Muted lavender — gentle on eyes */
-  --accent-secondary: #7577b8; /* Soft indigo */
-  --accent-gradient: linear-gradient(135deg, #9b8abf 0%, #7577b8 100%);
+  --accent-primary: #a78bce; /* Rich amethyst — warm but not neon */
+  --accent-secondary: #7e82c9; /* Deeper periwinkle */
+  --accent-gradient: linear-gradient(135deg, #a78bce 0%, #7e82c9 100%);
   
-  --success: #3da882;
-  --warning: #d4a033;
-  --error: #d06060;
+  --success: #45b88e;
+  --warning: #dba840;
+  --error: #d46868;
 
-  --glow-primary: rgba(155, 138, 191, 0.1);
+  --glow-primary: rgba(167, 139, 206, 0.12);
 }
 
 .hover-menu-item {

@@ -113,7 +113,7 @@ export const DocumentationModal: React.FC<DocumentationModalProps> = ({ onClose 
                 desc="As you type, our engine calculates the Big O complexity of your algorithm. Optimized solutions trigger 'Sparkle' events."
               />
               <FeatureCard 
-                icon={<Brain size={20} color="#9b8abf" />}
+                icon={<Brain size={20} color="#a78bce" />}
                 title="Behavioral Logic"
                 desc="Friday monitors your 'Think-Time' and 'Revision-Rate'. Asking clarifying questions early in the session significantly boosts your communication score."
               />

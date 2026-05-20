@@ -153,7 +153,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
             <div style={{ display: 'flex', gap: '32px', alignItems: 'flex-start', flexWrap: 'wrap' }}>
               {/* Avatar Preview */}
               <div style={{ position: 'relative', width: '100px', height: '100px', flexShrink: 0 }}>
-                <div style={{ width: '100%', height: '100%', borderRadius: '50%', overflow: 'hidden', background: 'var(--bg-panel)', border: '2px solid var(--accent-primary)', boxShadow: '0 0 20px rgba(140,120,180,0.2)' }}>
+                <div style={{ width: '100%', height: '100%', borderRadius: '50%', overflow: 'hidden', background: 'var(--bg-panel)', border: '2px solid var(--accent-primary)', boxShadow: '0 0 20px rgba(150,118,200,0.2)' }}>
                   <img src={avatarUrl} alt="Avatar" style={{ width: '100%', height: '100%' }} />
                 </div>
                 <div onClick={() => setSeed(Math.random().toString(36).substring(7))} style={{ position: 'absolute', bottom: 0, right: 0, background: 'var(--accent-primary)', width: '30px', height: '30px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: '#fff', border: '2px solid var(--bg-panel-light)' }} title="Randomize">

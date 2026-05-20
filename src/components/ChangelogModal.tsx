@@ -75,7 +75,7 @@ export const ChangelogModal: React.FC<ChangelogModalProps> = ({ onClose }) => {
             <LogItem icon={<Star size={14} color="#FBBF24" />} type="New" title="AI Video Interviewer">
               Integrated a seamless video overlay for mock interviews with "Hide/Reopen" and "End Interview" capabilities.
             </LogItem>
-            <LogItem icon={<Zap size={14} color="#9b8abf" />} type="Improved" title="Cyber-Organic UI">
+            <LogItem icon={<Zap size={14} color="#a78bce" />} type="Improved" title="Cyber-Organic UI">
               Complete landing page overhaul with high-fidelity glass-morphism, mouse trails, and interactive code sandboxes.
             </LogItem>
             <LogItem icon={<Sparkles size={14} color="#06B6D4" />} type="New" title="Gamified Dashboard">
@@ -96,7 +96,7 @@ export const ChangelogModal: React.FC<ChangelogModalProps> = ({ onClose }) => {
           </VersionBlock>
 
           <VersionBlock version="v2.2.0" date="March 2026">
-            <LogItem icon={<Zap size={14} color="#9b8abf" />} type="Improved" title="Complexity Analyzer">
+            <LogItem icon={<Zap size={14} color="#a78bce" />} type="Improved" title="Complexity Analyzer">
               Upgraded the real-time Big O calculation engine to support nested loop depth analysis.
             </LogItem>
             <LogItem icon={<Bug size={14} color="#EF4444" />} type="Fixed" title="Code Persistence">

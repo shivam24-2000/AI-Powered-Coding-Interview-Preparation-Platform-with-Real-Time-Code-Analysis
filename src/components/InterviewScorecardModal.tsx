@@ -16,7 +16,7 @@ export const InterviewScorecardModal: React.FC<InterviewScorecardModalProps> = (
       case 'hired': return '#10B981';
       case 'waitlist': return '#F59E0B';
       case 'rejected': return '#EF4444';
-      default: return '#9b8abf';
+      default: return '#a78bce';
     }
   };
 
@@ -116,7 +116,7 @@ export const InterviewScorecardModal: React.FC<InterviewScorecardModalProps> = (
                 <span style={{ marginLeft: 'auto', fontWeight: 800, color: 'var(--text-primary)', fontSize: '1.2rem' }}>{evaluation.score}/100</span>
               </div>
               <div className="score-bar">
-                <div className="score-fill" style={{ width: `${evaluation.score}%`, background: 'linear-gradient(90deg, #9b8abf, #3B82F6)' }} />
+                <div className="score-fill" style={{ width: `${evaluation.score}%`, background: 'linear-gradient(90deg, #a78bce, #3B82F6)' }} />
               </div>
             </div>
 
