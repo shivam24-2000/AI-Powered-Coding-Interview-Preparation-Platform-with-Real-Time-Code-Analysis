@@ -77,13 +77,21 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
     return () => window.removeEventListener('keydown', handleKey);
   }, []);
 
-  // Scroll progress tracking
+  // Scroll progress tracking + HMR scroll preservation
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
+
+    // Restore scroll position after HMR remount
+    const savedPos = sessionStorage.getItem('landing-scroll-pos');
+    if (savedPos) {
+      container.scrollTop = parseInt(savedPos, 10);
+    }
+
     const handleScroll = () => {
       const { scrollTop, scrollHeight, clientHeight } = container;
       setScrollProgress(scrollTop / (scrollHeight - clientHeight));
+      sessionStorage.setItem('landing-scroll-pos', String(scrollTop));
     };
     container.addEventListener('scroll', handleScroll, { passive: true });
     return () => container.removeEventListener('scroll', handleScroll);
@@ -1338,18 +1346,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
         <div style={{ maxWidth: '1200px', margin: '80px auto 0', paddingTop: '40px', borderTop: '1px solid rgba(255,255,255,0.05)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '20px' }}>
           <div className="footer-meta-text" style={{ fontSize: '0.9rem', display: 'flex', alignItems: 'center', gap: '10px' }}>
             <span>© {new Date().getFullYear()} NexCode AI.</span>
-            <span style={{ width: '4px', height: '4px', borderRadius: '50%', background: 'rgba(255,255,255,0.1)' }} />
-            <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>Developed by <span style={{ color: 'var(--landing-text-primary)', fontWeight: 800 }}>Shivam Singhal</span></span>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
-            <div className="footer-meta-text" style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.85rem' }}>
-              <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#10b981', boxShadow: '0 0 10px rgba(16, 185, 129, 0.4)' }} />
-              API v2.4 Status: Operational
-            </div>
-            <div style={{ padding: '8px 16px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '12px', color: '#fff', fontSize: '0.75rem', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <Globe size={14} color="#a78bce" /> USD / English
-            </div>
-          </div>
+          <span className="footer-meta-text" style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.9rem' }}>Developed by <span style={{ color: 'var(--landing-text-primary)', fontWeight: 800 }}>Shivam Singhal</span></span>
         </div>
       </footer>
 
