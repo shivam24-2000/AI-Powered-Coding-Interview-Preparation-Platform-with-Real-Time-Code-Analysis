@@ -2813,7 +2813,7 @@ const styles: Record<string, React.CSSProperties> = {
   dots: { display: 'flex', gap: '6px' },
   dot: { width: '8px', height: '8px', borderRadius: '50%' },
   previewTab: { fontSize: '0.75rem', color: 'var(--landing-text-muted)', background: 'var(--landing-card-bg)', padding: '4px 10px', borderRadius: '6px' },
-  previewContent: { padding: '16px 20px', fontFamily: '"Fira Code", monospace', fontSize: '0.78rem', color: 'var(--landing-text-high)' },
+  previewContent: { padding: '16px 20px', fontFamily: '"Fira Code", monospace', fontSize: '0.78rem', color: 'var(--landing-text-high)', minHeight: '180px' },
   codeBlock: { margin: 0, lineHeight: 1.5 },
   floatingFriday: {
     position: 'absolute', bottom: '-16px', right: '20px', background: 'rgba(150, 118, 200, 0.08)',
