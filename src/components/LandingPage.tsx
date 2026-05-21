@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { Terminal, Brain, Zap, Shield, LogOut, Award, X, Users, Mic, User, TrendingUp, CheckCircle, Star, ArrowRight, Sparkles, Command, Play, ChevronDown, Linkedin, Globe, Mail, Settings } from 'lucide-react';
+import { Terminal, Brain, Zap, Shield, LogOut, Award, X, Users, Mic, User, TrendingUp, CheckCircle, Star, ArrowRight, Sparkles, Command, Play, ChevronDown, Linkedin, Mail, Settings } from 'lucide-react';
 import { PROBLEMS } from '../problems';
 import { supabase } from '../supabase';
 import { AuthModal } from './AuthModal';
