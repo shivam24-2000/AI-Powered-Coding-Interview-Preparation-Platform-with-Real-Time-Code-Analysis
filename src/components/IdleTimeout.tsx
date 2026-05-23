@@ -8,55 +8,88 @@ interface IdleTimeoutProps {
 export const IdleTimeout: React.FC<IdleTimeoutProps> = ({ onLogout }) => {
   const [showWarning, setShowWarning] = useState(false);
   const [countdown, setCountdown] = useState(30);
-  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const countdownRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  const IDLE_TIME = 5 * 60 * 1000; // 5 Minutes before warning triggers !!
-  const WARNING_TIME = 30; // 30 seconds countdown !!
+  const IDLE_TIME = 9.5 * 60 * 1000; // 9.5 Minutes before warning triggers (to logout at exactly 10 minutes)
+  const WARNING_TIME = 30; // 30 seconds countdown
+
+  const lastActiveRef = useRef<number>(Date.now());
+  const warningShownAtRef = useRef<number | null>(null);
+  const onLogoutRef = useRef(onLogout);
+
+  useEffect(() => {
+    onLogoutRef.current = onLogout;
+  }, [onLogout]);
 
   const resetTimer = () => {
-    if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    if (countdownRef.current) clearInterval(countdownRef.current);
-    
-    // Resume standard state
+    lastActiveRef.current = Date.now();
+    warningShownAtRef.current = null;
     setShowWarning(false);
     setCountdown(WARNING_TIME);
-
-    // Restart idle trigger
-    timeoutRef.current = setTimeout(() => {
-      setShowWarning(true);
-    }, IDLE_TIME);
   };
 
   useEffect(() => {
     // Event listeners capturing activity
     const events = ['mousemove', 'keydown', 'click', 'scroll', 'touchstart'];
-    events.forEach(event => window.addEventListener(event, resetTimer));
+    const handleActivity = () => {
+      resetTimer();
+    };
 
-    resetTimer(); // Start initial timer
+    events.forEach(event => window.addEventListener(event, handleActivity));
+
+    // Also check on visibilitychange (e.g. when tab is reactivated)
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        const now = Date.now();
+        const elapsedSinceActive = now - lastActiveRef.current;
+        if (elapsedSinceActive >= IDLE_TIME + (WARNING_TIME * 1000)) {
+          // Exceeded total 10 minutes, log out immediately
+          onLogoutRef.current();
+        } else if (elapsedSinceActive >= IDLE_TIME) {
+          // Within the warning window, show warning and set correct remaining countdown
+          setShowWarning(true);
+          if (!warningShownAtRef.current) {
+            warningShownAtRef.current = lastActiveRef.current + IDLE_TIME;
+          }
+        }
+      }
+    };
+    window.addEventListener('visibilitychange', handleVisibilityChange);
+    window.addEventListener('focus', handleVisibilityChange);
 
     return () => {
-      events.forEach(event => window.removeEventListener(event, resetTimer));
-      if (timeoutRef.current) clearTimeout(timeoutRef.current);
-      if (countdownRef.current) clearInterval(countdownRef.current);
+      events.forEach(event => window.removeEventListener(event, handleActivity));
+      window.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('focus', handleVisibilityChange);
     };
   }, []);
 
   useEffect(() => {
-    if (showWarning) {
-      countdownRef.current = setInterval(() => {
-        setCountdown((prev) => {
-          if (prev <= 1) {
-            if (countdownRef.current) clearInterval(countdownRef.current);
-            onLogout();
-            return 0;
-          }
-          return prev - 1;
-        });
-      }, 1000);
-    }
-    return () => { if (countdownRef.current) clearInterval(countdownRef.current); };
-  }, [showWarning, onLogout]);
+    const checkIdle = () => {
+      const now = Date.now();
+      const elapsedSinceActive = now - lastActiveRef.current;
+
+      if (!showWarning) {
+        if (elapsedSinceActive >= IDLE_TIME) {
+          setShowWarning(true);
+          warningShownAtRef.current = now;
+        }
+      } else {
+        const baseTime = warningShownAtRef.current || (lastActiveRef.current + IDLE_TIME);
+        const elapsedSinceWarning = now - baseTime;
+        const remaining = Math.max(0, WARNING_TIME - Math.floor(elapsedSinceWarning / 1000));
+
+        if (remaining <= 0) {
+          onLogoutRef.current();
+        } else {
+          setCountdown(remaining);
+        }
+      }
+    };
+
+    // Run check every 1 second
+    const interval = setInterval(checkIdle, 1000);
+    return () => clearInterval(interval);
+  }, [showWarning]);
 
   if (!showWarning) return null;
 
