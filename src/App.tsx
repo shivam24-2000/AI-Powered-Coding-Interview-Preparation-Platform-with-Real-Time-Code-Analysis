@@ -89,6 +89,7 @@ function App() {
     return 'landing';
   });
   const [shortcutsOpen, setShortcutsOpen] = useState(false);
+  const [historyTab, setHistoryTab] = useState<'analytics' | 'neural'>('analytics');
   const [session, setSession] = useState<any>(null);
   const [sessionLoaded, setSessionLoaded] = useState(false);
   const [authToast, setAuthToast] = useState<'login' | 'logout' | null>(null);
@@ -575,7 +576,14 @@ function App() {
             }}
             session={session}
             problems={problems}
-            onHistory={() => setView('history')}
+            onHistory={() => {
+              setHistoryTab('analytics');
+              setView('history');
+            }}
+            onNeuralMap={() => {
+              setHistoryTab('neural');
+              setView('history');
+            }}
             onEditProfile={() => setProfileOpen(true)}
             onSettings={() => setView('settings')}
             isLightMode={settings.appTheme === 'light-mode'}
@@ -599,7 +607,15 @@ function App() {
           onProfileUpdate={() => supabase.auth.getSession()}
         />
       ) : view === 'history' ? (
-        <HistoryPage onBack={() => setView('landing')} session={session} />
+        <HistoryPage
+          onBack={() => setView('landing')}
+          session={session}
+          defaultTab={historyTab}
+          onSelectProblem={(probId) => {
+            handleProblemChange(probId);
+            setView('workspace');
+          }}
+        />
       ) : !selectedProblem ? (
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh', color: '#fff', fontSize: '1rem', background: '#030009' }}>
           <div style={{ textAlign: 'center' }}>
@@ -617,7 +633,14 @@ function App() {
             onBackToLanding={() => setView('landing')}
             session={session}
             onEditProfile={() => setProfileOpen(true)}
-            onHistory={() => setView('history')}
+            onHistory={() => {
+              setHistoryTab('analytics');
+              setView('history');
+            }}
+            onNeuralMap={() => {
+              setHistoryTab('neural');
+              setView('history');
+            }}
             isAnalyzing={analysisState.isAnalyzing}
             isRunning={runState.status === 'running'}
             isSubmitting={submitState.status === 'running'}

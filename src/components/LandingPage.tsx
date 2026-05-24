@@ -23,6 +23,7 @@ interface LandingPageProps {
   session?: any;
   problems?: any[];
   onHistory: () => void;
+  onNeuralMap: () => void;
   onEditProfile: () => void;
   onSettings: () => void;
   isLightMode: boolean;
@@ -31,7 +32,7 @@ interface LandingPageProps {
 
 
 
-export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHistory, onEditProfile, onSettings, problems = PROBLEMS, isLightMode }) => {
+export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHistory, onNeuralMap, onEditProfile, onSettings, problems = PROBLEMS, isLightMode }) => {
   // === Interactive Hooks ===
   const sectionIds = ['hero-section', 'playground-section', 'interview-section', 'features-section', 'testimonials-section', 'cta-section'];
   const activeSection = useScrollSpy(sectionIds);
@@ -528,6 +529,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, session, onHi
                       {([
                         { label: 'Edit Profile', icon: <User size={15} />, iconBg: 'rgba(16,185,129,0.12)', iconColor: '#10B981', onClick: () => { onEditProfile?.(); setShowProfileMenu(false); } },
                         { label: 'Dashboard', icon: <Award size={15} />, iconBg: 'rgba(150,118,200,0.06)', iconColor: '#a78bce', onClick: () => { onHistory(); setShowProfileMenu(false); } },
+                        { label: 'Neural Map', icon: <Brain size={15} />, iconBg: 'rgba(167,139,250,0.08)', iconColor: '#c084fc', onClick: () => { onNeuralMap(); setShowProfileMenu(false); } },
                         { label: 'Settings', icon: <Settings size={15} />, iconBg: 'rgba(59,130,246,0.12)', iconColor: '#3B82F6', onClick: () => { onSettings(); setShowProfileMenu(false); } },
                       ] as { label: string; icon: React.ReactNode; iconBg: string; iconColor: string; onClick: () => void }[]).map((item, i) => (
                         <button key={i} onClick={item.onClick} className="profile-menu-item" style={{

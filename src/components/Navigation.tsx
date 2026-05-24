@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Play, Send, Settings, Loader, BrainCircuit, Keyboard, ArrowLeft, Award, LogOut, ChevronDown, Users, X, User } from 'lucide-react';
+import { Play, Send, Settings, Loader, BrainCircuit, Keyboard, ArrowLeft, Award, LogOut, ChevronDown, Users, X, User, Brain } from 'lucide-react';
 import { supabase } from '../supabase';
 
 interface NavigationProps {
@@ -16,6 +16,7 @@ interface NavigationProps {
   onBackToLanding?: () => void;
   session?: any;
   onHistory?: () => void;
+  onNeuralMap?: () => void;
   roomCode?: string | null;
   onShareRoom?: () => void;
   onLeaveRoom?: () => void;
@@ -40,6 +41,7 @@ export const Navigation: React.FC<NavigationProps> = ({
   onBackToLanding,
   session,
   onHistory,
+  onNeuralMap,
   roomCode,
   onShareRoom,
   onLeaveRoom,
@@ -352,6 +354,15 @@ export const Navigation: React.FC<NavigationProps> = ({
                     textAlign: 'left'
                   }} className="hover-menu-item">
                     <Award size={15} color="#a78bce" /> Dashboard
+                  </button>
+
+                  <button onClick={() => { onNeuralMap?.(); setShowProfileMenu(false); }} style={{
+                    background: 'transparent', border: 'none', color: 'var(--text-primary)',
+                    padding: '10px 12px', borderRadius: '10px', cursor: 'pointer',
+                    display: 'flex', alignItems: 'center', gap: '10px', fontSize: '0.85rem',
+                    textAlign: 'left'
+                  }} className="hover-menu-item">
+                    <Brain size={15} color="#c084fc" /> Neural Map
                   </button>
                   <button onClick={handleLogout} style={{
                     background: 'transparent', border: 'none', color: '#EF4444',
