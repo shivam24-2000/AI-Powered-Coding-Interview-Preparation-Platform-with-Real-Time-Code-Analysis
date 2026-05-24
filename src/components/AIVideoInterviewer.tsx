@@ -84,6 +84,7 @@ export const AIVideoInterviewer: React.FC<AIVideoInterviewerProps> = ({
 
   // ─── Voice Synthesis (AI speaking) ────────────────────────────────────────
   useEffect(() => {
+    if (!isInterviewMode) return;
     const lastMsg = messages[messages.length - 1];
     if (!lastMsg || lastMsg.role !== 'assistant' || lastMsg.id === lastSpokenMessageId.current) return;
     lastSpokenMessageId.current = lastMsg.id;

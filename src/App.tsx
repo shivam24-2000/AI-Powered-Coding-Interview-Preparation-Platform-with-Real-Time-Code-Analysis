@@ -8,6 +8,7 @@ import { ProblemDescription } from './components/ProblemDescription';
 import { CodeEditor } from './components/CodeEditor';
 import { AIAnalysis } from './components/AIAnalysis';
 import { OutputPanel, type RunState } from './components/OutputPanel';
+import { ComplexityVisualizer } from './components/ComplexityVisualizer';
 import { SettingsModal, DEFAULT_SETTINGS, type EditorSettings } from './components/SettingsModal';
 import { ResetModal } from './components/ResetModal';
 import { KeyboardShortcutsModal } from './components/KeyboardShortcutsModal';
@@ -269,6 +270,7 @@ function App() {
     spaceComplexity: 'O(1)',
     suggestions: [{ id: '1', type: 'info', message: 'Start typing to see real-time analysis.' }],
   });
+  const [isVisualizerOpen, setIsVisualizerOpen] = useState(false);
 
   // Apply application theme dynamically
   useEffect(() => {
@@ -746,6 +748,7 @@ function App() {
                         isChatTyping={isChatTyping}
                         activeTab={aiTab}
                         onTabChange={setAiTab}
+                        onOpenVisualizer={() => setIsVisualizerOpen(true)}
                       />
 
                       {runState.status === 'running' && (
@@ -802,6 +805,13 @@ function App() {
           onClose={() => setSettingsOpen(false)}
         />
       )}
+
+      <ComplexityVisualizer
+        isOpen={isVisualizerOpen}
+        onClose={() => setIsVisualizerOpen(false)}
+        problem={selectedProblem}
+        analysisState={analysisState}
+      />
 
       {isShareModalOpen && roomCode && (
         <ShareRoomModal roomCode={roomCode} onClose={() => setIsShareModalOpen(false)} />

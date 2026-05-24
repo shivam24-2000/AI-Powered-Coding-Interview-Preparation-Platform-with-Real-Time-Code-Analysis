@@ -1,5 +1,5 @@
 import React from 'react';
-import { Activity, AlertTriangle, CheckCircle, Info, Cpu, Zap, RefreshCw, MessageSquareOff, MessageSquare, ChevronRight, BookOpen, ShieldAlert, MessagesSquare } from 'lucide-react';
+import { Activity, AlertTriangle, CheckCircle, Info, Cpu, Zap, RefreshCw, MessageSquareOff, MessageSquare, ChevronRight, BookOpen, ShieldAlert, MessagesSquare, Sparkles } from 'lucide-react';
 import type { AnalysisState, ChatMessage } from '../types';
 import { AIChat } from './AIChat';
 
@@ -14,6 +14,7 @@ interface AIAnalysisProps {
   isChatTyping: boolean;
   activeTab: 'analysis' | 'chat';
   onTabChange: (tab: 'analysis' | 'chat') => void;
+  onOpenVisualizer?: () => void;
 }
 
 export const AIAnalysis: React.FC<AIAnalysisProps> = ({ 
@@ -26,7 +27,8 @@ export const AIAnalysis: React.FC<AIAnalysisProps> = ({
   onSendMessage,
   isChatTyping,
   activeTab,
-  onTabChange
+  onTabChange,
+  onOpenVisualizer
 }) => {
   const [analyzingMessage, setAnalyzingMessage] = React.useState('Analyzing...');
   
@@ -153,9 +155,34 @@ export const AIAnalysis: React.FC<AIAnalysisProps> = ({
         {activeTab === 'analysis' ? (
           <>
             <div className="analysis-card animate-fade-in" style={{ animationDelay: '0.1s' }}>
-              <div className="analysis-header">
-                <Cpu size={18} className="text-gradient" />
-                <span>Complexity Estimation</span>
+              <div className="analysis-header" style={{ justifyContent: 'space-between', display: 'flex', alignItems: 'center' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <Cpu size={18} className="text-gradient" />
+                  <span>Complexity Estimation</span>
+                </div>
+                {onOpenVisualizer && (
+                  <button
+                    onClick={onOpenVisualizer}
+                    className="btn btn-secondary hover-lift"
+                    style={{
+                      padding: '4px 10px',
+                      fontSize: '0.68rem',
+                      borderRadius: '8px',
+                      background: 'var(--bg-panel-light)',
+                      border: '1px solid var(--border-highlight)',
+                      color: 'var(--accent-primary)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                      cursor: 'pointer',
+                      fontWeight: 600,
+                      transition: 'all 0.2s',
+                      boxShadow: '0 2px 8px var(--glow-primary)'
+                    }}
+                  >
+                    <Sparkles size={11} /> Trace Execution
+                  </button>
+                )}
               </div>
               <div className="stat-row">
                 <span className="stat-label">Time:</span>
