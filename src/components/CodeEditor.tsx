@@ -5,6 +5,10 @@ import type { Language } from '../languages';
 import type { EditorSettings } from './SettingsModal';
 import { LanguageModal } from './LanguageModal';
 import { useState } from 'react';
+import {
+  registerCompletionProviders,
+  disposeAllCompletionProviders,
+} from '../utils/codeCompletions';
 
 interface CodeEditorProps {
   code: string;
@@ -35,6 +39,8 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
     editorRef.current = editor;
     monacoRef.current = monaco;
     applyTheme(monaco, settings.theme);
+    // Register completion providers on initial mount
+    registerCompletionProviders(monaco, language.monacoId, settings.codeCompletion);
   };
 
   const applyTheme = (monaco: any, theme: EditorSettings['theme']) => {
@@ -70,9 +76,32 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
       tabSize: settings.tabSize,
       wordWrap: settings.wordWrap,
       lineNumbers: settings.lineNumbers,
+      quickSuggestions: settings.codeCompletion
+        ? { other: true, comments: false, strings: true }
+        : false,
+      suggestOnTriggerCharacters: settings.codeCompletion,
+      tabCompletion: settings.codeCompletion ? 'on' : 'off',
+      acceptSuggestionOnCommitCharacter: settings.codeCompletion,
     });
     applyTheme(monacoRef.current, settings.theme);
   }, [settings]);
+
+  // Re-register completion providers whenever language or codeCompletion toggle changes
+  useEffect(() => {
+    if (!monacoRef.current) return;
+    registerCompletionProviders(
+      monacoRef.current,
+      language.monacoId,
+      settings.codeCompletion,
+    );
+  }, [language.monacoId, settings.codeCompletion]);
+
+  // Dispose all providers on unmount
+  useEffect(() => {
+    return () => {
+      disposeAllCompletionProviders();
+    };
+  }, []);
 
   // Removed handleLangChange in favor of modal select
 
@@ -168,6 +197,14 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
             cursorSmoothCaretAnimation: 'on',
             formatOnPaste: true,
             readOnly: readOnly,
+            // Code completion options (driven by settings)
+            quickSuggestions: settings.codeCompletion
+              ? { other: true, comments: false, strings: true }
+              : false,
+            suggestOnTriggerCharacters: settings.codeCompletion,
+            tabCompletion: settings.codeCompletion ? 'on' : 'off',
+            acceptSuggestionOnCommitCharacter: settings.codeCompletion,
+            snippetSuggestions: 'top',
           }}
         />
       </div>

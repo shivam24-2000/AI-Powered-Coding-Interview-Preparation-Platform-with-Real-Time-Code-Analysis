@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import {
-  X, Type, LayoutList, WrapText, Hash, Timer, Sun, Moon, Palette, ChevronRight, ChevronLeft
+  X, Type, LayoutList, WrapText, Hash, Timer, Sun, Moon, Palette, ChevronRight, ChevronLeft, Braces
 } from 'lucide-react';
 import { APP_THEMES } from '../themes';
 
@@ -12,6 +12,7 @@ export interface EditorSettings {
   theme: 'nexcode-dark' | 'vs-light';
   showTimer: boolean;
   appTheme: string;
+  codeCompletion: boolean;
 }
 
 export const DEFAULT_SETTINGS: EditorSettings = {
@@ -22,6 +23,7 @@ export const DEFAULT_SETTINGS: EditorSettings = {
   theme: 'nexcode-dark',
   showTimer: false,
   appTheme: 'midnight-purple',
+  codeCompletion: true,
 };
 
 interface SettingsModalProps {
@@ -344,6 +346,11 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ settings, onChange
           {/* Line Numbers */}
           <Row icon={<LayoutList size={15} />} label="Line Numbers">
             <Toggle id="toggle-linenumbers" checked={settings.lineNumbers === 'on'} onChange={v => set('lineNumbers', v ? 'on' : 'off')} />
+          </Row>
+
+          {/* Code Completion */}
+          <Row icon={<Braces size={15} />} label="Code Completion">
+            <Toggle id="toggle-codecompletion" checked={settings.codeCompletion} onChange={v => set('codeCompletion', v)} />
           </Row>
 
           {/* Interview Timer */}
