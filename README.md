@@ -1,86 +1,139 @@
 # NexCode AI 🚀
-### *The Next-Generation AI-Powered Coding Interview Platform*
+### *The Next-Generation AI-Powered Technical Interview & Code Analysis Platform*
 
-NexCode AI is a high-fidelity, premium coding interview preparation platform. It provides candidates with a state-of-the-art environment to practice data structures and algorithms, enhanced by a real-time **AI Mentor** and a **Virtual Execution Engine** powered by Google's Gemini 2.0 Flash architecture.
+[![Vite](https://img.shields.io/badge/Vite-5.0+-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev/)
+[![React](https://img.shields.io/badge/React-18.0+-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Monaco Editor](https://img.shields.io/badge/Monaco_Editor-VS_Code_Engine-007ACC?style=for-the-badge&logo=visualstudiocode&logoColor=white)](https://microsoft.github.io/monaco-editor/)
+[![Gemini AI](https://img.shields.io/badge/Google_Gemini-2.0_Flash-8E75B2?style=for-the-badge&logo=google&logoColor=white)](https://aistudio.google.com/)
 
-![Main Dashboard](./public/screenshots/main_view.png)
+NexCode AI is a high-fidelity, production-grade technical interview preparation platform. It combines a **VS Code-grade Monaco Editor**, **Language-Aware AI Code Completion (150+ DSA Snippets)**, **Real-Time Complexity Analysis (Friday AI)**, and an interactive **AI Video Mock Interviewer (Alex)** that conducts live technical interviews and generates instant hiring verdicts.
 
-## 🌟 Key Features
+---
 
-### 🧠 Real-Time AI Mentor
-Get instant feedback on your code's time and space complexity as you type. The mentor identifies potential bugs, logic flaws, and optimization opportunities before you even hit "Run". 
-- **Smart Isolation:** AI suggestions are automatically paused during code execution to prioritize performance and focus.
+![NexCode AI Landing Page](./public/screenshots/landing_hero.png)
 
-### ⚡ Virtual Execution Engine
-Execute your solutions across multiple languages (JavaScript, Java, Python, C++, and more) without the need for complex backend infrastructure.
-- **Resilient Architecture:** Includes dual-model failover (Gemini 2.0 Flash to Pro) and emergency local fallbacks to ensure test results are returned even when API limits are reached.
-- **Quota Protection:** Visual cooldown timers prevent accidental rate-limiting during intense practice sessions.
+---
 
-### 🎙️ Friday Voice Assistant (AI Mode)
-Formulate hands-free prompts naturally using human-like dictation. Friday can listen and speak directly to help unblock logic bottlenecks using natural client-side processing buffers.
+## 🌟 Key Platform Features
 
-### 👥 Peer-To-Peer Mock Interviews
-Host intervals session links syncing code transparently over standard Supabase Broadcast sockets. Direct deep-link pointers connect remote workspaces smoothly.
+### 🧠 1. Language-Aware AI Code Completion (11+ Languages)
+- **150+ DSA Snippet Registry:** Instant autocomplete for Binary Search, DP table initialization, Dijkstra's algorithm, Graph BFS/DFS, LRU Cache, Sliding Window, and Tree Traversals.
+- **Multi-Language Support:** Full snippet support for Python, Java, C++, JavaScript, TypeScript, Go, Rust, C#, Swift, Kotlin, and SQL.
+- **Toggleable Settings:** Toggle code completions anytime in the Editor Settings modal with zero memory leaks.
 
-### 🎥 Live Video & Audio Call
-Includes native WebRTC socket streams laying floating window feeds inside your layout permitted live P2P Interview stream structures natively flawless !!
+### 🎥 2. AI Video Mock Interviewer (Alex)
+- **Live Interactive Interviewer:** Face Alex, a Senior AI Technical Interviewer, on a live video call interface.
+- **Voice or Type Responses:** Speak your reasoning out loud or type in real time with live speech-to-text transcription.
+- **Targeted Follow-Ups:** Alex detects code bottlenecks in your editor and asks live follow-up questions about space/time trade-offs.
+- **Hiring Scorecard:** Receive a **Hire / Waitlist / Reject** verdict with per-skill breakdown (Communication, Efficiency, Code Quality).
 
-### 🎨 Premium Developer Experience
-- **Glassmorphism Design:** A stunning, modern interface with deep midnight themes and vibrant accents.
-- **Monaco Editor Integration:** The same core engine powering VS Code, featuring full syntax highlighting and custom themes.
-- **Integrated Whiteboard:** Sketch out ideas and system designs directly within the platform.
-- **Subtle Confirmations:** Custom, non-intrusive pop-ups for critical actions like resetting your code.
+### 💬 3. Friday Real-Time Complexity Mentor
+- **Static Trace Analysis:** Evaluates loops, recursive calls, and hash map lookups in real time.
+- **Visual Complexity Gauge:** Live $O(N)$ time & space complexity indicators.
+- **Non-Intrusive Guidance:** Provides structural clue tiers without spoiling full solutions.
 
-![Code Execution](./public/screenshots/execution.png)
+### 🎮 4. Interactive Hero Skill-Level Quiz & Roadmap
+- **10-Second Assessment:** Answer 2 quick questions (Experience Level + Career Goal) directly on the landing page.
+- **Custom Roadmap Generator:** Instantly renders a personalized 4-stage practice track with direct quick-launch buttons.
+
+### 🔥 5. Live User Counter & Activity Feed Toast
+- **Real-Time Social Proof:** Live animated user counter (`🔴 347 developers practicing right now`).
+- **Activity Stream:** Floating activity toasts highlighting recent problem solves, mock interview passes, and streak milestones.
+
+### ⚡ 6. 1-Tap Quick MCQ Knowledge Check
+- **Embedded DSA Quiz:** Test your algorithm fundamentals directly on the homepage.
+- **Streak Multipliers:** Track consecutive correct answers with live streak counters (`🔥 Streak: 5`).
+
+### 📊 7. Before vs After Performance Analytics
+- **Verified Candidate Growth:** Scroll-animated progress bar showing candidate score growth from 42% -> 94% across 3 mock sessions.
+
+### 👥 8. Peer-to-Peer Collaborative Sessions
+- **WebRTC & Supabase Sockets:** Practice mock interviews live with a friend using real-time code synchronization and WebRTC video call streams.
+
+---
 
 ## 🖼️ Visual Tour
 
-### 📋 Comprehensive Problem Library
-Access a curated list of popular coding challenges ranging from Easy to Hard.
-![Problem List](./public/screenshots/problem_list.png)
+### 🚀 Landing Page & Interactive Platform Preview
+![Landing Page Main](./public/screenshots/landing_page_main.png)
 
-### ☕ Multi-Language Support
-Seamlessly switch between languages like Java, C++, Python, and TypeScript with intelligent syntax highlighting.
-![Java Editor](./public/screenshots/java_editor.png)
+### 🎥 AI Video Mock Interviewer (Alex)
+![AI Mock Interview](./public/screenshots/ai_mock_interview.png)
 
-### 🦾 Deep AI Insights
-The Feedback Mentor provides granular analysis, identifying specific lines for improvement.
-![AI Analysis](./public/screenshots/ai_analysis.png)
+### 💻 Monaco IDE & Virtual Execution Engine
+![Code Editor Workspace](./public/screenshots/editor.png)
 
-## 🛠️ Tech Stack
-- **Frontend:** React 18, Vite, TypeScript
-- **Styling:** Vanilla CSS (Custom Glassmorphism Design System)
-- **AI/LLM:** Google Generative AI (Gemini 2.0 Flash)
-- **Editor:** Monaco Editor (@monaco-editor/react)
-- **Icons:** Lucide React
+### 📊 Multi-Language Support (Java, C++, Python, TypeScript)
+![Java Code Editor](./public/screenshots/java_editor.png)
+
+### 📚 Comprehensive Problem Bank
+![Problem Bank](./public/screenshots/problem_bank.png)
+
+### 🏆 Weekly Community Leaderboards
+![Leaderboards](./public/screenshots/leaderboards.png)
+
+### 🎓 AI Mock Exams Showcase
+![AI Mock Exams](./public/screenshots/ai_mock_exams.png)
+
+---
+
+## 🛠️ Technology Stack
+
+| Layer | Technologies Used |
+| :--- | :--- |
+| **Frontend Core** | React 18, TypeScript, Vite |
+| **Styling & Design System** | Vanilla CSS (Dark Midnight & Light Mode Glassmorphism Theme) |
+| **Code Editor** | Monaco Editor (`@monaco-editor/react`), Custom Completion Providers |
+| **AI / LLM Infrastructure** | Google Generative AI (`@google/genai`), Gemini 2.0 Flash Failover |
+| **Icons & Visuals** | Lucide React, HTML5 Canvas Particle Engine |
+| **Backend & Realtime** | Supabase Auth, WebRTC P2P Video |
+
+---
 
 ## 🚀 Getting Started
 
 ### Prerequisites
-- Node.js (v18 or higher)
-- A Google Gemini API Key (Available at [Google AI Studio](https://aistudio.google.com/))
+- **Node.js** (v18.0 or higher)
+- **npm** or **yarn**
+- **Google Gemini API Key** (Available at [Google AI Studio](https://aistudio.google.com/))
 
-### Installation
+### Installation & Setup
+
 1. **Clone the repository:**
    ```bash
-   https://github.com/shivam24-2000/AI-Powered-Coding-Interview-Preparation-Platform-with-Real-Time-Code-Analysis.git
+   git clone https://github.com/shivam24-2000/AI-Powered-Coding-Interview-Preparation-Platform-with-Real-Time-Code-Analysis.git
+   cd AI-Powered-Coding-Interview-Preparation-Platform-with-Real-Time-Code-Analysis
    ```
+
 2. **Install dependencies:**
    ```bash
    npm install
    ```
+
 3. **Configure Environment Variables:**
    Create a `.env` file in the root directory:
    ```env
    VITE_GEMINI_API_KEY=your_gemini_api_key_here
+   VITE_SUPABASE_URL=your_supabase_url_here
+   VITE_SUPABASE_ANON_KEY=your_supabase_anon_key_here
    ```
-4. **Start the development server:**
+
+4. **Start Development Server:**
    ```bash
    npm run dev
    ```
+   Open `http://localhost:5173` in your browser.
 
-## 🔒 Security Note
-The `.env` file is included in `.gitignore` by default. Never share your API key or push it to public repositories.
+5. **Build for Production:**
+   ```bash
+   npm run build
+   ```
 
 ---
 
+## 🔒 Security Note
+Never commit your `.env` file or publicize your private API keys. `.env` is included in `.gitignore` by default.
+
+---
+Developed with ❤️ by **Shivam Singhal**
